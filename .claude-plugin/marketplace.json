@@ -1,0 +1,13 @@
+{
+  "name": "claude-buddy",
+  "description": "An animated pixel companion for Claude Code",
+  "owner": {
+    "name": "Anders Gram"
+  },
+  "plugins": [
+    {
+      "name": "buddy",
+      "source": "./"
+    }
+  ]
+}
