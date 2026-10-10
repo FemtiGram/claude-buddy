@@ -6,16 +6,18 @@ const PANE = 'buddy'
 const KEY = 'sprite'
 const W = 16
 const H = 14 // 16 rows of art, minus the always-empty top and bottom rows
+const H_SEASON = 16 // a season's hat needs the headroom: all 16 rows, buddy 2 lower
 const FRAME_MS = 66
-const PANE_COLUMNS = 36 // 2× sprite (32 cells) plus a little air
+const PANE_COLUMNS = 50 // room for an agent's task on one line
 const MAX_SCALE = 4
 const MOOD_MS = 2500
-const MINI_COLUMNS = W + 1 // a 1× mini plus a gap
-const MINI_ROWS = H / 2 + 2 // its sprite plus a task line and an activity line
-const MINI_PER_ROW = 2
-const MAX_MINIS = 8 // two columns of four
-const MINI_LINGER_MS = 3000 // how long a finished mini celebrates before it leaves
+const TW = 8 // a mini is an 8×6-pixel sprite: 8 cells by 3 rows, one per text line
+const TH = 6
+const MINI_ROWS = TH / 2 + 1 // its three lines plus a gap
+const MAX_MINIS = 8
+const MINI_LINGER_MS = 30_000 // how long a finished agent stays listed, dimmed
 const SWEEP_MS = 5000
+const CLOCK_MS = 1000 // elapsed times tick once a second
 
 const NONE = 0x01000000 // terminal default (transparent)
 const BODY = 0xd97757 // Claude orange
@@ -23,6 +25,12 @@ const SHADE = 0xb85c3e
 const EYE = 0x1f1e1d
 const SPARK = 0xf5d76e
 const TEAR = 0x5aa9e6
+// Halloween: purple and green, since buddy is orange already.
+const HAT = 0x6a3d9a
+const BAND = 0x8bc34a
+const BAT = 0x8e6bbf
+const PUMPKIN = 0xf0882a
+const EMBER = 0xc0541c
 
 type Mood = 'idle' | 'think' | 'run' | 'happy' | 'sad'
 
@@ -34,8 +42,27 @@ const CAPTION: Record<Mood, string> = {
   sad: 'OH NO...',
 }
 
+// Seasons dress buddy up for a few days a year.
+export type Season = 'halloween'
+export const SEASONS: Season[] = ['halloween']
+
+// The week up to Halloween, by the local calendar.
+export function seasonFor(ms: number): Season | undefined {
+  const d = new Date(ms)
+  if (d.getMonth() === 9 && d.getDate() >= 24) return 'halloween'
+  return undefined
+}
+
+export const heightOf = (season?: Season) => (season ? H_SEASON : H)
+
+export const SEASON_CAPTIONS: Record<Season, Partial<Record<Mood, string>>> = {
+  halloween: { idle: 'SPOOKY', happy: 'BOO!' },
+}
+export const captionFor = (mood: Mood, season?: Season) => (season && SEASON_CAPTIONS[season][mood]) || CAPTION[mood]
+
 // A tiny variable-width pixel font, 5 pixels tall, for the caption.
 const FONT: Record<string, string[]> = {
+  B: ['##.', '#.#', '##.', '#.#', '##.'],
   C: ['###', '#..', '#..', '#..', '###'],
   D: ['##.', '#.#', '#.#', '#.#', '##.'],
   E: ['###', '#..', '##.', '#..', '###'],
@@ -46,9 +73,13 @@ const FONT: Record<string, string[]> = {
   L: ['#..', '#..', '#..', '#..', '###'],
   N: ['#..#', '##.#', '#.##', '#..#', '#..#'],
   O: ['###', '#.#', '#.#', '#.#', '###'],
+  P: ['###', '#.#', '###', '#..', '#..'],
   R: ['##.', '#.#', '##.', '#.#', '#.#'],
+  S: ['###', '#..', '###', '..#', '###'],
   T: ['###', '.#.', '.#.', '.#.', '.#.'],
+  U: ['#.#', '#.#', '#.#', '#.#', '###'],
   W: ['#...#', '#...#', '#.#.#', '#.#.#', '.#.#.'],
+  Y: ['#.#', '#.#', '.#.', '.#.', '.#.'],
   '!': ['#', '#', '#', '.', '#'],
   '.': ['.', '.', '.', '.', '#'],
   ' ': ['..', '..', '..', '..', '..'],
@@ -99,16 +130,19 @@ const TINT: Record<string, number> = {
   'general-purpose': BODY,
 }
 export const tintFor = (type: string) => TINT[type] ?? 0xd4a27f
+export const hex = (c: number) => `#${c.toString(16).padStart(6, '0')}`
 const darken = (c: number) =>
   (Math.floor(((c >> 16) & 255) * 0.82) << 16) | (Math.floor(((c >> 8) & 255) * 0.82) << 8) | Math.floor((c & 255) * 0.82)
 
-export function frame(mood: Mood, tick: number, body = BODY): number[] {
+export function frame(mood: Mood, tick: number, body = BODY, season?: Season): number[] {
   const BODY = body
   const SHADE = darken(body)
-  const px: number[] = new Array(W * H).fill(NONE)
+  const h = heightOf(season)
+  const top = season ? 2 : 0 // a season moves buddy down to make room for a hat
+  const px: number[] = new Array(W * h).fill(NONE)
   const set = (x: number, y: number, c: number) => {
     y -= 1 // the art is laid out on 16 rows; row 0 is never drawn on
-    if (x >= 0 && x < W && y >= 0 && y < H) px[y * W + x] = c
+    if (x >= 0 && x < W && y >= 0 && y < h) px[y * W + x] = c
   }
 
   // Vertical motion per mood.
@@ -120,7 +154,7 @@ export function frame(mood: Mood, tick: number, body = BODY): number[] {
   if (mood === 'sad') dy = 1
 
   const ox = 3
-  const oy = 5 + dy
+  const oy = 5 + top + dy
 
   BODY_ROWS.forEach((row, y) => {
     for (let x = 0; x < row.length; x++) {
@@ -185,8 +219,8 @@ export function frame(mood: Mood, tick: number, body = BODY): number[] {
   // Sparkles when happy, a thought dot when thinking.
   if (mood === 'happy') {
     const on = tick % 6 < 3
-    set(on ? 1 : 14, on ? 2 : 1, SPARK)
-    set(on ? 14 : 1, on ? 4 : 3, SPARK)
+    set(on ? 1 : 14, top + (on ? 2 : 1), SPARK)
+    set(on ? 14 : 1, top + (on ? 4 : 3), SPARK)
   }
   if (mood === 'sad') {
     // A tear that slides down the cheek and drips.
@@ -195,15 +229,99 @@ export function frame(mood: Mood, tick: number, body = BODY): number[] {
   }
   if (mood === 'think') {
     const n = Math.floor(tick / 6) % 4
-    for (let i = 0; i < n; i++) set(11 + i * 2, 1, SHADE)
+    for (let i = 0; i < n; i++) set(11 + i * 2, 1 + top, SHADE)
+  }
+
+  if (season === 'halloween') {
+    // A witch hat in the headroom, bent at the tip, with a green band.
+    for (let x = ox + 1; x <= ox + 8; x++) set(x, oy - 1, HAT)
+    for (let x = ox + 3; x <= ox + 6; x++) set(x, oy - 2, BAND)
+    for (let x = ox + 5; x <= ox + 7; x++) set(x, oy - 3, HAT)
+
+    // A bat flitting about above the left shoulder.
+    const bx = 1 + Math.round(Math.sin(tick / 11))
+    const by = 3 + Math.round(Math.sin(tick / 7) * 0.6)
+    const wing = tick % 6 < 3 ? -1 : 0
+    set(bx, by, BAT)
+    set(bx - 1, by + wing, BAT)
+    set(bx + 1, by + wing, BAT)
+
+    // A jack-o'-lantern at his feet, its face flickering.
+    for (let x = 11; x <= 15; x++) {
+      set(x, 15, PUMPKIN)
+      set(x, 16, PUMPKIN)
+    }
+    set(13, 14, BAND)
+    const glow = tick % 9 < 7 ? SPARK : EMBER
+    set(12, 15, glow)
+    set(14, 15, glow)
+    set(13, 16, glow)
   }
 
   return px
 }
 
+// The mini, 8×6 pixels: a body with two eyes, arms and legs, enough room for
+// a bob, a blink, happy ^^ eyes and a tear.
+export function tinyFrame(mood: Mood, tick: number, body = BODY, season?: Season): number[] {
+  const SHADE = darken(body)
+  const px: number[] = new Array(TW * TH).fill(NONE)
+  const set = (x: number, y: number, c: number) => {
+    if (x >= 0 && x < TW && y >= 0 && y < TH) px[y * TW + x] = c
+  }
+  let dy = 0
+  if (mood === 'idle') dy = Math.sin(tick / 8) > 0.6 ? -1 : 0
+  if (mood === 'run') dy = tick % 4 < 2 ? -1 : 0
+  if (mood === 'happy') dy = Math.abs(Math.sin(tick / 3)) > 0.5 ? -1 : 0
+  const oy = 1 + dy
+
+  for (let x = 1; x <= 6; x++) {
+    set(x, oy, body)
+    set(x, oy + 1, body)
+    set(x, oy + 2, body)
+    set(x, oy + 3, SHADE)
+  }
+  set(1, oy, NONE)
+  set(6, oy, NONE)
+  const armUp = mood === 'happy' || (mood === 'run' && tick % 4 < 2)
+  set(0, oy + (armUp ? 1 : 2), body)
+  set(7, oy + (armUp ? 1 : 2), body)
+  const step = mood === 'run' && tick % 4 < 2
+  set(step ? 1 : 2, oy + 4, SHADE)
+  set(step ? 6 : 5, oy + 4, SHADE)
+
+  const blink = mood === 'idle' && tick % 48 >= 46
+  if (mood === 'happy') {
+    set(2, oy + 2, EYE)
+    set(3, oy + 1, EYE)
+    set(4, oy + 1, EYE)
+    set(5, oy + 2, EYE)
+  } else if (mood === 'sad') {
+    set(2, oy + 2, EYE)
+    set(5, oy + 2, EYE)
+    if (tick % 16 < 10) set(2, oy + 3, TEAR)
+  } else if (!blink) {
+    const look = mood === 'think' ? ([0, 1, 0, -1][Math.floor(tick / 10) % 4] ?? 0) : 0
+    set(2 + look, oy + 1, EYE)
+    set(5 + look, oy + 1, EYE)
+  } else {
+    set(2, oy + 2, EYE)
+    set(5, oy + 2, EYE)
+  }
+  if (mood === 'happy' && tick % 6 < 3) set(7, 0, SPARK)
+  if (mood === 'think' && Math.floor(tick / 6) % 2) set(7, 0, SHADE)
+  if (season === 'halloween') {
+    // No headroom here: the hat's brim takes the top of the head.
+    for (let x = 1; x <= 6; x++) set(x, oy, HAT)
+    set(3, oy - 1, HAT)
+    set(4, oy - 1, HAT)
+  }
+  return px
+}
+
 // Cells for a sprite drawn `scale`× as big: each pixel is `scale` columns wide
 // and `scale` half-rows tall, so it stays square.
-export const size = (scale: number) => ({ columns: W * scale, rows: (H * scale) / 2 })
+export const size = (scale: number, season?: Season) => ({ columns: W * scale, rows: (heightOf(season) * scale) / 2 })
 
 export function encode(px: number[], scale = 1, width = W, height = H): string {
   const columns = width * scale
@@ -270,11 +388,15 @@ type Buddy = {
   toolsRunning: number
   last: string
   lastCaption?: string
-  // minis only
-  label?: string
   activity?: string // what it's doing right now, e.g. "▸ Read page.tsx"
+  // minis only
+  name?: string // its agent's name, else its type
+  label?: string // its task
   body?: number
   phase?: number // offsets the animation so minis don't bob in sync
+  startedAt?: number
+  endedAt?: number
+  tools?: number
   leaveAt?: number // set when its agent's turn ends
 }
 
@@ -288,7 +410,17 @@ export const moodOf = (b: Buddy, now: number): Mood => {
 }
 
 const miniKey = (id: string) => `mini-${id.replace(/[^A-Za-z0-9_-]/g, '').slice(0, 40)}`
-const clip = (text: string, n: number) => (text.length > n ? `${text.slice(0, n - 1)}…` : text)
+
+export const elapsed = (ms: number) => {
+  const s = Math.max(0, Math.floor(ms / 1000))
+  return s < 3600 ? `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}` : `${Math.floor(s / 3600)}h${String(Math.floor(s / 60) % 60).padStart(2, '0')}`
+}
+
+// Running agents first, newest at the bottom; finished ones after, latest first.
+export const listOrder = <T extends { leaveAt?: number; startedAt?: number }>(minis: [string, T][]) =>
+  [...minis].sort(([, a], [, b]) =>
+    !a.leaveAt !== !b.leaveAt ? (a.leaveAt ? 1 : -1) : a.leaveAt ? b.leaveAt! - a.leaveAt : (a.startedAt ?? 0) - (b.startedAt ?? 0),
+  )
 
 export const register: Register = on => {
   const main = fresh()
@@ -296,27 +428,34 @@ export const register: Register = on => {
   let scale = 2
   let isShown = false
   let tick = 0
+  let wallNow = 0 // the clock as of the last frame, for drawing times
+  let season: Season | undefined
+  let preview: Season | 'none' | undefined // `/buddy halloween` overrides the calendar
+  const seasonAt = (now: number) => (preview === 'none' ? undefined : (preview ?? seasonFor(now)))
 
   // The buddy a loop's events belong to: the main one, or its agent's mini.
   const buddyFor = (agentId: string | undefined, create: boolean): Buddy | undefined => {
     if (!agentId) return main
     let mini = minis.get(agentId)
     if (!mini && create) {
-      mini = { ...fresh(), mood: 'think', phase: minis.size * 7, label: 'agent', body: BODY }
+      mini = { ...fresh(), mood: 'think', phase: minis.size * 7, name: 'agent', label: '', body: BODY, startedAt: wallNow, tools: 0 }
       minis.set(agentId, mini)
     }
     return mini
   }
 
   on('session.start', async ($, e, next) => {
-    await $.command.register({ name: 'buddy', description: 'Show or hide your pixel buddy' })
+    await $.command.register({ name: 'buddy', description: 'Show or hide your pixel buddy', argumentHint: '[halloween|normal|auto]' })
     isShown = (await $.ui.panes()).some(pane => pane.id === PANE)
     if (!isShown) void $.ui.open({ id: PANE, title: 'Buddy', rows: 18, columns: PANE_COLUMNS })
 
     $.clock.every(FRAME_MS, async () => {
       if (!isShown) return
       tick++
-      const now = await $.clock.now()
+      const now = (wallNow = await $.clock.now())
+
+      // A season starting or ending changes the sprite's size: lay out again.
+      if (seasonAt(now) !== season) return $.ui.invalidate('ui.render')
 
       // Finished minis leave once they've celebrated.
       let left = false
@@ -328,26 +467,28 @@ export const register: Register = on => {
       }
       if (left) return $.ui.invalidate('ui.render')
 
-      const paint = async (b: Buddy, key: string, s: number, t: number) => {
-        const cells = encode(frame(moodOf(b, now), t, b.body), s)
+      const paint = async (b: Buddy, key: string, cells: string) => {
         if (cells === b.last) return
         b.last = cells
         await $.ui.blit({ requestId: PANE, key, cells })
       }
-      await paint(main, KEY, scale, tick)
+      await paint(main, KEY, encode(frame(moodOf(main, now), tick, BODY, season), scale, W, heightOf(season)))
       if (scale >= 2) {
         const mood = moodOf(main, now)
-        const caption = encode(captionPixels(CAPTION[mood], tick, mood === 'think'), 1, CAPTION_W, CAPTION_H)
+        const caption = encode(captionPixels(captionFor(mood, season), tick, mood === 'think'), 1, CAPTION_W, CAPTION_H)
         if (caption !== main.lastCaption) {
           main.lastCaption = caption
           await $.ui.blit({ requestId: PANE, key: 'caption', cells: caption })
         }
       }
-      let n = 0
       for (const [id, mini] of minis) {
-        if (n++ >= MAX_MINIS) break
-        await paint(mini, miniKey(id), 1, tick + (mini.phase ?? 0))
+        await paint(mini, miniKey(id), encode(tinyFrame(moodOf(mini, now), tick + (mini.phase ?? 0), mini.body, season), 1, TW, TH))
       }
+    })
+
+    // Running agents' elapsed times tick.
+    $.clock.every(CLOCK_MS, () => {
+      if (isShown && [...minis.values()].some(m => !m.leaveAt)) $.ui.invalidate('ui.render')
     })
 
     // Safety net: drop minis whose agent ended without a turn.complete (killed).
@@ -358,14 +499,35 @@ export const register: Register = on => {
       for (const [id, mini] of minis) {
         const agent = agents.find(a => a.id === id)
         const isOver = !agent || ['completed', 'failed', 'killed'].includes(agent.status)
-        if (isOver && !mini.leaveAt) mini.leaveAt = now + MINI_LINGER_MS
+        if (isOver && !mini.leaveAt) {
+          mini.leaveAt = now + MINI_LINGER_MS
+          mini.endedAt = now
+          mini.activity = agent?.status === 'failed' ? '✗ failed' : agent?.status === 'completed' ? '✓ done' : '■ stopped'
+          $.ui.invalidate('ui.render')
+        }
       }
     })
 
     return next(e)
   })
 
-  on('command.run', { command: 'buddy' }, async $ => {
+  on('command.run', { command: 'buddy' }, async ($, e) => {
+    // `/buddy halloween` tries a costume on now; `normal` takes it off;
+    // `auto` goes back to the calendar.
+    const arg = e.args.trim().toLowerCase()
+    if (arg) {
+      if (arg === 'auto') preview = undefined
+      else if (arg === 'normal') preview = 'none'
+      else if ((SEASONS as string[]).includes(arg)) preview = arg as Season
+      else return { text: `Buddy doesn't know "${arg}". Try ${[...SEASONS, 'normal', 'auto'].join(', ')}.` }
+      $.ui.invalidate('ui.render')
+      if (!(await $.ui.panes()).some(pane => pane.id === PANE)) {
+        await $.ui.open({ id: PANE, title: 'Buddy', rows: 18, columns: PANE_COLUMNS })
+      }
+      return {
+        text: preview === undefined ? 'Buddy follows the calendar again.' : preview === 'none' ? 'Buddy dresses down.' : `Buddy dresses up for ${preview}!`,
+      }
+    }
     if ((await $.ui.panes()).some(pane => pane.id === PANE)) {
       await $.ui.close({ id: PANE })
       return { text: 'Buddy is taking a nap.' }
@@ -384,8 +546,10 @@ export const register: Register = on => {
     const result = await next(e)
     if (result.agentId) {
       const mini = buddyFor(result.agentId, true)!
-      mini.label = e.description || e.subagentType
+      mini.name = e.name || e.subagentType
+      mini.label = e.description
       mini.body = tintFor(e.subagentType)
+      mini.startedAt = await $.clock.now()
       $.ui.invalidate('ui.render')
     }
     return result
@@ -402,8 +566,9 @@ export const register: Register = on => {
       const id = e.agentId
       void $.agent.list().then(agents => {
         const agent = agents.find(a => a.id === id)
-        if (agent && b.label === 'agent') {
-          b.label = agent.description || agent.type
+        if (agent && b.name === 'agent') {
+          b.name = agent.name || agent.type
+          b.label = agent.description
           b.body = tintFor(agent.type)
           $.ui.invalidate('ui.render')
         }
@@ -411,7 +576,8 @@ export const register: Register = on => {
     }
     b.mood = 'think'
     b.leaveAt = undefined
-    if (b !== main && b.toolsRunning === 0) b.activity = '▸ thinking…'
+    b.endedAt = undefined
+    if (b.toolsRunning === 0) b.activity = '▸ thinking…'
     $.ui.invalidate('ui.render')
     return yield* next(e)
   })
@@ -420,7 +586,8 @@ export const register: Register = on => {
     const b = buddyFor(e.agentId, false)
     if (!b) return next(e)
     b.toolsRunning++
-    if (b !== main) b.activity = `▸ ${describeTool(e.tool, e)}`
+    if (b !== main) b.tools = (b.tools ?? 0) + 1
+    b.activity = `▸ ${describeTool(e.tool, e)}`
     $.ui.invalidate('ui.render')
     try {
       const result = await next(e)
@@ -446,8 +613,10 @@ export const register: Register = on => {
         b.mood = 'idle'
         if (e.reason !== 'aborted') b.sadUntil = now + MOOD_MS
       }
-      if (b !== main) {
+      if (b === main) b.activity = undefined
+      else {
         b.leaveAt = now + MINI_LINGER_MS
+        b.endedAt = now
         b.activity = e.reason === 'answer' ? '✓ done' : e.reason === 'aborted' ? '■ stopped' : '✗ failed'
       }
       $.clock.after(MOOD_MS + 100, () => $.ui.invalidate('ui.render'))
@@ -459,50 +628,77 @@ export const register: Register = on => {
   on('ui.render', { component: 'Pane', requestId: PANE }, async ($, e) => {
     const now = await $.clock.now()
     const mood = moodOf(main, now)
+    season = seasonAt(now)
+    const spriteH = heightOf(season) // not `h`: that's the JSX factory
+    const caption = captionFor(mood, season)
     if (e.surface !== 'terminal') {
       const { Text } = $.ui.resolve(e)
-      return <Text dimColor>Buddy lives in the terminal ({CAPTION[mood]})</Text>
+      return <Text dimColor>Buddy lives in the terminal ({caption})</Text>
     }
     const { Box, Text, Raster } = $.ui.resolve(e)
     isShown = true
     const { bodyColumns, scroll } = e.props
 
-    // Minis sit in rows below the big buddy; the big one gets what's left.
-    const shown = [...minis].slice(0, MAX_MINIS)
+    // The agent list sits below the big buddy, as many as fit; the big one
+    // shrinks to 1× while there are agents, to leave them room.
+    const ordered = listOrder([...minis])
+    const headerRows = minis.size > 0 ? 1 : 0
+    const mainActivity = main.activity ? 1 : 0
+    const fit = Math.max(1, Math.floor((scroll.bodyRows - spriteH / 2 - 1 - mainActivity - headerRows - 1) / MINI_ROWS))
+    const shown = ordered.slice(0, Math.min(MAX_MINIS, fit))
     const extra = minis.size - shown.length
-    const perRow = Math.max(1, Math.min(MINI_PER_ROW, Math.floor(bodyColumns / MINI_COLUMNS)))
-    const miniRows = Math.ceil(shown.length / perRow)
-    const roomRows = scroll.bodyRows - CAPTION_H / 2 - miniRows * MINI_ROWS - (extra > 0 ? 1 : 0)
-    scale = Math.max(1, Math.min(MAX_SCALE, Math.floor(bodyColumns / W), Math.floor((roomRows * 2) / H)))
-    main.last = encode(frame(mood, tick), scale)
-    const { columns, rows } = size(scale)
-
-    const rowsOfMinis: (typeof shown)[] = []
-    for (let i = 0; i < shown.length; i += perRow) rowsOfMinis.push(shown.slice(i, i + perRow))
+    const cap = minis.size > 0 ? 1 : MAX_SCALE
+    const roomRows = scroll.bodyRows - CAPTION_H / 2 - mainActivity
+    scale = Math.max(1, Math.min(cap, Math.floor(bodyColumns / W), Math.floor((roomRows * 2) / spriteH)))
+    main.last = encode(frame(mood, tick, BODY, season), scale, W, spriteH)
+    const { columns, rows } = size(scale, season)
+    const running = ordered.filter(([, m]) => !m.leaveAt).length
+    const textColumns = Math.max(8, bodyColumns - TW - 3)
 
     return (
-      <Box flexDirection="column" alignItems="center">
-        <Raster key={KEY} columns={columns} rows={rows} cells={main.last} />
-        {scale >= 2 ? (
-          <Raster key="caption" columns={CAPTION_W} rows={CAPTION_H / 2} cells={(main.lastCaption = encode(captionPixels(CAPTION[mood], tick, mood === 'think'), 1, CAPTION_W, CAPTION_H))} />
-        ) : (
-          <Text dimColor>{CAPTION[mood].toLowerCase()}</Text>
-        )}
-        {rowsOfMinis.map(row => (
-          <Box flexDirection="row" gap={1}>
-            {row.map(([id, mini]) => {
-              mini.last = encode(frame(moodOf(mini, now), tick + (mini.phase ?? 0), mini.body), 1)
-              return (
-                <Box flexDirection="column" alignItems="center" width={W}>
-                  <Raster key={miniKey(id)} columns={W} rows={H / 2} cells={mini.last} />
-                  <Text wrap="truncate">{clip(mini.label ?? 'agent', W)}</Text>
-                  <Text dimColor wrap="truncate">{clip(mini.activity ?? '▸ starting…', W)}</Text>
-                </Box>
-              )
-            })}
+      <Box flexDirection="column">
+        <Box flexDirection="column" alignItems="center">
+          <Raster key={KEY} columns={columns} rows={rows} cells={main.last} />
+          {scale >= 2 ? (
+            <Raster key="caption" columns={CAPTION_W} rows={CAPTION_H / 2} cells={(main.lastCaption = encode(captionPixels(caption, tick, mood === 'think'), 1, CAPTION_W, CAPTION_H))} />
+          ) : (
+            <Text color={hex(INK)} bold>{caption.toLowerCase()}</Text>
+          )}
+          {main.activity && <Text dimColor wrap="truncate">{main.activity}</Text>}
+        </Box>
+        {minis.size > 0 && (
+          <Box marginTop={1}>
+            <Text dimColor wrap="truncate">
+              {`── agents · ${running ? `${running} running` : 'all done'} `.padEnd(bodyColumns - 1, '─')}
+            </Text>
           </Box>
-        ))}
-        {extra > 0 && <Text dimColor>+{extra} more</Text>}
+        )}
+        {shown.map(([id, mini]) => {
+          const isDone = !!mini.leaveAt
+          mini.last = encode(tinyFrame(moodOf(mini, now), tick + (mini.phase ?? 0), mini.body, season), 1, TW, TH)
+          const time = elapsed((mini.endedAt ?? now) - (mini.startedAt ?? now))
+          const meta = `${mini.tools ? `${mini.tools} tool${mini.tools === 1 ? '' : 's'} · ` : ''}${time}`
+          const activity = mini.activity ?? '▸ starting…'
+          const statusColor = activity.startsWith('✓') ? 'success' : activity.startsWith('✗') ? 'error' : undefined
+          return (
+            <Box flexDirection="row" gap={1} marginTop={1}>
+              <Box paddingLeft={1}>
+                <Raster key={miniKey(id)} columns={TW} rows={TH / 2} cells={mini.last} />
+              </Box>
+              <Box flexDirection="column" width={textColumns}>
+                <Box flexDirection="row" justifyContent="space-between">
+                  <Text bold color={isDone ? undefined : hex(mini.body ?? BODY)} dimColor={isDone} wrap="truncate">
+                    {mini.name ?? 'agent'}
+                  </Text>
+                  <Text dimColor>{meta}</Text>
+                </Box>
+                <Text dimColor={isDone} wrap="truncate">{mini.label || '…'}</Text>
+                <Text dimColor={!statusColor} color={statusColor} wrap="truncate">{activity}</Text>
+              </Box>
+            </Box>
+          )
+        })}
+        {extra > 0 && <Text dimColor>{`  +${extra} more`}</Text>}
       </Box>
     )
   })

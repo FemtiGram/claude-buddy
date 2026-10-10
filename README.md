@@ -8,9 +8,18 @@ A small animated pixel companion for [Claude Code](https://claude.com/claude-cod
 - **done** — jumps with sparkles when a turn finishes
 - **oh no** — droops with a tear when a tool fails
 
-Every agent Claude starts gets its own **mini-buddy** below the big one, tinted by agent type, with the agent's task and what it's doing right now (`▸ Read page.tsx`, `▸ Grep Promise.all`, `✓ done`). Up to 8 show in two columns.
+Every agent Claude starts gets a row in the **agent list** below the big buddy: a tiny buddy tinted by agent type, its name with the tool count and elapsed time, its task, and what it's doing right now (`▸ Read page.tsx`, `▸ Grep Promise.all`, `✓ done`). Running agents list first; finished ones stay for 30 seconds, dimmed. While agents run, the big buddy shrinks to make room and shows its own current tool under the caption.
+
+```
+ ── agents · 1 running ──────────────────────
+ ▗▆▆▖  Explore                 6 tools · 0:42
+ ▐▀▀▌  Find all usages of requireAuth
+ ▝▘▝▘  ▸ Grep requireAuth
+```
 
 Drawn with half-block pixels in the terminal's own colours, so empty space stays transparent.
+
+Around the holidays buddy dresses up. In the week up to **Halloween** (Oct 24–31) he wears a witch hat, a bat flits over his shoulder, a jack-o'-lantern flickers at his feet, and he says `SPOOKY` and `BOO!`.
 
 ## Install
 
@@ -26,6 +35,7 @@ Answer `y` to add the marketplace and pick the **user** scope to have buddy in e
 
 - Opens as a side pane on its own when the terminal is ≥ 144 columns wide.
 - `/buddy` toggles it (opens it at any width).
+- `/buddy halloween` tries the costume on now, `/buddy normal` takes it off, `/buddy auto` follows the calendar again.
 - Terminal only for now; the desktop and VS Code surfaces show a one-line text status.
 
 ## Develop
