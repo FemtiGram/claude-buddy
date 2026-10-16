@@ -1,6 +1,6 @@
 import { test, expect, mock } from 'claude-code/testing'
 import {
-  describeTool, CAPTIONS, SEASON_CAPTIONS, captionFor, captionPixels, captionWidth, elapsed, encode, frame, listOrder, moodOf,
+  describeTool, CAPTIONS, SEASON_CAPTIONS, SKIN_CAPTIONS, CRITTERS, critterFor, captionFor, captionPixels, captionWidth, elapsed, encode, frame, listOrder, moodOf,
   seasonFor, size, tinyFrame, tintFor,
 } from './register'
 
@@ -265,4 +265,137 @@ test('/buddy halloween tries the costume on; normal and auto take it off', async
   expect((await $.command.run({ command: 'buddy', args: 'auto' })).text).toBe('Buddy follows the calendar again.')
   expect(await rows()).toBe(14)
   expect((await $.command.run({ command: 'buddy', args: 'easter' })).text).toContain("doesn't know")
+})
+
+const FUR = 0x8b9099
+const BELLY = 0xeee4c8
+
+test('the forest spirit is 16×16 and never clips its ears, its feet or the tear', () => {
+  const TEAR = 0x5aa9e6
+  expect(size(2, undefined, 'forest')).toEqual({ columns: 32, rows: 16 })
+  for (const mood of MOODS) {
+    const fur = frame(mood, 0, undefined, undefined, 'forest').filter(c => c === FUR).length
+    for (let tick = 0; tick < 96; tick++) {
+      const px = frame(mood, tick, undefined, undefined, 'forest')
+      expect(px).toHaveLength(256)
+      // as much fur at every height of every jump: nothing falls off the edge
+      expect(px.filter(c => c === FUR)).toHaveLength(fur)
+      expect(px.some(c => c === BELLY)).toBe(true)
+      expect(px.some(c => c === 0xd97757)).toBe(false)
+      if (mood === 'sad') expect(px.filter(c => c === TEAR)).toHaveLength(1)
+    }
+  }
+  expect(encode(frame('run', 0, undefined, undefined, 'forest'), 1, 16, 16)).not.toBe(encode(frame('run', 2, undefined, undefined, 'forest'), 1, 16, 16))
+})
+
+test('the forest spirit skips the hats but keeps the season\'s props, behind or beside it', () => {
+  const HAT = 0x6a3d9a
+  const SANTA = 0xd63a3a
+  const PUMPKIN = 0xf0882a
+  const GIFT = 0x3f9b4f
+  for (const mood of MOODS) {
+    for (let tick = 0; tick < 96; tick++) {
+      const fur = frame(mood, tick, undefined, undefined, 'forest').filter(c => c === FUR).length
+      const spooky = frame(mood, tick, undefined, 'halloween', 'forest')
+      expect(spooky.some(c => c === HAT)).toBe(false)
+      expect(spooky.some(c => c === PUMPKIN)).toBe(true)
+      expect(spooky.filter(c => c === FUR)).toHaveLength(fur)
+      const merry = frame(mood, tick, undefined, 'christmas', 'forest')
+      expect(merry.some(c => c === SANTA)).toBe(false)
+      expect(merry.filter(c => c === GIFT)).toHaveLength(6)
+      expect(merry.filter(c => c === FUR)).toHaveLength(fur)
+    }
+  }
+  // minis are forest critters and wear no hat
+  for (const mood of MOODS) expect(tinyFrame(mood, 3, 0xe8a87c, 'halloween', 'forest').some(c => c === HAT)).toBe(false)
+})
+
+test('the forest spirit cheers WHEEE!; a season\'s caption still wins', () => {
+  for (const captions of Object.values(SKIN_CAPTIONS)) {
+    for (const text of Object.values(captions)) expect(captionWidth(text!)).toBeLessThanOrEqual(32)
+  }
+  expect(captionFor('happy', undefined, 'forest')).toBe('WHEEE!')
+  expect(captionFor('idle', undefined, 'forest')).toBe(CAPTIONS.idle)
+  expect(captionFor('happy', 'christmas', 'forest')).toBe('MERRY!')
+})
+
+test('/buddy forest changes skin and remembers it; classic changes back', async ($, on) => {
+  mock.clock(on)
+  const store = new Map<string, unknown>()
+  on('store.set', ($, e) => (store.set(e.key, e.value), { value: undefined }))
+  on('ui.panes', () => ({ value: [] }))
+  on('ui.open', () => ({ value: { isPlaced: true } as never }))
+  const rows = async () => {
+    const term = await $.ui.mount({ plugin: 'buddy', surface: 'terminal', component: 'Pane', requestId: 'buddy', props: pane(36, 40) })
+    const r = (await term.find({ type: 'Raster', key: 'sprite' }))?.props.rows
+    await term.unmount()
+    return r
+  }
+  expect(await rows()).toBe(14)
+  expect((await $.command.run({ command: 'buddy', args: 'Forest' })).text).toBe('Buddy turns into a forest spirit!')
+  expect(await rows()).toBe(16)
+  expect(store.get('skin')).toBe('forest')
+  // a season costume on top keeps the skin
+  await $.command.run({ command: 'buddy', args: 'halloween' })
+  expect(await rows()).toBe(16)
+  await $.command.run({ command: 'buddy', args: 'normal' })
+  expect(await rows()).toBe(16)
+  expect((await $.command.run({ command: 'buddy', args: 'classic' })).text).toBe('Buddy is himself again.')
+  expect(await rows()).toBe(14)
+  expect(store.get('skin')).toBe('classic')
+})
+
+test('a skin picked in an earlier session comes back', async ($, on) => {
+  mock.clock(on)
+  mock.store(on, { skin: 'forest' })
+  on('ui.panes', () => ({ value: [] }))
+  on('ui.open', () => ({ value: { isPlaced: true } as never }))
+  on('command.register', () => ({ value: undefined }))
+  on('session.start', ($, e) => ({ cwd: e.cwd }))
+  await $.session.start({ cwd: '/tmp', surface: 'terminal', isInteractive: true })
+  const term = await $.ui.mount({ plugin: 'buddy', surface: 'terminal', component: 'Pane', requestId: 'buddy', props: pane(36, 40) })
+  expect((await term.find({ type: 'Raster', key: 'sprite' }))?.props.rows).toBe(16)
+})
+
+test('in the forest each agent type is its own critter, whole in every mood', () => {
+  expect(critterFor('Explore')).toBe('sprout')
+  expect(critterFor('Plan')).toBe('owl')
+  expect(critterFor('fork')).toBe('acorn')
+  expect(critterFor('general-purpose')).toBe('spirit')
+  expect(critterFor('something-new')).toBe('mushroom')
+  const looks = new Set<string>()
+  for (const [critter, { colors }] of Object.entries(CRITTERS) as [keyof typeof CRITTERS, (typeof CRITTERS)[keyof typeof CRITTERS]][]) {
+    looks.add(encode(tinyFrame('idle', 0, undefined, undefined, 'forest', critter), 1, 8, 6))
+    for (const mood of MOODS) {
+      // every pixel drawn but a sparkle or a thought dot, which come and go in the corner
+      // (a thinking critter holds still, so its corner is always the dot's)
+      const drawn = (px: number[]) => px.filter((c, i) => c !== 0x01000000 && !(i === 7 && (c === 0xf5d76e || mood === 'think'))).length
+      const own = drawn(tinyFrame(mood, 0, undefined, undefined, 'forest', critter))
+      for (let tick = 0; tick < 96; tick++) {
+        const px = tinyFrame(mood, tick, 0xe8a87c, undefined, 'forest', critter)
+        expect(px).toHaveLength(48)
+        // drawn in its own colours, never the agent's tint
+        expect(px.some(c => c === 0xe8a87c)).toBe(false)
+        // nothing falls off the top or bottom at any point of a bob
+        expect(drawn(px)).toBe(own)
+        expect(px.some(c => c === colors['#'])).toBe(true)
+      }
+    }
+  }
+  expect(looks.size).toBe(Object.keys(CRITTERS).length)
+})
+
+test('in the forest an agent\'s name takes its critter\'s colour', async ($, on) => {
+  mock.clock(on)
+  on('ui.panes', () => ({ value: [] }))
+  on('ui.open', () => ({ value: { isPlaced: true } as never }))
+  mock.store(on)
+  on('agent.spawn', () => ({ model: 'test', agentId: 'agent-1' }))
+  await $.agent.spawn({
+    tool_use_id: 'toolu_1', prompt: 'x', description: 'Plan the move', subagentType: 'Plan',
+    provider: { plugin: 'engine', tier: 'core' }, parentModel: 'test', background: true, fork: false,
+  })
+  await $.command.run({ command: 'buddy', args: 'forest' })
+  const term = await $.ui.mount({ plugin: 'buddy', surface: 'terminal', component: 'Pane', requestId: 'buddy', props: pane(50, 40) })
+  expect((await term.find({ type: 'Text', text: 'Plan' }))?.props.color).toBe(`#${CRITTERS.owl.tint.toString(16)}`)
 })

@@ -6,7 +6,7 @@ const PANE = 'buddy'
 const KEY = 'sprite'
 const W = 16
 const H = 14 // 16 rows of art, minus the always-empty top and bottom rows
-const H_SEASON = 16 // a season's hat needs the headroom: all 16 rows, buddy 2 lower
+const H_TALL = 16 // a season's hat or the forest spirit's ears need the headroom: all 16 rows, buddy 2 lower
 const FRAME_MS = 66
 const PANE_COLUMNS = 50 // room for an agent's task on one line
 const MAX_SCALE = 4
@@ -36,6 +36,9 @@ const SANTA = 0xd63a3a
 const TRIM = 0xf4f4f4
 const SNOW = 0xcfe3f2
 const GIFT = 0x3f9b4f
+// The forest skin: a grey-blue spirit with a cream belly.
+const FUR = 0x8b9099
+const BELLY = 0xeee4c8
 
 type Mood = 'idle' | 'think' | 'run' | 'happy' | 'sad'
 
@@ -59,13 +62,22 @@ export function seasonFor(ms: number): Season | undefined {
   return undefined
 }
 
-export const heightOf = (season?: Season) => (season ? H_SEASON : H)
+// Skins change who buddy is, all year round; `/buddy forest` picks one and it's remembered.
+export type Skin = 'classic' | 'forest'
+export const SKINS: Skin[] = ['classic', 'forest']
+
+export const heightOf = (season?: Season, skin?: Skin) => (season || skin === 'forest' ? H_TALL : H)
 
 export const SEASON_CAPTIONS: Record<Season, Partial<Record<Mood, string>>> = {
   halloween: { idle: 'SPOOKY', happy: 'BOO!' },
   christmas: { idle: 'HO HO HO', happy: 'MERRY!' },
 }
-export const captionFor = (mood: Mood, season?: Season) => (season && SEASON_CAPTIONS[season][mood]) || CAPTION[mood]
+export const SKIN_CAPTIONS: Record<Skin, Partial<Record<Mood, string>>> = {
+  classic: {},
+  forest: { happy: 'WHEEE!' },
+}
+export const captionFor = (mood: Mood, season?: Season, skin: Skin = 'classic') =>
+  (season && SEASON_CAPTIONS[season][mood]) || SKIN_CAPTIONS[skin][mood] || CAPTION[mood]
 
 // A tiny variable-width pixel font, 5 pixels tall, for the caption.
 const FONT: Record<string, string[]> = {
@@ -142,35 +154,10 @@ export const hex = (c: number) => `#${c.toString(16).padStart(6, '0')}`
 const darken = (c: number) =>
   (Math.floor(((c >> 16) & 255) * 0.82) << 16) | (Math.floor(((c >> 8) & 255) * 0.82) << 8) | Math.floor((c & 255) * 0.82)
 
-export function frame(mood: Mood, tick: number, body = BODY, season?: Season): number[] {
-  const BODY = body
-  const SHADE = darken(body)
-  const h = heightOf(season)
-  const top = season ? 2 : 0 // a season moves buddy down to make room for a hat
-  const px: number[] = new Array(W * h).fill(NONE)
-  const set = (x: number, y: number, c: number) => {
-    y -= 1 // the art is laid out on 16 rows; row 0 is never drawn on
-    if (x >= 0 && x < W && y >= 0 && y < h) px[y * W + x] = c
-  }
+type Draw = (x: number, y: number, c: number) => void
 
-  // Vertical motion per mood.
-  let dy = 0
-  if (mood === 'idle') dy = Math.round(Math.sin(tick / 8) * 0.6)
-  if (mood === 'think') dy = Math.round(Math.sin(tick / 5) * 0.6)
-  if (mood === 'run') dy = tick % 4 < 2 ? -1 : 0
-  if (mood === 'happy') dy = -Math.round(Math.abs(Math.sin(tick / 3)) * 3)
-  if (mood === 'sad') dy = 1
-
-  const ox = 3
-  const oy = 5 + top + dy
-
-  // Snow falls first, so buddy stands in front of it.
-  if (season === 'christmas') {
-    for (const [x, phase] of [[0, 0], [2, 9], [8, 5], [13, 3], [15, 12]] as const) {
-      set(x, 1 + (Math.floor(tick / 4 + phase) % 16), SNOW)
-    }
-  }
-
+// Buddy himself: body, arms, legs, eyes and a tear, `oy` the top of his head.
+function classicBody(set: Draw, mood: Mood, tick: number, ox: number, oy: number, BODY: number, SHADE: number) {
   BODY_ROWS.forEach((row, y) => {
     for (let x = 0; x < row.length; x++) {
       if (row[x] === '#') set(ox + x, oy + y, BODY)
@@ -231,36 +218,154 @@ export function frame(mood: Mood, tick: number, body = BODY, season?: Season): n
     }
   }
 
-  // Sparkles when happy, a thought dot when thinking.
-  if (mood === 'happy') {
-    const on = tick % 6 < 3
-    set(on ? 1 : 14, top + (on ? 2 : 1), SPARK)
-    set(on ? 14 : 1, top + (on ? 4 : 3), SPARK)
-  }
   if (mood === 'sad') {
     // A tear that slides down the cheek and drips.
     const t = tick % 16
     set(ox + 2, oy + 5 + Math.min(t >> 2, 3), TEAR)
   }
-  if (mood === 'think') {
-    const n = Math.floor(tick / 6) % 4
-    for (let i = 0; i < n; i++) set(11 + i * 2, 1 + top, SHADE)
+}
+
+// The forest spirit, 10 wide: ears above the head ('#' fur, '=' belly, '-' the
+// shaded bottom), a pear-shaped body with a chevron on its belly.
+const SPIRIT_ROWS = [
+  '.#......#.',
+  '.##....##.',
+  '.########.',
+  '##########',
+  '##########',
+  '##########',
+  '###====###',
+  '##==##==##',
+  '#==#==#==#',
+  '.#======#.',
+  '..------..',
+]
+
+// `oy` is the top of the head; the ears stick up two rows above it, the feet
+// sit one below the shaded bottom.
+function spiritBody(set: Draw, mood: Mood, tick: number, ox: number, oy: number, FUR: number, SHADE: number) {
+  SPIRIT_ROWS.forEach((row, y) => {
+    for (let x = 0; x < row.length; x++) {
+      if (row[x] === '#') set(ox + x, oy - 2 + y, FUR)
+      if (row[x] === '=') set(ox + x, oy - 2 + y, BELLY)
+      if (row[x] === '-') set(ox + x, oy - 2 + y, SHADE)
+    }
+  })
+
+  // Stubby arms, up when happy or running.
+  const armUp = mood === 'happy' || (mood === 'run' && tick % 4 < 2)
+  set(ox - 1, oy + (armUp ? 2 : 4), FUR)
+  set(ox + 10, oy + (armUp ? 2 : 4), FUR)
+  if (mood === 'happy') {
+    set(ox - 2, oy + 1, FUR)
+    set(ox + 11, oy + 1, FUR)
   }
 
-  if (season === 'halloween') {
-    // A witch hat in the headroom, bent at the tip, with a green band.
-    for (let x = ox + 1; x <= ox + 8; x++) set(x, oy - 1, HAT)
-    for (let x = ox + 3; x <= ox + 6; x++) set(x, oy - 2, BAND)
-    for (let x = ox + 5; x <= ox + 7; x++) set(x, oy - 3, HAT)
+  // Wide clawed feet that shuffle while running.
+  const feet = mood === 'run' ? (tick % 4 < 2 ? [1, 2, 6, 7] : [2, 3, 7, 8]) : [2, 3, 6, 7]
+  for (const fx of feet) set(ox + fx, oy + 9, SHADE)
 
-    // A bat flitting about above the left shoulder.
+  // A small nose above the eyes.
+  set(ox + 4, oy + 1, SHADE)
+  set(ox + 5, oy + 1, SHADE)
+
+  // Big round eyes: a white and a pupil each.
+  const blink = mood === 'idle' && tick % 48 >= 46
+  if (mood === 'happy') {
+    // ^ ^ and the famous grin.
+    for (const ex of [ox + 1, ox + 6]) {
+      set(ex, oy + 2, EYE)
+      set(ex + 1, oy + 1, EYE)
+      set(ex + 2, oy + 2, EYE)
+    }
+    for (let x = ox + 3; x <= ox + 6; x++) set(x, oy + 3, EYE)
+  } else if (mood === 'sad') {
+    // Heavy lids over small pupils.
+    set(ox + 1, oy + 2, SHADE)
+    set(ox + 2, oy + 2, EYE)
+    set(ox + 7, oy + 2, EYE)
+    set(ox + 8, oy + 2, SHADE)
+  } else if (blink) {
+    for (const x of [ox + 1, ox + 2, ox + 7, ox + 8]) set(x, oy + 2, EYE)
+  } else {
+    // Pupils look inward, and dart side to side while thinking.
+    const look = mood === 'think' ? ([0, 1, 0, -1][Math.floor(tick / 10) % 4] ?? 0) : 0
+    const left = look < 0 ? 1 : 2
+    const right = look > 0 ? 8 : 7
+    for (const x of [ox + 1, ox + 2, ox + 7, ox + 8]) set(x, oy + 2, TRIM)
+    set(ox + left, oy + 2, EYE)
+    set(ox + right, oy + 2, EYE)
+  }
+
+  if (mood === 'sad') {
+    // A tear that runs down the fur beside the belly.
+    const t = tick % 16
+    set(ox + 1, oy + 3 + Math.min(t >> 2, 2), TEAR)
+  }
+}
+
+export function frame(mood: Mood, tick: number, body = BODY, season?: Season, skin: Skin = 'classic'): number[] {
+  const forest = skin === 'forest'
+  const BODY = forest ? FUR : body
+  const SHADE = darken(BODY)
+  const h = heightOf(season, skin)
+  const top = h === H_TALL ? 2 : 0 // the tall sprite moves buddy down to make room for a hat or ears
+  const px: number[] = new Array(W * h).fill(NONE)
+  const set: Draw = (x, y, c) => {
+    y -= 1 // the art is laid out on 16 rows; row 0 is never drawn on
+    if (x >= 0 && x < W && y >= 0 && y < h) px[y * W + x] = c
+  }
+
+  // Vertical motion per mood.
+  let dy = 0
+  if (mood === 'idle') dy = Math.round(Math.sin(tick / 8) * 0.6)
+  if (mood === 'think') dy = Math.round(Math.sin(tick / 5) * 0.6)
+  if (mood === 'run') dy = tick % 4 < 2 ? -1 : 0
+  if (mood === 'happy') dy = -Math.round(Math.abs(Math.sin(tick / 3)) * 3)
+  if (mood === 'sad') dy = 1
+
+  const ox = 3
+  // The spirit is taller: his ears reach row 1 at the top of a jump, his feet row 16 when sad.
+  const oy = (forest ? 6 : 5 + top) + dy
+
+  // Snow falls and the bat flits behind buddy.
+  if (season === 'christmas') {
+    for (const [x, phase] of [[0, 0], [2, 9], [8, 5], [13, 3], [15, 12]] as const) {
+      set(x, 1 + (Math.floor(tick / 4 + phase) % 16), SNOW)
+    }
+  }
+  if (season === 'halloween') {
     const bx = 1 + Math.round(Math.sin(tick / 11))
     const by = 3 + Math.round(Math.sin(tick / 7) * 0.6)
     const wing = tick % 6 < 3 ? -1 : 0
     set(bx, by, BAT)
     set(bx - 1, by + wing, BAT)
     set(bx + 1, by + wing, BAT)
+  }
 
+  if (forest) spiritBody(set, mood, tick, ox, oy, BODY, SHADE)
+  else classicBody(set, mood, tick, ox, oy, BODY, SHADE)
+
+  // Sparkles when happy, thought dots when thinking, clear of arms and ears.
+  if (mood === 'happy') {
+    const on = tick % 6 < 3
+    const [l, r] = forest ? [0, 15] : [1, 14]
+    set(on ? l : r, top + (on ? 2 : 1), SPARK)
+    set(on ? r : l, top + (on ? 4 : 3), SPARK)
+  }
+  if (mood === 'think') {
+    const n = Math.floor(tick / 6) % 4
+    for (let i = 0; i < n; i++) set(11 + i * 2, forest ? 1 : 1 + top, SHADE)
+  }
+
+  // The spirit's ears leave no room for a hat; he still gets the props.
+  if (season === 'halloween' && !forest) {
+    // A witch hat in the headroom, bent at the tip, with a green band.
+    for (let x = ox + 1; x <= ox + 8; x++) set(x, oy - 1, HAT)
+    for (let x = ox + 3; x <= ox + 6; x++) set(x, oy - 2, BAND)
+    for (let x = ox + 5; x <= ox + 7; x++) set(x, oy - 3, HAT)
+  }
+  if (season === 'halloween') {
     // A jack-o'-lantern at his feet, its face flickering.
     for (let x = 11; x <= 15; x++) {
       set(x, 15, PUMPKIN)
@@ -273,13 +378,14 @@ export function frame(mood: Mood, tick: number, body = BODY, season?: Season): n
     set(13, 16, glow)
   }
 
-  if (season === 'christmas') {
+  if (season === 'christmas' && !forest) {
     // A Santa hat: white brim, red cone, its pom-pom flopped to the side.
     for (let x = ox + 1; x <= ox + 8; x++) set(x, oy - 1, TRIM)
     for (let x = ox + 2; x <= ox + 7; x++) set(x, oy - 2, SANTA)
     for (let x = ox + 4; x <= ox + 7; x++) set(x, oy - 3, SANTA)
     set(ox + 8, oy - 3, TRIM)
-
+  }
+  if (season === 'christmas') {
     // A present at his feet, tied with a gold ribbon and bow.
     for (let x = 12; x <= 15; x++) {
       set(x, 15, GIFT)
@@ -294,9 +400,86 @@ export function frame(mood: Mood, tick: number, body = BODY, season?: Season): n
   return px
 }
 
+// In the forest every agent type is a creature of its own, told apart by
+// shape: 4 rows over a pair of feet, '#' its colour, '-' that colour shaded,
+// other letters from `colors`; `eye` is the row its eyes sit on.
+export type Critter = 'spirit' | 'sprout' | 'owl' | 'acorn' | 'mushroom'
+export const CRITTERS: Record<Critter, { rows: string[]; eye: number; colors: Record<string, number>; tint: number }> = {
+  // The big spirit's little cousin: ears and a belly.
+  spirit: { rows: ['.#.##.#.', '.######.', '.##==##.', '.------.'], eye: 1, colors: { '#': 0x7f9fc0, '=': BELLY }, tint: 0x7f9fc0 },
+  // A moss blob with a sprout on top, out looking around.
+  sprout: { rows: ['...aa...', '.######.', '.######.', '.------.'], eye: 2, colors: { '#': 0x9cc27a, a: 0x4f8f3a }, tint: 0x8fbf6a },
+  // A wise owl with ear tufts, a beak and a pale front, for planning.
+  owl: { rows: ['#......#', '.######.', '.##bb##.', '.#====#.'], eye: 1, colors: { '#': 0x9a7650, '=': 0xd9c29a, b: 0xe8a33d }, tint: 0xb08a5e },
+  // A forked agent is a seed of its parent: an acorn in its cap.
+  acorn: { rows: ['cccccccc', '.######.', '.######.', '..----..'], eye: 1, colors: { '#': 0xc8954f, c: 0x7a5230 }, tint: 0xc8954f },
+  // Anyone else: a spotted mushroom, its face on the stem.
+  mushroom: { rows: ['.rrwrrr.', 'rwrrrrwr', '.######.', '..----..'], eye: 2, colors: { '#': 0xefe3c8, r: 0xd04a3a, w: TRIM }, tint: 0xd65a4a },
+}
+const CRITTER_FOR: Record<string, Critter> = { Explore: 'sprout', Plan: 'owl', fork: 'acorn', 'general-purpose': 'spirit' }
+export const critterFor = (type: string) => CRITTER_FOR[type] ?? 'mushroom'
+
+function critterFrame(mood: Mood, tick: number, critter: Critter): number[] {
+  const { rows, eye, colors } = CRITTERS[critter]
+  const main = colors['#']!
+  const SHADE = darken(main)
+  const px: number[] = new Array(TW * TH).fill(NONE)
+  const set = (x: number, y: number, c: number) => {
+    if (x >= 0 && x < TW && y >= 0 && y < TH) px[y * TW + x] = c
+  }
+  let dy = 0
+  if (mood === 'idle') dy = Math.sin(tick / 8) > 0.6 ? -1 : 0
+  if (mood === 'run') dy = tick % 4 < 2 ? -1 : 0
+  if (mood === 'happy') dy = Math.abs(Math.sin(tick / 3)) > 0.5 ? -1 : 0
+  const oy = 1 + dy
+
+  rows.forEach((row, y) => {
+    for (let x = 0; x < row.length; x++) {
+      const ch = row[x]!
+      if (ch !== '.') set(x, oy + y, ch === '-' ? SHADE : (colors[ch] ?? main))
+    }
+  })
+  // Arms right beside the body: level with the eyes when waving, below them otherwise.
+  const armUp = mood === 'happy' || (mood === 'run' && tick % 4 < 2)
+  const armRow = eye + (armUp ? 0 : 1)
+  const row = rows[armRow]!
+  set(row.search(/[^.]/) - 1, oy + armRow, main)
+  set(row.length - [...row].reverse().join('').search(/[^.]/), oy + armRow, main)
+  const step = mood === 'run' && tick % 4 < 2
+  set(step ? 1 : 2, oy + 4, SHADE)
+  set(step ? 6 : 5, oy + 4, SHADE)
+
+  const e = oy + eye
+  const blink = mood === 'idle' && tick % 48 >= 46
+  if (mood === 'happy') {
+    // Eyes and a smile.
+    set(2, e, EYE)
+    set(3, e + 1, EYE)
+    set(4, e + 1, EYE)
+    set(5, e, EYE)
+  } else if (mood === 'sad') {
+    set(2, e, EYE)
+    set(5, e, EYE)
+    if (tick % 16 < 10) set(2, e + 1, TEAR)
+  } else if (blink) {
+    set(2, e, SHADE)
+    set(5, e, SHADE)
+  } else {
+    const look = mood === 'think' ? ([0, 1, 0, -1][Math.floor(tick / 10) % 4] ?? 0) : 0
+    set(2 + look, e, EYE)
+    set(5 + look, e, EYE)
+  }
+  // A sparkle or a thought dot in the corner, unless an ear or a cap is there.
+  const free = px[7] === NONE
+  if (free && mood === 'happy' && tick % 6 < 3) set(7, 0, SPARK)
+  if (free && mood === 'think' && Math.floor(tick / 6) % 2) set(7, 0, SHADE)
+  return px
+}
+
 // The mini, 8×6 pixels: a body with two eyes, arms and legs, enough room for
-// a bob, a blink, happy ^^ eyes and a tear.
-export function tinyFrame(mood: Mood, tick: number, body = BODY, season?: Season): number[] {
+// a bob, a blink, happy ^^ eyes and a tear. In the forest it's a critter.
+export function tinyFrame(mood: Mood, tick: number, body = BODY, season?: Season, skin: Skin = 'classic', critter: Critter = 'spirit'): number[] {
+  if (skin === 'forest') return critterFrame(mood, tick, critter)
   const SHADE = darken(body)
   const px: number[] = new Array(TW * TH).fill(NONE)
   const set = (x: number, y: number, c: number) => {
@@ -359,7 +542,7 @@ export function tinyFrame(mood: Mood, tick: number, body = BODY, season?: Season
 
 // Cells for a sprite drawn `scale`× as big: each pixel is `scale` columns wide
 // and `scale` half-rows tall, so it stays square.
-export const size = (scale: number, season?: Season) => ({ columns: W * scale, rows: (heightOf(season) * scale) / 2 })
+export const size = (scale: number, season?: Season, skin?: Skin) => ({ columns: W * scale, rows: (heightOf(season, skin) * scale) / 2 })
 
 export function encode(px: number[], scale = 1, width = W, height = H): string {
   const columns = width * scale
@@ -431,6 +614,7 @@ type Buddy = {
   name?: string // its agent's name, else its type
   label?: string // its task
   body?: number
+  type?: string // its agent's type, which picks its critter in the forest
   phase?: number // offsets the animation so minis don't bob in sync
   startedAt?: number
   endedAt?: number
@@ -470,6 +654,8 @@ export const register: Register = on => {
   let season: Season | undefined
   let preview: Season | 'none' | undefined // `/buddy halloween` overrides the calendar
   const seasonAt = (now: number) => (preview === 'none' ? undefined : (preview ?? seasonFor(now)))
+  let skin: Skin = 'classic' // as last drawn
+  let chosenSkin: Skin = 'classic' // as picked with `/buddy forest`, kept in the store
 
   // The buddy a loop's events belong to: the main one, or its agent's mini.
   const buddyFor = (agentId: string | undefined, create: boolean): Buddy | undefined => {
@@ -483,7 +669,9 @@ export const register: Register = on => {
   }
 
   on('session.start', async ($, e, next) => {
-    await $.command.register({ name: 'buddy', description: 'Show or hide your pixel buddy', argumentHint: '[halloween|christmas|normal|auto]' })
+    await $.command.register({ name: 'buddy', description: 'Show or hide your pixel buddy', argumentHint: '[forest|classic|halloween|christmas|normal|auto]' })
+    const stored = await $.store.get('skin').catch(() => undefined)
+    if ((SKINS as unknown[]).includes(stored)) chosenSkin = stored as Skin
     isShown = (await $.ui.panes()).some(pane => pane.id === PANE)
     if (!isShown) void $.ui.open({ id: PANE, title: 'Buddy', rows: 18, columns: PANE_COLUMNS })
 
@@ -492,8 +680,8 @@ export const register: Register = on => {
       tick++
       const now = (wallNow = await $.clock.now())
 
-      // A season starting or ending changes the sprite's size: lay out again.
-      if (seasonAt(now) !== season) return $.ui.invalidate('ui.render')
+      // A season starting or ending, or a new skin, changes the sprite's size: lay out again.
+      if (seasonAt(now) !== season || chosenSkin !== skin) return $.ui.invalidate('ui.render')
 
       // Finished minis leave once they've celebrated.
       let left = false
@@ -510,17 +698,17 @@ export const register: Register = on => {
         b.last = cells
         await $.ui.blit({ requestId: PANE, key, cells })
       }
-      await paint(main, KEY, encode(frame(moodOf(main, now), tick, BODY, season), scale, W, heightOf(season)))
+      await paint(main, KEY, encode(frame(moodOf(main, now), tick, BODY, season, skin), scale, W, heightOf(season, skin)))
       if (scale >= 2) {
         const mood = moodOf(main, now)
-        const caption = encode(captionPixels(captionFor(mood, season), tick, mood === 'think'), 1, CAPTION_W, CAPTION_H)
+        const caption = encode(captionPixels(captionFor(mood, season, skin), tick, mood === 'think'), 1, CAPTION_W, CAPTION_H)
         if (caption !== main.lastCaption) {
           main.lastCaption = caption
           await $.ui.blit({ requestId: PANE, key: 'caption', cells: caption })
         }
       }
       for (const [id, mini] of minis) {
-        await paint(mini, miniKey(id), encode(tinyFrame(moodOf(mini, now), tick + (mini.phase ?? 0), mini.body, season), 1, TW, TH))
+        await paint(mini, miniKey(id), encode(tinyFrame(moodOf(mini, now), tick + (mini.phase ?? 0), mini.body, season, skin, critterFor(mini.type ?? '')), 1, TW, TH))
       }
     })
 
@@ -551,13 +739,23 @@ export const register: Register = on => {
 
   on('command.run', { command: 'buddy' }, async ($, e) => {
     // `/buddy christmas` tries a costume on now; `normal` takes it off;
-    // `auto` goes back to the calendar.
+    // `auto` goes back to the calendar. `/buddy forest` and `classic` pick a
+    // skin, remembered across sessions.
     const arg = e.args.trim().toLowerCase()
+    if ((SKINS as string[]).includes(arg)) {
+      chosenSkin = arg as Skin
+      await $.store.set('skin', chosenSkin)
+      $.ui.invalidate('ui.render')
+      if (!(await $.ui.panes()).some(pane => pane.id === PANE)) {
+        await $.ui.open({ id: PANE, title: 'Buddy', rows: 18, columns: PANE_COLUMNS })
+      }
+      return { text: chosenSkin === 'forest' ? 'Buddy turns into a forest spirit!' : 'Buddy is himself again.' }
+    }
     if (arg) {
       if (arg === 'auto') preview = undefined
       else if (arg === 'normal') preview = 'none'
       else if ((SEASONS as string[]).includes(arg)) preview = arg as Season
-      else return { text: `Buddy doesn't know "${arg}". Try ${[...SEASONS, 'normal', 'auto'].join(', ')}.` }
+      else return { text: `Buddy doesn't know "${arg}". Try ${[...SKINS, ...SEASONS, 'normal', 'auto'].join(', ')}.` }
       $.ui.invalidate('ui.render')
       if (!(await $.ui.panes()).some(pane => pane.id === PANE)) {
         await $.ui.open({ id: PANE, title: 'Buddy', rows: 18, columns: PANE_COLUMNS })
@@ -587,6 +785,7 @@ export const register: Register = on => {
       mini.name = e.name || e.subagentType
       mini.label = e.description
       mini.body = tintFor(e.subagentType)
+      mini.type = e.subagentType
       mini.startedAt = await $.clock.now()
       $.ui.invalidate('ui.render')
     }
@@ -608,6 +807,7 @@ export const register: Register = on => {
           b.name = agent.name || agent.type
           b.label = agent.description
           b.body = tintFor(agent.type)
+          b.type = agent.type
           $.ui.invalidate('ui.render')
         }
       })
@@ -667,8 +867,9 @@ export const register: Register = on => {
     const now = await $.clock.now()
     const mood = moodOf(main, now)
     season = seasonAt(now)
-    const spriteH = heightOf(season) // not `h`: that's the JSX factory
-    const caption = captionFor(mood, season)
+    skin = chosenSkin
+    const spriteH = heightOf(season, skin) // not `h`: that's the JSX factory
+    const caption = captionFor(mood, season, skin)
     if (e.surface !== 'terminal') {
       const { Text } = $.ui.resolve(e)
       return <Text dimColor>Buddy lives in the terminal ({caption})</Text>
@@ -688,8 +889,8 @@ export const register: Register = on => {
     const cap = minis.size > 0 ? 1 : MAX_SCALE
     const roomRows = scroll.bodyRows - CAPTION_H / 2 - mainActivity
     scale = Math.max(1, Math.min(cap, Math.floor(bodyColumns / W), Math.floor((roomRows * 2) / spriteH)))
-    main.last = encode(frame(mood, tick, BODY, season), scale, W, spriteH)
-    const { columns, rows } = size(scale, season)
+    main.last = encode(frame(mood, tick, BODY, season, skin), scale, W, spriteH)
+    const { columns, rows } = size(scale, season, skin)
     const running = ordered.filter(([, m]) => !m.leaveAt).length
     const textColumns = Math.max(8, bodyColumns - TW - 3)
 
@@ -713,7 +914,7 @@ export const register: Register = on => {
         )}
         {shown.map(([id, mini]) => {
           const isDone = !!mini.leaveAt
-          mini.last = encode(tinyFrame(moodOf(mini, now), tick + (mini.phase ?? 0), mini.body, season), 1, TW, TH)
+          mini.last = encode(tinyFrame(moodOf(mini, now), tick + (mini.phase ?? 0), mini.body, season, skin, critterFor(mini.type ?? '')), 1, TW, TH)
           const time = elapsed((mini.endedAt ?? now) - (mini.startedAt ?? now))
           const meta = `${mini.tools ? `${mini.tools} tool${mini.tools === 1 ? '' : 's'} · ` : ''}${time}`
           const activity = mini.activity ?? '▸ starting…'
@@ -725,7 +926,7 @@ export const register: Register = on => {
               </Box>
               <Box flexDirection="column" width={textColumns}>
                 <Box flexDirection="row" justifyContent="space-between">
-                  <Text bold color={isDone ? undefined : hex(mini.body ?? BODY)} dimColor={isDone} wrap="truncate">
+                  <Text bold color={isDone ? undefined : hex(skin === 'forest' ? CRITTERS[critterFor(mini.type ?? '')].tint : (mini.body ?? BODY))} dimColor={isDone} wrap="truncate">
                     {mini.name ?? 'agent'}
                   </Text>
                   <Text dimColor>{meta}</Text>
