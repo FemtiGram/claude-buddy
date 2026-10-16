@@ -3,6 +3,7 @@ import type { SkinLook } from './types'
 const YELLOW = 0xd9a93b
 const RUST = 0x8c6a2a
 const GREY = 0x6e6e6e
+const TREAD = 0x4a4a4a
 
 // WALL-E: boxy rusty body with a front panel, binocular eyes on a neck,
 // grabber arms and tank treads.
@@ -10,23 +11,23 @@ export const look: SkinLook = {
   said: 'Buddy turns into WALL-E!',
   group: 'Film & TV',
   rows: [
-    '.ggg..ggg.',
-    '.gLL..LLg.',
+    '.LwL..LwL.',
+    '.LLL..LLL.',
     '....gg....',
-    '.yyyyyyyy.',
-    '.yyyyyyyy.',
-    '.yrrrrrry.',
-    '.yrrrrrry.',
-    '.yyyyyyyy.',
-    '.rrrrrrrr.',
+    '.yyyyyyys.',
+    '.yyyyyyys.',
+    '.yrrrrrrs.',
+    '.yrrrrrrs.',
+    '.yyyyyyys.',
+    '.tgtgtgtg.',
   ],
-  colors: { g: GREY, L: 0x2a3a5c, y: YELLOW, r: RUST },
+  colors: { g: GREY, L: 0x3c5a8a, w: 0xffffff, y: YELLOW, s: 0xb07a20, r: RUST, t: TREAD },
   eyes: [[2, 1], [7, 1]],
   eyeColor: 0xbfe0ff,
   smile: [[4, 6], [5, 6]],
   tear: [3, 3],
   arms: { color: 0x7a7a7a, down: [[0, 5], [9, 5]], up: [[0, 3], [9, 3]] },
-  feet: { color: GREY, at: [2, 3, 6, 7] },
+  feet: { color: TREAD, at: [2, 3, 6, 7] },
   captions: { happy: 'WOW!', idle: 'HELLO' },
   critters: {
     // EVE: a white egg with a dark face band and blue eyes.

@@ -5,7 +5,8 @@ const DARK = 0xb8601c
 const BLADE = 0xb8bec8
 const TEETH = 0x8a929e
 const TONGUE = 0xf08098
-const CORD = 0xd8c8a0
+const CORD = 0xc9a56a
+const HANDLE = 0x6a4a2a
 
 // Pochita: round orange devil dog, chainsaw out of his forehead, a tail with
 // a pull cord, a happy open mouth.
@@ -14,21 +15,22 @@ export const look: SkinLook = {
   group: 'Anime',
   rows: [
     '....bk....',
+    '....b.....',
     '....bk....',
     '...oooo...',
     '.dooooood.',
-    '.oooooooo.',
-    '.ooooooooc',
-    '.oooppoooo',
-    '.oooooooo.',
-    '..oooooo..',
+    '.ooooooodc',
+    '.oooppoodh',
+    '.oooooood.',
+    '.dooooodd.',
+    '..dddddd..',
   ],
-  colors: { o: ORANGE, d: DARK, b: BLADE, k: TEETH, p: TONGUE, c: CORD },
-  eyes: [[3, 4], [6, 4]],
+  colors: { o: ORANGE, d: DARK, b: BLADE, k: TEETH, p: TONGUE, c: CORD, h: HANDLE },
+  eyes: [[3, 5], [6, 5]],
   eyeColor: 0x3a2018,
-  smile: [[4, 5], [5, 5]],
-  tear: [3, 5],
-  arms: { color: DARK, down: [[0, 7], [9, 7]], up: [[0, 4], [9, 4]] },
+  smile: [[4, 6], [5, 6]],
+  tear: [3, 6],
+  arms: { color: DARK, down: [[0, 8], [9, 8]], up: [[0, 4], [9, 4]] },
   feet: { color: DARK, at: [2, 7] },
   captions: { happy: 'BRRRR!', idle: 'WOOO' },
   critters: {

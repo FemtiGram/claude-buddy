@@ -1,9 +1,11 @@
 import type { SkinLook } from './types'
 
 const SKIN = 0x5aa83a
+const LIGHT = 0x7ac85a
 const SHADE = 0x3e7e28
-const HAIR = 0x2e3a2a
-const SHORTS = 0x6a3a8a
+const HAIR = 0x3a4a30
+const HAIR_LT = 0x5e7448
+const SHORTS = 0x7a44a8
 
 // The Hulk: a huge green body with shoulders filling the width, a small head
 // under messy dark hair, a heavy brow, gritted teeth, torn purple shorts.
@@ -12,18 +14,18 @@ export const look: SkinLook = {
   group: 'Marvel',
   rows: [
     '..........',
-    '...HHHH...',
+    '...hHHH...',
     '..HHHHHH..',
-    '...DDDD...',
-    '...GGGG...',
-    '...GwwG...',
-    '.GGGGGGGG.',
+    '..GDDDDG..',
+    '..GGGGGG..',
+    '..GGwwGG..',
+    '.LGGGGGGG.',
     '.GDGGGGDG.',
     '.GGGDDGGG.',
     '.PPPPPPPP.',
     '.PP.PPP.P.',
   ],
-  colors: { H: HAIR, G: SKIN, D: SHADE, P: SHORTS, w: 0xe0e0d0 },
+  colors: { H: HAIR, h: HAIR_LT, G: SKIN, L: LIGHT, D: SHADE, P: SHORTS, w: 0xe0e0d0 },
   eyes: [[3, 4], [6, 4]],
   eyeColor: 0x1e2a1a,
   smile: [[4, 5], [5, 5]],

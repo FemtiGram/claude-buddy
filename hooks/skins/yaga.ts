@@ -1,9 +1,9 @@
 import type { SkinLook } from './types'
 
-const LOG = 0x7a4b2a
+const LOG = 0x8a5a32
 const LINE = 0x5a3820
 const THATCH = 0xb89b5e
-const LEG = 0xd9a441
+const LEG = 0xc99a30
 
 // Baba Yaga's hut: a log cabin with a thatched roof and a lit window for
 // eyes, standing on two scrawny chicken legs.
@@ -15,12 +15,14 @@ export const look: SkinLook = {
     '...rrrr...',
     '..rrrrrr..',
     '.rrrrrrrr.',
-    '..lwllwl..',
+    '..wwllww..',
     '..kkkkkk..',
-    '..lldDll..',
-    '..lldDll..',
+    '..llddll..',
+    '..kkddkk..',
+    '...y..y...',
+    '..yy..yy..',
   ],
-  colors: { r: THATCH, l: LOG, k: LINE, w: 0x3a2412, d: 0x2e1c10, D: 0x2e1c10 },
+  colors: { r: THATCH, l: LOG, k: LINE, w: 0x2e1c10, d: 0x3a2412, y: LEG },
   eyes: [[3, 4], [6, 4]],
   eyeColor: 0xf2c14e,
   tear: [3, 5],

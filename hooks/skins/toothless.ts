@@ -1,28 +1,28 @@
 import type { SkinLook } from './types'
 
-const DARK = 0x2a2d3a
+const DARK = 0x33374a
 const HI = 0x5a5f78
 const RED = 0xe85d3a
 const GREEN = 0x9be34d
 
-// Toothless, the Night Fury: dark dragon, ear-flaps, big green eyes, bat
-// wings for arms, a red saddle strap and a red tail fin.
+// Toothless, the Night Fury: dark dragon with a pale rim on head and ear
+// flaps, big green eyes, bat wings for arms, a red saddle strap and tail fin.
 export const look: SkinLook = {
   said: 'Buddy spreads his wings: Toothless!',
   group: 'Film & TV',
   rows: [
-    '..e....e..',
-    '.edh..hde.',
-    '.dhdddddd.',
-    '.dddddddd.',
-    '.dddddddd.',
-    '.dddmmddd.',
-    '..dddddd..',
+    '..h....h..',
+    '.hhh..hhh.',
+    '.hhhhhhhh.',
+    '.hddddddh.',
+    '.hddddddd.',
+    '.hddmmddd.',
+    '..hddddd..',
     '..drrrrd..',
     '..dddddd..',
     '...ddd.ddr',
   ],
-  colors: { d: DARK, h: HI, e: HI, m: 0xc86a6a, r: RED },
+  colors: { d: DARK, h: HI, m: 0xc86a6a, r: RED },
   eyes: [[2, 3], [7, 3]],
   eyeColor: GREEN,
   smile: [[4, 5], [5, 5]],

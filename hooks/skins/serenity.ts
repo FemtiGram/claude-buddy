@@ -1,9 +1,9 @@
 import type { SkinLook } from './types'
 
-const TAN = 0x9a8a6e
+const TAN = 0xb0a080
 const DARK = 0x6e604a
 const RUST = 0xa0582e
-const GLOW = 0xffb040
+const GLOW = 0xffa030
 
 // Serenity, a Firefly-class transport: a rounded bridge with big windows, a
 // neck, a bulbous cargo body and two engine pods glowing at the back.
@@ -11,21 +11,24 @@ export const look: SkinLook = {
   said: 'Buddy flies Serenity. Shiny!',
   group: 'Sci-fi ships',
   rows: [
-    '..........',
-    '..dtttd...',
-    '.dwwwwwd..',
-    '.dtttttd..',
-    '..dtttd...',
-    '.tttttttdp',
-    'ttttrtttpp',
-    'tdtttttdpp',
-    '.dddddddd.',
+    '...hhht...',
+    '..hwwwwt..',
+    '..tttttd..',
+    '....td....',
+    '.hhhttttd.',
+    'hhtttrttdd',
+    '.ttttttdd.',
+    '..tddddt..',
+    '.td....dt.',
+    '.pp....pp.',
   ],
-  colors: { t: TAN, d: DARK, r: RUST, w: 0x9ad0e0, p: GLOW },
-  eyes: [[2, 2], [4, 2]],
-  smile: [[3, 6], [4, 6], [5, 6]],
-  tear: [1, 7],
-  feet: { color: GLOW, at: [8, 9] },
+  colors: { h: 0xd8caa8, t: TAN, d: DARK, r: RUST, w: 0x9ad0e0, p: GLOW },
+  eyes: [[3, 1], [6, 1]],
+  eyeColor: 0x2a3a50,
+  smile: [[1, 9], [2, 9], [7, 9], [8, 9]],
+  smileColor: 0xffd070,
+  tear: [3, 6],
+  feet: { color: GLOW, at: [1, 2, 7, 8] },
   captions: { happy: 'SHINY!', idle: 'HMM' },
   critters: {
     // The shuttle.
@@ -37,6 +40,6 @@ export const look: SkinLook = {
     // A Reaver ship.
     'general-purpose': { rows: ['#.#..#.#', '.######.', '########', '.######.'], eye: 2, eyeColor: 0xd04040, feet: false, arms: false, colors: { '#': 0x5a2a34 }, tint: 0xd04040 },
     // Wash's plastic dinosaur.
-    other: { rows: ['.##.....', '###...#.', '########', '.#.##.#.'], eye: 1, eyes: [1], colors: { '#': 0x4aa86a }, tint: 0x4aa86a },
+    other: { rows: ['.#.#.#..', '########', '.######.', '.##..##.'], eye: 1, eyes: [6], feet: false, colors: { '#': 0x4aa86a }, tint: 0x4aa86a },
   },
 }

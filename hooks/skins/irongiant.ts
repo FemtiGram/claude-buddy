@@ -1,27 +1,29 @@
 import type { SkinLook } from './types'
 
+const HI = 0xb4c0cc
 const GREY = 0x7a8794
 const SHADE = 0x4d5a66
+const VISOR = 0x232a31
 const RUST = 0xb04a2e
 
-// The Iron Giant: a tall boxy metal robot, domed head, glowing yellow eyes,
-// very wide shoulders and a rust-red rivet on the chest.
+// The Iron Giant: a tall boxy metal robot in a 3-tone ramp, domed head with a
+// dark visor and glowing yellow eyes, heavy jaw, wide shoulders and rivets.
 export const look: SkinLook = {
   said: 'Buddy turns into the Iron Giant. Superb.',
   group: 'Film & TV',
   rows: [
     '..........',
     '..........',
-    '...gggg...',
-    '..gggggg..',
-    '..gggggg..',
-    '..gddddg..',
-    'sgggggggds',
-    '.gggrrggg.',
-    '.ggggggdg.',
-    '..gg..gg..',
+    '...hhhh...',
+    '..hggggg..',
+    '..gvvvvd..',
+    '..hgggdd..',
+    'hhggggggdd',
+    '.ggrggrgd.',
+    '.gggggdgd.',
+    '..gg..gd..',
   ],
-  colors: { g: GREY, d: SHADE, s: SHADE, r: RUST },
+  colors: { h: HI, g: GREY, d: SHADE, v: VISOR, r: RUST },
   eyes: [[3, 4], [6, 4]],
   eyeColor: 0xffe066,
   smile: [[3, 5], [6, 5]],

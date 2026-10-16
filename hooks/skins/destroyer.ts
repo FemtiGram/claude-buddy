@@ -1,7 +1,8 @@
 import type { SkinLook } from './types'
 
-const HULL = 0xb8bec6
-const SHADE = 0x7e858e
+const HULL = 0xc8ced6
+const SHADE = 0x838a94
+const TRENCH = 0x5e646c
 const GLOW = 0x4aa8ff
 
 // An Imperial Star Destroyer: a grey arrowhead tapering to a point, the
@@ -10,22 +11,24 @@ export const look: SkinLook = {
   said: 'Buddy commands a Star Destroyer.',
   group: 'Sci-fi ships',
   rows: [
-    '....gg....',
-    '...gggg...',
-    '...gddg...',
-    '..gggggg..',
-    '..gdggdg..',
-    '.gggttggg.',
-    '.ggDttDgg.',
-    'gggggggggg',
-    'gdgdggdgdg',
+    '...o..o...',
+    '..LLLRRR..',
+    '....LR....',
+    '...LkkR...',
+    '..LLkkRR..',
+    '..LLkkRR..',
+    '.LLLkkRRR.',
+    '.LLLkkRRR.',
+    'LLLLkkRRRR',
+    'LdLLkkRRdR',
   ],
-  colors: { g: HULL, d: SHADE, t: 0x9aa4b0, D: 0xd0d8e0 },
-  eyes: [[3, 6], [6, 6]],
-  eyeColor: 0x4a6a9a,
-  smile: [[4, 8], [5, 8]],
-  tear: [2, 7],
-  feet: { color: GLOW, at: [2, 4, 5, 7] },
+  colors: { L: HULL, R: SHADE, k: TRENCH, d: 0x4a5058, o: 0x9fb4cc },
+  eyes: [[2, 6], [7, 6]],
+  eyeColor: 0x2a3a60,
+  smile: [[1, 8], [8, 8]],
+  smileColor: 0x8ac8ff,
+  tear: [2, 4],
+  feet: { color: GLOW, at: [1, 2, 3, 6, 7, 8] },
   captions: { happy: 'ORDER', idle: 'HUM' },
   critters: {
     // A probe droid pod.

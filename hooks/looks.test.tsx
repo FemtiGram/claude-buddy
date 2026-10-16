@@ -11,6 +11,15 @@ const SPARK = 0xf5d76e
 const DOT = 0x9aa0a6
 const EYE = 0x1f1e1d
 const TEAR = 0x5aa9e6
+// WCAG contrast ratio between two colours.
+const luminance = (c: number) => {
+  const f = (v: number) => ((v /= 255) <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4)
+  return 0.2126 * f((c >> 16) & 255) + 0.7152 * f((c >> 8) & 255) + 0.0722 * f(c & 255)
+}
+const contrast = (a: number, b: number) => {
+  const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x)
+  return (hi! + 0.05) / (lo! + 0.05)
+}
 const PROPS = [0x6a3d9a, 0x8bc34a, 0x8e6bbf, 0xf0882a, 0xc0541c, 0xd63a3a, 0xf4f4f4, 0xcfe3f2, 0x3f9b4f]
 
 for (const [name, look] of Object.entries(LOOKS) as [keyof typeof LOOKS, SkinLook][]) {
@@ -46,6 +55,15 @@ for (const [name, look] of Object.entries(LOOKS) as [keyof typeof LOOKS, SkinLoo
         }
       }
     }
+  })
+
+  test(`${name}: reads on a dark and on a light terminal`, () => {
+    // Enough of him must stand out from both a dark (#1e1e1e) and a white
+    // background, or he melts into one of them.
+    const px = frame('idle', 0, undefined, undefined, name).filter(c => c !== NONE)
+    const share = (bg: number, min: number) => px.filter(c => contrast(c, bg) >= min).length / px.length
+    expect(share(0x1e1e1e, 1.6), 'share of pixels that stand out on a dark terminal').toBeGreaterThanOrEqual(0.3)
+    expect(share(0xffffff, 1.3), 'share of pixels that stand out on a light terminal').toBeGreaterThanOrEqual(0.3)
   })
 
   test(`${name}: captions fit the font and the row`, () => {

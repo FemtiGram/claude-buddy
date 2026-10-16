@@ -22,7 +22,8 @@ Where buddy is and what comes next. Written 2026-10-10 to pick work up in a fres
 | 14 | The whole backlog of SKIN-IDEAS.md: 45 more skins drawn by 15 agents (three each); groups Film & TV and Anime; gillman and bonnie join the Halloween monsters; the creature test samples key frames to stay fast with 300+ creatures. 79 skins. Version 0.6.0 | committed `3c0349d` |
 | 15 | Sci-fi ships group: xwing, tie, falcon, destroyer, enterprise, borg, birdofprey, rocinante, serenity, tardis (windows as eyes, engine glow as feet); `smileColor` lets a happy face light up instead of darken (the TARDIS lamp). 89 skins. Version 0.7.0 | committed `89aa51d` |
 | 16 | Marvel group (spidey, ironman, hulk, cap, thor, groot, deadpool, panther, venom, strange) and 18 more anime (goku, vegeta, saitama, luffy, chopper, spike, tanjiro, nezuko, levi, deku, allmight, gojo, ichigo, ryuk, edward, eva, pochita, anya); MIT LICENSE for the code and a fan-project disclaimer in the README. 117 skins. Version 0.8.0 | committed `4e43cfc` |
-| 17 | DC group: batman, superman, wonder, joker, flash, harley, robin, lantern, aquaman, catwoman, cyborg, ivy; the skin tests now also check that every creature's eyes sit on its body. 129 skins. Version 0.9.0 | committed (this commit) |
+| 17 | DC group: batman, superman, wonder, joker, flash, harley, robin, lantern, aquaman, catwoman, cyborg, ivy; the skin tests now also check that every creature's eyes sit on its body. 129 skins. Version 0.9.0 | committed `9035373` |
+| 18 | Art pass: a review rated every skin and the 35 weakest were redrawn (rims on dark characters, shading on pale ones, real silhouettes for the ships, cleaner colour ramps); a contrast check makes every skin read on both a dark and a light terminal. Version 0.10.0 | committed (this commit) |
 
 A test run with three Explore agents showed the agent list working live. `/buddy halloween` and `/buddy normal` were tried in a real session and worked. The desktop drawing was tried in the desktop app and works. Christmas and the forest and mask skins have not been looked at in a real pane yet.
 
@@ -57,6 +58,7 @@ A test run with three Explore agents showed the agent list working live. `/buddy
 
 - One file per skin exports `look: SkinLook` (`types.ts` documents every field and how each mood comes out of it); `index.ts` lists them in `LOOKS`, which register.tsx folds into `SKINS`, captions, `CRITTERS` (as `<skin>:<role>`) and `UNIVERSE`.
 - `looks.test.tsx` runs the same checks on every skin, named after it: the format, nothing clipped in any mood or season, captions in the font, five distinct creatures each with a main colour '#', and `/buddy <name>`.
+- The checks include contrast: at least 30% of a skin's pixels must stand out from a dark (#1e1e1e) and from a white terminal, so dark characters need a lighter rim and pale ones a mid-tone edge. Good references for new skins: mario, blackmage, slime, calcifer, doraemon, tanjiro, redbird, chewie, creeper, ironman (a 2–3 tone ramp, a highlight on top, eyes on a contrasting patch, one bold detail).
 - `preview.test.tsx` prints every skin as text (`PREVIEW <name>` in `claude plugin test .`), so a skin can be drawn without a pane. Several agents can draw skins in parallel, one file each.
 
 **Adding a skin:** write `hooks/skins/<name>.ts`, add it to `index.ts`, run the tests and read its preview.

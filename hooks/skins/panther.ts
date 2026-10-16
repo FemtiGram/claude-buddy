@@ -1,28 +1,27 @@
 import type { SkinLook } from './types'
 
-const SUIT = 0x3a3a48
-const SHEEN = 0x6a6488
+const SUIT = 0x44445a
 const SILVER = 0xc8ccd6
 const GLOW = 0x9a6ae0
 
-// Black Panther: a sleek dark suit with a purple-silver sheen, a cat-eared mask
-// with silver lenses, a vibranium necklace, silver claws, a purple glow.
+// Black Panther: a sleek dark suit outlined in purple kinetic light, a
+// cat-eared mask with silver lenses, a bold vibranium necklace, silver claws.
 export const look: SkinLook = {
   said: 'Buddy turns into Black Panther. Wakanda forever!',
   group: 'Marvel',
   rows: [
-    '.K......K.',
-    '.KS....SK.',
-    '.KKKKKKKK.',
-    '.KSKKKKSK.',
-    '.KLLKKLLK.',
-    '.KKKKKKKK.',
-    '..KKKKKK..',
-    '.SnnnnnnS.',
-    '.KKSnnSKK.',
+    '.P......P.',
+    '.PK....KP.',
+    '.PKKKKKKP.',
+    '.PKKKKKKP.',
+    '.PLLKKLLP.',
+    '.PKKKKKKP.',
+    '..PKKKKP..',
+    '.PnnnnnnP.',
+    '.PKKnnKKP.',
     '.KKKPPKKK.',
   ],
-  colors: { K: SUIT, S: SHEEN, L: 0x9aa0b8, n: SILVER, P: GLOW },
+  colors: { K: SUIT, P: GLOW, L: 0x9aa0b8, n: SILVER },
   eyes: [[3, 4], [6, 4]],
   eyeColor: 0xe6eaf8,
   smile: [[4, 6], [5, 6]],
@@ -33,7 +32,7 @@ export const look: SkinLook = {
     down: [[0, 8], [0, 9], [9, 8], [9, 9]],
     up: [[0, 5], [0, 6], [9, 5], [9, 6]],
   },
-  feet: { color: SHEEN, at: [3, 6] },
+  feet: { color: GLOW, at: [3, 6] },
   captions: { idle: 'HMM', happy: 'KING!' },
   critters: {
     // Shuri: dark braids, a brown face, purple gauntlets on both sides.

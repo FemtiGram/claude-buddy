@@ -1,8 +1,8 @@
 import type { SkinLook } from './types'
 
-const HULL = 0x5a6270
-const LIGHT = 0x8c9098
-const DARK = 0x3a404a
+const HULL = 0x8a94a2
+const LIGHT = 0xc4ccd8
+const DARK = 0x5c6474
 const DRIVE = 0x7fd0ff
 
 // The Rocinante: a tall, narrow Martian corvette flying nose-up, point-defence
@@ -11,23 +11,24 @@ export const look: SkinLook = {
   said: 'Buddy boards the Rocinante.',
   group: 'Sci-fi ships',
   rows: [
-    '....ll....',
-    '...llll...',
-    '...lwwl...',
-    '...hhhh...',
-    '..hhhhhh..',
-    '.chhhhhhc.',
-    '.dhhhhhhd.',
-    '..hhhhhh..',
-    '..dhhhhd..',
+    '....Lh....',
+    '...Lhhd...',
+    '...Lwwd...',
+    '..Lhhhhd..',
+    '..Lhhhhd..',
+    'dLhhhhhhdd',
+    '.Lhhhhhhd.',
+    '..Lhhhhd..',
     '...dddd...',
+    '...wwww...',
   ],
-  colors: { l: LIGHT, h: HULL, d: DARK, w: DRIVE, c: 0xc0c8d4 },
+  colors: { L: LIGHT, h: HULL, d: DARK, w: DRIVE },
   eyes: [[4, 2], [5, 2]],
   eyeColor: 0x2a3a50,
-  smile: [[1, 5], [8, 5]],
-  tear: [4, 7],
-  feet: { color: DRIVE, at: [3, 4, 5, 6] },
+  smile: [[0, 5], [9, 5]],
+  smileColor: 0xffd060,
+  tear: [4, 6],
+  feet: { color: DRIVE, at: [4, 5] },
   captions: { happy: 'BURN!', idle: 'ROCI' },
   critters: {
     // A Razorback racing pinnace.

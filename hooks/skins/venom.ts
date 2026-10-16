@@ -3,26 +3,26 @@ import type { SkinLook } from './types'
 const BODY = 0x2e2e3e
 const SHEEN = 0x5a5e78
 const WHITE = 0xf0f0ec
-const TONGUE = 0xd84a6a
+const TONGUE = 0xd0507a
 
-// Venom, cute-creepy: a glossy black symbiote with a blue-grey sheen, huge
-// jagged white eyes, a toothy grin that lolls a pink tongue when happy, a
-// white spider on the chest and drippy tendrils at the sides.
+// Venom, cute-creepy: a glossy black symbiote rimmed all round in blue-grey
+// light, huge jagged white eyes, a toothy grin that lolls a pink tongue when
+// happy, a white spider on the chest and drippy tendrils at the sides.
 export const look: SkinLook = {
   said: 'Buddy turns into Venom. We are Venom.',
   group: 'Marvel',
   rows: [
     '..........',
-    '...BSBB...',
-    '..BSBBBB..',
-    '.WWWBBWWW.',
-    '.BWWBBWWB.',
-    '.BBBBBBBB.',
-    '.BWWWWWWB.',
-    '.BMMMMMMB.',
-    '..BBWWBB..',
-    'BBWBWWBWBB',
-    'B.BWBBWB.B',
+    '...SSSS...',
+    '..SSBBBS..',
+    '.SWWBBWWS.',
+    'SWWWBBWWWS',
+    'SBBBBBBBBS',
+    'SBWWWWWWBS',
+    'SBMMMMMMBS',
+    '..SBWWBS..',
+    'SBWBWWBWBS',
+    'S.BWBBWB.S',
   ],
   colors: { B: BODY, S: SHEEN, W: WHITE, M: 0x4a1a2e },
   eyes: [[3, 4], [6, 4]],

@@ -1,7 +1,7 @@
 import type { SkinLook } from './types'
 
-const HULL = 0xd0d4dc
-const SHADE = 0xa0a6b0
+const HULL = 0xb8bec9
+const SHADE = 0x8890a0
 const BUSSARD = 0xe0502a
 const GLOW = 0x5ab0ff
 
@@ -11,20 +11,20 @@ export const look: SkinLook = {
   said: 'Buddy takes the Enterprise. Engage!',
   group: 'Sci-fi ships',
   rows: [
-    '...gggg...',
+    '....gg....',
     '..gggggg..',
-    '.gggggggg.',
-    '.gsggggsg.',
-    '..ssssss..',
-    '.r..gg..r.',
+    'gggggggggg',
+    '.ssssssss.',
+    '.r.gddg.r.',
+    '.b.gggg.b.',
     '.bsggggsb.',
-    '.b.gddg.b.',
     '.b..ss..b.',
+    '.b......b.',
   ],
   colors: { g: HULL, s: SHADE, r: BUSSARD, b: GLOW, d: 0x3f86d8 },
-  eyes: [[3, 3], [6, 3]],
-  smile: [[3, 4], [4, 4], [5, 4], [6, 4]],
-  tear: [4, 5],
+  eyes: [[3, 2], [6, 2]],
+  smile: [[3, 3], [4, 3], [5, 3], [6, 3]],
+  tear: [4, 3],
   arms: { color: BUSSARD, down: [[0, 6], [9, 6]], up: [[0, 5], [9, 5]] },
   feet: { color: GLOW, at: [1, 8] },
   captions: { happy: 'BOLDLY', idle: 'HMM' },

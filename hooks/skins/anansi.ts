@@ -1,7 +1,7 @@
 import type { SkinLook } from './types'
 
 const BODY = 0x4a4a58
-const LEG = 0x6a6a7c
+const LEG = 0x8a8a9c
 const GOLD = 0xf4b41a
 const RED = 0xc8102e
 const GREEN = 0x1e8449
@@ -14,19 +14,20 @@ export const look: SkinLook = {
   rows: [
     '....t.....',
     '....t.....',
-    '..bbbbbb..',
-    '.bwwbbwwb.',
-    'lbbbbbbbbl',
-    '.ygryyrgy.',
-    'lbbbbbbbbl',
-    '..bbbbbb..',
+    '..llllll..',
+    '..wwbbww..',
+    'llbbbbbbll',
+    '.lygrrgyl.',
+    'llbbbbbbll',
+    '.lbbbbbbl.',
+    'l.bbbbbb.l',
   ],
   colors: { b: BODY, w: 0xe8e8ee, l: LEG, t: 0xb8b8c8, y: GOLD, r: RED, g: GREEN },
   eyes: [[3, 3], [6, 3]],
   eyeColor: 0x22222c,
   smile: [[4, 4], [5, 4]],
   tear: [2, 4],
-  arms: { color: LEG, down: [[0, 3], [9, 3], [0, 5], [9, 5]], up: [[0, 2], [9, 2], [0, 1], [9, 1]] },
+  arms: { color: LEG, down: [[0, 3], [9, 3]], up: [[0, 2], [9, 2]] },
   feet: { color: LEG, at: [2, 3, 6, 7] },
   captions: { happy: 'STORY', idle: 'WEB' },
   critters: {

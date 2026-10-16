@@ -1,6 +1,6 @@
 import type { SkinLook } from './types'
 
-const CLOAK = 0xb8282e
+const CLOAK = 0xd0343a
 const SPELL = 0xffa030
 
 // Doctor Strange: swept dark hair with grey temples, a goatee, a blue tunic,
@@ -10,19 +10,19 @@ export const look: SkinLook = {
   said: 'Buddy turns into Doctor Strange.',
   group: 'Marvel',
   rows: [
-    '.C......C.',
-    'CC.HHHH.CC',
+    '..........',
+    'C..HHHH..C',
     'C.HHHHHH.C',
     'C.GFFFFG.C',
     'C.FFFFFF.C',
-    'CCFFFFFFCC',
-    'CC.FHHF.CC',
-    'CCBBAABBCC',
-    'C.BBBBBB.C',
+    'C.FFFFFF.C',
+    'C..FHHF..C',
+    'CBBBAABBBC',
+    'C.BBAABB.C',
     '..BDBBDB..',
     '..BB..BB..',
   ],
-  colors: { C: CLOAK, H: 0x3a3440, G: 0x9a9aa8, F: 0xe8b890, B: 0x2e4a8a, D: 0x1e3264, A: 0x5ae07a },
+  colors: { C: CLOAK, H: 0x5e5878, G: 0xb4b4c4, F: 0xe8b890, B: 0x4a6ac0, D: 0x34509a, A: 0x5ae07a },
   eyes: [[3, 4], [6, 4]],
   smile: [[4, 5], [5, 5]],
   tear: [3, 4],

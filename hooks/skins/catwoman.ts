@@ -1,6 +1,6 @@
 import type { SkinLook } from './types'
 
-const SUIT = 0x2e2e3e
+const SUIT = 0x46465a // lifted off black, so she shows on a dark terminal
 const SHEEN = 0x5a5670
 const SILVER = 0xb4b8c4
 const SKIN = 0xe8b898

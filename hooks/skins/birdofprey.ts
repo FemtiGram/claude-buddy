@@ -1,7 +1,9 @@
 import type { SkinLook } from './types'
 
-const HULL = 0x6e7a5a
-const SHADE = 0x4e5840
+const HULL = 0x7a8a62
+const NECK = 0x4e5840
+const EDGE = 0xb4c09a
+const LINE = 0x3e4630
 const GLOW = 0xe0602a
 
 // A Klingon Bird-of-Prey in attack position: a head on a long neck, two big
@@ -12,25 +14,26 @@ export const look: SkinLook = {
   rows: [
     '....hh....',
     '...hwwh...',
-    '....hh....',
-    '..hhhhhh..',
-    '.hhshhshh.',
-    'hhhhhhhhhh',
-    'hshshhshsh',
-    'hh.shhs.hh',
-    'h...hh...h',
-    'r........r',
+    '....nn....',
+    '....nn....',
+    '..eennee..',
+    '.ehhnnhhe.',
+    'ehhfnnfhhe',
+    'hhfhnnhfhh',
+    'hfh.nn.hfh',
+    'w........w',
   ],
-  colors: { h: HULL, s: SHADE, w: GLOW, r: GLOW },
+  colors: { h: HULL, n: NECK, e: EDGE, f: LINE, w: GLOW },
   eyes: [[4, 1], [5, 1]],
   eyeColor: 0x2a1a10,
   smile: [[0, 9], [9, 9]],
+  smileColor: 0xffc060,
   tear: [4, 3],
   feet: { color: GLOW, at: [4, 5] },
   captions: { happy: 'GLORY!', idle: 'HONOR' },
   critters: {
     // A scout probe.
-    Explore: { rows: ['...##...', '..####..', '.#o##o#.', '..-..-..'], eye: 2, eyeColor: 0xe0602a, feet: false, arms: false, colors: { '#': HULL, o: 0xe0602a }, tint: HULL },
+    Explore: { rows: ['...##...', '..####..', '.#o##o#.', '..-..-..'], eye: 2, eyeColor: 0xe0602a, feet: false, arms: false, colors: { '#': HULL, o: GLOW }, tint: HULL },
     // A warrior: ridged forehead, long hair.
     Plan: { rows: ['.kkkkkk.', 'k#-##-#k', 'k######k', 'k.#--#.k'], eye: 2, feet: false, arms: false, colors: { '#': 0xc89a7a, k: 0x3a3a48 }, tint: 0xc89a7a },
     // A small fighter.

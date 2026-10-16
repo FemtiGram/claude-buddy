@@ -1,29 +1,32 @@
 import type { SkinLook } from './types'
 
 const HELM = 0x3a3a48
-const SHEEN = 0x5a5a6e
+const SHEEN = 0x7a7a90
+const RIM = 0x8a8ea0
 const CAPE = 0x2e2e3a
+const EDGE = 0x4a4a5c
 const SILVER = 0x9fa3b0
 const SABER = 0xe8303a
 
-// Darth Vader: a glossy dark helmet with a sheen and flared edge, red-amber
-// lenses, a silver grille, a cape, a chest box with lights, a red saber at his side.
+// Darth Vader: a glossy dark helmet with a pale rim light on dome and
+// shoulders, red-amber lenses, a silver grille, an edged cape, a chest box
+// with lights, a red saber at his side.
 export const look: SkinLook = {
   said: 'Buddy puts on the helmet. *kshhh*',
   group: 'Star Wars',
   rows: [
     '..........',
-    '...HHHH...',
-    '..HSSHHH..',
-    '.HSHHHHHH.',
-    '.HHHHHHHH.',
-    '.HHHHHHHH.',
-    '..HHggHH..',
-    '.HHHggHHH.',
-    '.CCCCCCCC.',
-    '.CCrgbCCC.',
+    '...RRRR...',
+    '..RSSHHH..',
+    '.RSHHHHHH.',
+    '.RHHHHHHH.',
+    '.RHHHHHHH.',
+    '..RHggHH..',
+    '.RHHggHHH.',
+    '.RRCCCCCE.',
+    '.ECCrgCCE.',
   ],
-  colors: { H: HELM, S: SHEEN, C: CAPE, g: SILVER, r: SABER, b: 0x4a8ae8 },
+  colors: { H: HELM, S: SHEEN, R: RIM, C: CAPE, E: EDGE, g: SILVER, r: SABER },
   eyes: [[3, 4], [6, 4]],
   eyeColor: 0xd8503a,
   smile: [[4, 7], [5, 7]],

@@ -1,6 +1,6 @@
 import type { SkinLook } from './types'
 
-const GLOVE = 0xf2f2ee
+const GLOVE = 0xe8e8e0
 const SHOE = 0xf2d13b
 
 // Rayman: limbless. A floating head under a big orange tuft, a purple torso
@@ -9,19 +9,19 @@ export const look: SkinLook = {
   said: 'Buddy has no arms and no legs: Rayman!',
   group: 'Games',
   rows: [
-    '...h.hh...',
-    '..hhhhhh..',
+    '...H..hh..',
+    '..HHhhhd..',
     '..ssssss..',
-    '..sssssnn.',
-    '..ssssss..',
+    '..wwssww..',
+    '..sssssn..',
     '..........',
     '...rrrr...',
-    '...pppp...',
-    '...pppp...',
+    '...Pppq...',
+    '...ppqq...',
     '..........',
   ],
-  colors: { h: 0xf5a623, s: 0xf2c48d, n: 0xe29a6c, r: 0xd32f2f, p: 0x7b4fb0 },
-  eyes: [[3, 3], [5, 3]],
+  colors: { H: 0xffc04a, h: 0xf5a623, d: 0xc77a12, s: 0xf2c48d, n: 0xe29a6c, w: 0xfffaf0, r: 0xd32f2f, P: 0x9a6fd0, p: 0x7b4fb0, q: 0x57357f },
+  eyes: [[3, 3], [6, 3]],
   smile: [[4, 4], [5, 4]],
   tear: [3, 4],
   arms: {

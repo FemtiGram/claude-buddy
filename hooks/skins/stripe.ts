@@ -1,32 +1,33 @@
 import type { SkinLook } from './types'
 
-const GREEN = 0x6fae45
-const DARK = 0x4a8a30
+const GREEN = 0x5fa03a
+const HI = 0x92d45c
+const DARK = 0x3d6e28
 const CREAM = 0xe6e0c8
 
-// Stripe from Gremlins: green scaly skin, a spiky white mohawk, big pointed bat
-// ears, red eyes, a yellow-cream belly and a wide toothy grin.
+// Stripe from Gremlins: a green ramp, a spiky white mohawk, big bat ears with
+// pink insides, red eyes on dark patches, a cream belly and a toothy grin.
 export const look: SkinLook = {
   said: "Buddy turns into Stripe. Don't feed him after midnight!",
   group: 'Horror',
   rows: [
     '...W..W...',
-    '..eWWWWe..',
-    'ee######ee',
-    '.e######e.',
-    '..######..',
-    '..#TTTT#..',
-    '..#yyyy#..',
-    '..#yyyy#..',
+    '.#.WWWW.#.',
+    '#pHH####p#',
+    '.#H#####d.',
+    '..kk##kk..',
+    '..mTTTTm..',
+    '..#TmmT#..',
+    '..#yyyyd..',
     '..dyyyyd..',
   ],
-  colors: { '#': GREEN, e: DARK, d: DARK, W: 0xe6e0c8, T: 0xe6e0c8, y: 0xe0cf85 },
+  colors: { '#': GREEN, H: HI, d: DARK, k: 0x1f2a14, m: 0x3a1414, p: 0xd98a8a, W: 0xf4efe0, T: 0xf4efe0, y: 0xe0cf85 },
   eyes: [[3, 4], [6, 4]],
   eyeColor: 0xe02828,
   smile: [[3, 5], [4, 5], [5, 5], [6, 5]],
   tear: [3, 5],
   arms: {
-    color: 0x8ac45a,
+    color: HI,
     down: [[1, 7], [8, 7]],
     up: [[1, 4], [8, 4]],
   },

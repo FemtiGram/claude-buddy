@@ -3,7 +3,9 @@ import type { SkinLook } from './types'
 const SKIN = 0x6e9a72
 const DARK = 0x4f7a5e
 const BELLY = 0xc9c28a
-const FIN = 0xd8b84a
+const FIN = 0x2e5a3a
+const TIP = 0xa8d8a0
+const CHECK = 0x5f8d69
 
 // The Gill-man: moss-green and scaly with a ridged head fin, big yellow eyes,
 // gill frills, a fish snout, a pale belly, webbed claws and feet.
@@ -11,19 +13,19 @@ export const look: SkinLook = {
   said: 'Buddy turns into the Gill-man.',
   group: 'Horror',
   rows: [
-    '....yy....',
-    '...yyyy...',
-    '.GGGGGGGG.',
-    'dGGGGGGGGd',
-    'dGGGGGGGGd',
+    '...l..l...',
+    '..lnnnnl..',
+    '.GGGnnGGG.',
+    'lGGGGGGGGl',
+    'lGGGGGGGGl',
     '.GGGddGGG.',
-    '..GBBBBG..',
-    '..GBBBBG..',
-    '..GBBBBG..',
-    '..GGGGGG..',
+    '..cBBBBG..',
+    '..GBBBBc..',
+    '..cBBBBG..',
+    '..GcGGcG..',
     '..GG..GG..',
   ],
-  colors: { G: SKIN, d: DARK, y: FIN, B: BELLY },
+  colors: { G: SKIN, c: CHECK, d: DARK, n: FIN, l: TIP, B: BELLY },
   eyes: [[2, 3], [3, 3], [6, 3], [7, 3]],
   eyeColor: 0xe8d84a,
   smile: [[4, 5], [5, 5]],

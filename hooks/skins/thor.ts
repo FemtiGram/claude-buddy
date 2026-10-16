@@ -1,12 +1,13 @@
 import type { SkinLook } from './types'
 
+const SHINE = 0xdde1e8
 const SILVER = 0x9aa2ae
-const SHINE = 0xc8ced6
+const SHADE = 0x6a707c
 const HAIR = 0xe8c060
 const SKIN = 0xe8b890
 const BEARD = 0xc09048
-const ARMOUR = 0x4a5870
-const CAPE = 0xb8282e
+const ARMOUR = 0x56688a
+const CAPE = 0xc82e34
 const HANDLE = 0x8a5e3a
 
 // Thor: a silver winged helmet, long blond hair, a short beard, armour with
@@ -16,17 +17,17 @@ export const look: SkinLook = {
   group: 'Marvel',
   rows: [
     '.W......W.',
-    '.WW.hh.WW.',
-    '..hHHHHH..',
+    '.WS.WW.SW.',
+    '..SWSSSS..',
     '.YYssssYY.',
     '.YYssssYY.',
     '.YYbbbbYMM',
     '.RAdAAdAMM',
     '.RAAAAAARn',
     '.RAAAAAARn',
-    '..AAAAAA.n',
+    '.RAAAAAARn',
   ],
-  colors: { W: SHINE, h: SHINE, H: SILVER, Y: HAIR, s: SKIN, b: BEARD, A: ARMOUR, d: SHINE, R: CAPE, M: 0x8a909c, n: HANDLE },
+  colors: { W: SHINE, S: SILVER, Y: HAIR, s: SKIN, b: BEARD, A: ARMOUR, d: SHINE, R: CAPE, M: SHADE, n: HANDLE },
   eyes: [[3, 4], [6, 4]],
   eyeColor: 0x3a4a7a,
   smile: [[4, 5], [5, 5]],

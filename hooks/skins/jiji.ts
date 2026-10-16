@@ -1,31 +1,33 @@
 import type { SkinLook } from './types'
 
-const FUR = 0x3a3846
-const RIM = 0x5a5868
-const WHITE = 0xe6e6ee
+const FUR = 0x34323f
+const SHADE = 0x24232e
+const RIM = 0x9c9ab8
+const WHITE = 0xf2f2f8
 const BOW = 0xd62839
 
-// Jiji, the black cat of Kiki's Delivery Service: pointed ears, big white
-// eyes with dark pupils, a bow, and a long tail curling beside him.
+// Jiji, the black cat of Kiki's Delivery Service: dark fur with a pale rim on
+// ears, head and back, big white eyes with dark pupils, a red bow, and a tail
+// curling into a ring beside him.
 export const look: SkinLook = {
   said: 'Buddy turns into Jiji.',
   group: 'Ghibli',
   rows: [
     '..r....r..',
-    '..bb..bb..',
-    '.rbbbbbbr.',
+    '.rbr..rbr.',
+    '.rbbrrbbr.',
+    '.rwwbbwwb.',
     '.bwwbbwwb.',
-    '.bwwbbwwb.',
-    '..bbppbb.b',
-    '.bbbbbbb.b',
-    '.bbbbbbbbb',
-    '..bbbbbb..',
+    '..bbppbbrr',
+    '.bbbbbbb.r',
+    '.bbbbbbsrr',
+    '..bbbbss..',
   ],
-  colors: { b: FUR, r: RIM, w: WHITE, p: BOW },
+  colors: { b: FUR, s: SHADE, r: RIM, w: WHITE, p: BOW },
   eyes: [[3, 3], [6, 3]],
   smile: [[4, 4], [5, 4]],
   tear: [1, 4],
-  arms: { color: RIM, down: [[0, 7], [8, 6]], up: [[0, 5], [8, 5]] },
+  arms: { color: RIM, down: [[0, 7], [8, 6]], up: [[0, 5], [9, 4]] },
   feet: { color: RIM, at: [2, 6] },
   captions: { happy: 'MEOW!', idle: 'MEOW' },
   critters: {

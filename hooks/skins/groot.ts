@@ -2,27 +2,28 @@ import type { SkinLook } from './types'
 
 const BARK = 0x8a6440
 const GROOVE = 0x5e4228
-const LIGHT = 0xa88458
+const LIGHT = 0xb08c5e
+const FACE = 0xe0c898
 const LEAF = 0x5ab04a
 
-// Groot: a tall bark-brown tree being with a round wooden head, deep-set eyes,
-// leaf sprouts, long branchy arms and root-like feet.
+// Groot: a tall bark-brown tree being, grooved bark in three tones, a round
+// head with dark eyes on pale wood patches, leaf sprouts and branchy arms.
 export const look: SkinLook = {
   said: 'Buddy turns into Groot. I am Groot.',
   group: 'Marvel',
   rows: [
     '..g....g..',
-    '..gBBBBg..',
-    '..BLBBBB..',
-    '..DBBBBD..',
-    '..BBBBBB..',
-    '.gBBLBBBg.',
-    '.BBDBBLBB.',
-    '..BBBDBB..',
-    '..BLBBDB..',
-    '..BB..BB..',
+    '..gLBBBg..',
+    '..LBBBBD..',
+    '..FFBBFF..',
+    '..BBBBDB..',
+    '.gBLBBDBg.',
+    '.BLBDBBDB.',
+    '..BBDBBDD.',
+    '..BLBDBDD.',
+    '..BB..BD..',
   ],
-  colors: { B: BARK, D: GROOVE, L: LIGHT, g: LEAF },
+  colors: { B: BARK, D: GROOVE, L: LIGHT, F: FACE, g: LEAF },
   eyes: [[3, 3], [6, 3]],
   eyeColor: 0x20140a,
   smile: [[4, 4], [5, 4]],

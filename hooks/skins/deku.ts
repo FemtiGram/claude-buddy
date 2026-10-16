@@ -1,10 +1,11 @@
 import type { SkinLook } from './types'
 
-const HAIR = 0x2e5a44
-const HAIR_LT = 0x4a7a5e
+const HAIR = 0x2e6a4a
+const HAIR_LT = 0x5aa070
 const SKIN = 0xf5cfa0
-const SUIT = 0x2e7a5a
-const MASK = 0x5a6070
+const SUIT = 0x3aa070
+const SUIT_DK = 0x2a7a54
+const MASK = 0x7a8090
 const RED = 0xd8302c
 
 // Deku (Izuku Midoriya): messy green curls, freckles, green hero costume
@@ -20,10 +21,10 @@ export const look: SkinLook = {
     '.sfssssfs.',
     '..ssssss..',
     '..mmmmmm..',
-    '.cccccccc.',
-    '..cmccmc..',
+    '.cccccccC.',
+    '..cmccmC..',
   ],
-  colors: { h: HAIR_LT, g: HAIR, s: SKIN, f: 0xd89870, m: MASK, c: SUIT },
+  colors: { h: HAIR_LT, g: HAIR, s: SKIN, f: 0xd89870, m: MASK, c: SUIT, C: SUIT_DK },
   eyes: [[3, 3], [6, 3]],
   eyeColor: 0x1e9a4a,
   smile: [[4, 5], [5, 5]],

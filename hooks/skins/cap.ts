@@ -1,8 +1,8 @@
 import type { SkinLook } from './types'
 
-const BLUE = 0x2a4a9a
-const RED = 0xc0303a
-const WHITE = 0xe8eaf0
+const BLUE = 0x3a5cc0
+const RED = 0xd0343c
+const WHITE = 0xf0f2f8
 const SKIN = 0xe8b48a
 const BROWN = 0x8a5a3a
 
@@ -14,27 +14,27 @@ export const look: SkinLook = {
   group: 'Marvel',
   rows: [
     '..........',
-    '...BBBB...',
-    '.W.BWWB.W.',
-    '..BSSSSB..',
-    '..BSSSSB..',
-    'RWRBBBBBB.',
-    'WBWBWWBBB.',
-    'RWRBWWWWB.',
-    '.RRRRRRRR.',
-    '.WWWWWWWW.',
-    '..BB..BB..',
+    '....BBBB..',
+    '..W.BWWB.W',
+    '...BSSSSB.',
+    '...BSSSSB.',
+    '.R.BBBBBB.',
+    'RWRBBWWBB.',
+    'RBRBBWWBB.',
+    '.R.RRRRRR.',
+    '...WWWWWW.',
+    '...BB..BB.',
   ],
   colors: { B: BLUE, R: RED, W: WHITE, S: SKIN },
-  eyes: [[3, 3], [6, 3]],
-  smile: [[4, 4], [5, 4]],
-  tear: [3, 4],
+  eyes: [[4, 3], [7, 3]],
+  smile: [[5, 4], [6, 4]],
+  tear: [4, 4],
   arms: {
     color: BROWN,
     down: [[9, 6], [9, 7]],
     up: [[9, 3], [9, 4]],
   },
-  feet: { color: BROWN, at: [2, 6] },
+  feet: { color: BROWN, at: [3, 7] },
   captions: { idle: 'HOLD', happy: 'SHIELD' },
   critters: {
     // The Falcon, wings out.
