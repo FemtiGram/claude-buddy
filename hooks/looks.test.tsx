@@ -66,6 +66,8 @@ for (const [name, look] of Object.entries(LOOKS) as [keyof typeof LOOKS, SkinLoo
       expect(CRITTERS[c].rows.length).toBe(4)
       expect(CRITTERS[c].colors['#'], `${c} needs a main colour '#'`).toBeDefined()
       expect(CRITTERS[c].rows.join(''), `${c} must use its main colour '#' in its rows`).toContain('#')
+      const { rows, eye, eyes = [2, 5] } = CRITTERS[c]
+      for (const x of eyes) expect(rows[eye]?.[x] ?? '.', `${c}: an eye at column ${x} of row ${eye} must sit on its body`).not.toBe('.')
     }
   })
 

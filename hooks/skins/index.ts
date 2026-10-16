@@ -113,6 +113,18 @@ import { look as edward } from './edward'
 import { look as eva } from './eva'
 import { look as pochita } from './pochita'
 import { look as anya } from './anya'
+import { look as batman } from './batman'
+import { look as superman } from './superman'
+import { look as wonder } from './wonder'
+import { look as joker } from './joker'
+import { look as flash } from './flash'
+import { look as harley } from './harley'
+import { look as robin } from './robin'
+import { look as lantern } from './lantern'
+import { look as aquaman } from './aquaman'
+import { look as catwoman } from './catwoman'
+import { look as cyborg } from './cyborg'
+import { look as ivy } from './ivy'
 
 // Every skin drawn from data, by its `/buddy` word.
-export const LOOKS = { mario, moogle, pikachu, slime, barba, moomin, tomte, kirby, creeper, soot, stripe, sam, alien, jason, chucky, freddy, ghostface, predator, pennywise, frank, vader, trooper, chewie, yoda, grogu, threepio, mando, leia, ewok, jawa, noface, calcifer, kodama, jiji, kiki, doraemon, naruto, usagi, kitsune, link, sonic, pacman, shovel, junimo, hollow, blackmage, megaman, companion, goose, bomber, rayman, redbird, minion, walle, baymax, mike, gizmo, toothless, dalek, slimer, irongiant, jack, joy, pippi, tintin, gromit, smurf, calavera, lion, troll, yaga, anansi, sphinx, gillman, bonnie, xwing, tie, falcon, destroyer, enterprise, borg, birdofprey, rocinante, serenity, tardis, spidey, ironman, hulk, cap, thor, groot, deadpool, panther, venom, strange, goku, vegeta, saitama, luffy, chopper, spike, tanjiro, nezuko, levi, deku, allmight, gojo, ichigo, ryuk, edward, eva, pochita, anya } satisfies Record<string, SkinLook>
+export const LOOKS = { mario, moogle, pikachu, slime, barba, moomin, tomte, kirby, creeper, soot, stripe, sam, alien, jason, chucky, freddy, ghostface, predator, pennywise, frank, vader, trooper, chewie, yoda, grogu, threepio, mando, leia, ewok, jawa, noface, calcifer, kodama, jiji, kiki, doraemon, naruto, usagi, kitsune, link, sonic, pacman, shovel, junimo, hollow, blackmage, megaman, companion, goose, bomber, rayman, redbird, minion, walle, baymax, mike, gizmo, toothless, dalek, slimer, irongiant, jack, joy, pippi, tintin, gromit, smurf, calavera, lion, troll, yaga, anansi, sphinx, gillman, bonnie, xwing, tie, falcon, destroyer, enterprise, borg, birdofprey, rocinante, serenity, tardis, spidey, ironman, hulk, cap, thor, groot, deadpool, panther, venom, strange, goku, vegeta, saitama, luffy, chopper, spike, tanjiro, nezuko, levi, deku, allmight, gojo, ichigo, ryuk, edward, eva, pochita, anya, batman, superman, wonder, joker, flash, harley, robin, lantern, aquaman, catwoman, cyborg, ivy } satisfies Record<string, SkinLook>

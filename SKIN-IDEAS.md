@@ -1,6 +1,6 @@
 # Skin ideas
 
-A catalog of skins buddy could wear, gathered 2026-10-16 by seven research agents (anime, games, film/TV, folklore; then deeper passes on Nordic/European culture, cult film and indie games). Built so far: everything in this file, the Sci-fi ships, Marvel and a big anime batch (117 skins). Next ideas: DC (Batman, Superman, Wonder Woman, the Joker, the Flash, Harley Quinn...).
+A catalog of skins buddy could wear, gathered 2026-10-16 by seven research agents (anime, games, film/TV, folklore; then deeper passes on Nordic/European culture, cult film and indie games). Built so far: everything in this file, the Sci-fi ships, Marvel, DC and a big anime batch (129 skins). Next: an art review and a detail pass on the weakest skins.
 
 Every skin needs: a 16×16 sprite (body ~10 px wide, 2 rows of headroom), the five moods (chilling, thinking, working, done, oh no), captions of ≤ 8 letters in the pixel font (A, F, J, Q, V, X, Z are missing; add glyphs before using them), and five 8×6 creatures for the agent roles: Explore, Plan, fork (a copy of its parent), general-purpose, anything else.
 
