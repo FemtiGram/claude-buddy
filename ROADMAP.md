@@ -1,0 +1,62 @@
+# buddy roadmap
+
+Where buddy is and what comes next. Written 2026-10-10 to pick work up in a fresh session.
+
+## Milestones
+
+| # | What | State |
+|---|------|-------|
+| 1 | Animated pixel buddy in a side pane: moods chilling, thinking, working, done, oh no | committed `3ee9348` |
+| 2 | Agent list: a tinted mini per subagent with name, task, tool count, elapsed time and live activity (`▸ Read page.tsx`, `✓ done`); finished agents linger 30s dimmed; big buddy shrinks to 1× while agents are listed | committed `0167af1` |
+| 3 | Seasons, Halloween (Oct 24–31): witch hat, bat, jack-o'-lantern, `SPOOKY` / `BOO!`; `/buddy halloween\|normal\|auto` preview | committed `0167af1` |
+| 4 | Seasons, Christmas (Dec 1–26): Santa hat, snow behind buddy, present, `HO HO HO` / `MERRY!`; `/buddy christmas` | committed `28a61ed` |
+| 5 | Skins, forest: a grey 16×16 spirit with ears, belly chevron, grin, `WHEEE!`; minis become critters by agent type (sprout, owl, acorn, spirit, mushroom), names in the critter's colour; `/buddy forest\|classic`, remembered in `$.store` | committed `ab1200b` |
+
+A test run with three Explore agents showed the agent list working live. `/buddy halloween` and `/buddy normal` were tried in a real session and worked. Christmas and the forest skin have not been looked at in a real pane yet.
+
+## How seasons work (`hooks/register.tsx`)
+
+- `seasonFor(ms)` maps a local date to a `Season`; `SEASONS` lists them for `/buddy <name>`.
+- In a season the sprite is 16 rows instead of 14 (`heightOf`), and `frame()` draws buddy 2 rows lower (`top`) so a hat fits even at the top of the happy jump. Sparkles and thinking dots move down with him.
+- Each season is one `if (season === '…')` block at the end of `frame()` (hat, props) and one in `tinyFrame()` (a pixel or two on the mini). Anything that should pass *behind* buddy (snow) is drawn before the body.
+- `SEASON_CAPTIONS` overrides some moods' captions; `captionFor` falls back to the usual ones. New letters go in `FONT`.
+- `preview` holds a `/buddy <season>` choice in memory only; a restart goes back to the calendar.
+
+**Adding a season:** add it to `Season`, `SEASONS` and `seasonFor`; add colours, a `frame()` block and a `tinyFrame()` block; add captions (and glyphs); update the `argumentHint`; add tests that the hat pixel count is constant over every mood and tick 0–95 (so it's never clipped), plus date tests; update the README.
+
+## How skins work (`hooks/register.tsx`)
+
+- A skin changes who buddy is all year; a season only dresses him up. They combine: `seasonAt()` and `chosenSkin` are separate.
+- `Skin` and `SKINS` list them. `/buddy forest|classic` sets `chosenSkin` and writes it to `$.store` under `skin`; `session.start` reads it back.
+- `frame()` picks the big body: `classicBody()` or `spiritBody()`. The spirit always uses the 16-row sprite (`heightOf`) for its ears, and skips the season hats but keeps the props. Snow and the bat are drawn before the body, so they pass behind it.
+- Minis in the forest are critters, one per agent type: `CRITTERS` holds each one's 4 rows, eye row, colours and name tint; `critterFor(type)` picks one, mushroom by default. `critterFrame()` draws any of them with shared moods, and puts arms right beside each row's edge.
+- Each mini remembers its agent's `type`, so a skin change redraws it as the right critter.
+
+**Adding a skin:** add it to `Skin`/`SKINS`, a body function for `frame()`, and its minis in `tinyFrame()`; add captions to `SKIN_CAPTIONS`; update the `argumentHint` and README; add tests that nothing is clipped in any mood over ticks 0–95.
+
+## Gotchas
+
+- **`h` is the JSX factory.** A local variable named `h` breaks rendering ("h is not a function"). The sprite height is `spriteH` for that reason.
+- **Tests:** `claude plugin test .` and `claude plugin validate .`. The test harness has no `ui.panes` / `ui.open`; stub them with `on('ui.panes', …)` / `on('ui.open', …)` as the `/buddy` command test does.
+- `bun` and `tsc` aren't installed, so there's no quick way to print a sprite outside the tests.
+- **Auto mode blocks file edits here:** Edit calls fail with "classifier gave no verdict". An `Edit(hooks/**)` allow rule in `.claude/settings.local.json` didn't help (perhaps until a restart). Accept-edits mode, or leaving auto mode, works. Something to try: start with `CLAUDE_CODE_AUTO_MODE_SERVER=0`.
+
+## Next iterations
+
+1. **Look at Christmas and the forest skin in a real pane.** The spirit: the white eyes and cream belly on a light background, the grey on a dark one; the mushroom's cream stem and the owl's brown on both. Check the white brim, pom-pom and pale snow on light and dark backgrounds, and that the red hat stands out from buddy's orange.
+2. **Easter:** Good Friday to Easter Monday, computed each year (anonymous Gregorian algorithm). In 2027 Easter Sunday is March 28. Ideas: bunny ears, a bobbing egg, `HOPPY!`.
+3. **New Year** (Dec 31–Jan 1): confetti or fireworks, a party hat, a countdown caption?
+4. More options: Valentine's Day, a birthday, or national days if wanted.
+5. **Stress test the agent list:** 9+ agents (the 8-agent cap and "+N more"), an agent whose tool fails (sad mood, `✗ failed`), and one stopped partway (`■ stopped`).
+6. **Tests for untested code:**
+   - the three timers (frame loop, 1s clock, 5s sweep);
+   - the `tool.call` and `turn.complete` handlers (moods, labels, the 30s linger);
+   - `turn.step`;
+   - `ui.close`;
+   - the 8-agent cap;
+   - `describeTool` for more tools.
+7. Maybe: remember a `/buddy <season>` preview across restarts, as skins already are (`$.store`).
+
+## Restarting
+
+Open a new session in this folder and say something like: "Read ROADMAP.md and pick up at next iteration 1."
