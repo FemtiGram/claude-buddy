@@ -31,14 +31,15 @@ export const look: SkinLook = {
   feet: { color: 0x3a4660, at: [2, 6] },
   captions: { happy: 'ARISE!', idle: 'KNEEL' },
   critters: {
-    // A ghoul, hunched, claws out.
-    Explore: { rows: ['..####..', '.######.', '#.#kk#.#', '..####..'], eye: 1, eyeColor: 0xb0f0ff, colors: { '#': 0x8a9a7a, k: 0x2a1a1a }, tint: 0x8a9a7a },
+    // A ghoul: lean and grey-green, hunched, claws out, bare bony legs.
+    Explore: { rows: ['..####..', '.######.', '#.#kk#.#', '..#..#..'], eye: 1, eyeColor: 0xb0f0ff, colors: { '#': 0x7a8a68, k: 0x2a1a1a }, tint: 0x8a9a7a },
     // Lil' K.T., Kel'Thuzad in a blue robe, floating.
     Plan: { rows: ['.#ssss#.', '.#ssss#.', '########', '.#-##-#.'], eye: 1, eyes: [3, 4], eyeColor: GLOW, feet: false, colors: { '#': 0x4a5aa0, s: 0xe8e4d8 }, tint: 0x6a7ad0 },
     // A little Lich King, spiked helm and glowing eyes.
     fork: { rows: ['#.#..#.#', '.######.', '.#kkkk#.', '..####..'], eye: 2, eyeColor: GLOW, colors: { '#': 0x7a8aa0, k: 0x101418 }, tint: GLOW },
-    // An abomination, stitched and bloated.
-    'general-purpose': { rows: ['.######.', '#-####-#', '##kkkk##', '.##..##.'], eye: 1, colors: { '#': 0xa8b890, k: 0x5a2a2a }, tint: 0xa8b890 },
+    // An abomination: bloated pale pink-grey flesh, dark stitches across the
+    // belly, a meat hook on a chain.
+    'general-purpose': { rows: ['.######.', '#######h', '#s#s#s#h', '.##..#hh'], eye: 1, arms: false, colors: { '#': 0xd8b4b0, s: 0x6a2a3a, h: 0xa8b0bc }, tint: 0xd8b4b0 },
     // Sindragosa, the frost wyrm, wings spread.
     other: { rows: ['#-....-#', '##-##-##', '.######.', '...--...'], eye: 1, eyes: [3, 4], eyeColor: 0x3060c0, feet: false, colors: { '#': 0xb8e8f8 }, tint: 0x8fd8f0 },
   },

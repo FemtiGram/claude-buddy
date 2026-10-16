@@ -36,8 +36,9 @@ export const look: SkinLook = {
   critters: {
     // WALL-E: binocular eyes on a neck over his box and treads.
     Explore: { rows: ['.kkgkk..', '...g....', '.######.', 'tttttttt'], eye: 0, eyes: [2, 4], eyeColor: 0xbfe0ff, feet: false, colors: { '#': 0xd9a93b, k: 0x4a5a7a, g: 0x7a7a7a, t: 0x4a4a4a }, tint: 0xd9a93b },
-    // AUTO, the autopilot wheel with its single red eye.
-    Plan: { rows: ['..####..', '.#kkkk#.', '##kkkk##', '...##...'], eye: 1, eyes: [3, 4], eyeColor: 0xff3a2a, feet: false, arms: false, colors: { '#': 0x8a9098, k: 0x1a1a1e }, tint: 0xff3a2a },
+    // AUTO, the ship's-wheel autopilot: a grey rim and spoke handles round
+    // a dark hub with its single glaring red eye.
+    Plan: { rows: ['#.####.#', '.#-kk-#.', '.#-rr-#.', '#.####.#'], eye: 1, eyes: [3, 4], eyeColor: 0xff3a2a, feet: false, arms: false, colors: { '#': 0x9aa0a8, k: 0x1a1a1e, r: 0xc02018 }, tint: 0xff3a2a },
     // A mini EVE, the plant glowing green in her chest.
     fork: { rows: ['..####..', '.#kkkk#.', '.##gg##.', '...--...'], eye: 1, eyeColor: LED, feet: false, colors: { '#': WHITE, k: VISOR, g: 0x5ad06a }, tint: LED },
     // BURN-E the welder bot, an orange warning light on top.

@@ -35,8 +35,9 @@ export const look: SkinLook = {
   critters: {
     // Randall: a lavender chameleon on too many legs, green slit eyes.
     Explore: { rows: ['..####..', '-######-', '.#-##-#.', '-.-..-.-'], eye: 1, eyeColor: 0x6ad04a, feet: false, colors: { '#': 0x9a7ad0 }, tint: 0x9a7ad0 },
-    // Mr. Waternoose: a grey-green crab boss with a white mustache and many eyes.
-    Plan: { rows: ['..####..', '.######.', '.wwwwww.', 'l.l..l.l'], eye: 1, eyes: [1, 3, 4, 6], feet: false, colors: { '#': 0x6a7a5a, w: 0xe8e8e0, l: 0x4a5a3a }, tint: 0x6a7a5a },
+    // Mr. Waternoose: a purple crab of a boss on spindly legs, a row of
+    // eyes over a big grey mustache.
+    Plan: { rows: ['-.####.-', '########', '##mmmm##', '-.-..-.-'], eye: 1, eyes: [1, 3, 4, 6], eyeColor: 0x1a1020, feet: false, colors: { '#': 0xa862b8, m: 0xb4b4bc }, tint: 0xa862b8 },
     // A mini Boo in her hood.
     fork: { rows: ['#......#', '##kkkk##', '.#ssss#.', '.######.'], eye: 2, colors: { '#': PURPLE, k: HAIR, s: SKIN }, tint: PURPLE },
     // A CDA agent in a yellow hazmat suit and visor.

@@ -38,7 +38,7 @@ export const look: SkinLook = {
     // Gwaihir, the Windlord: a great brown eagle with a golden beak.
     Explore: { rows: ['..####..', 'ww####ww', 'w-#yy#-w', '..----..'], eye: 1, colors: { '#': 0x9a6a34, w: 0x5e3c1c, y: 0xf0b830 }, tint: 0xc89a50 },
     // Shadowfax, lord of horses: white, with a silver mane.
-    Plan: { rows: ['.#.mm.#.', '.######.', '..####..', '..-kk-..'], eye: 1, colors: { '#': 0xe8eaf0, m: 0x9aa2b0, k: 0x5a6070 }, tint: 0xd8dce6 },
+    Plan: { rows: ['..#.....', '.m####..', 'm#######', 'm##..--k'], eye: 1, eyes: [3], colors: { '#': 0xe8eaf0, m: 0x9aa2b0, k: 0x5a6070 }, tint: 0xd8dce6 },
     // A pocket Gandalf: grey hat, white beard.
     fork: { rows: ['...##...', '.######.', '.wssssw.', '.-wwww-.'], eye: 2, colors: { '#': HAT, s: SKIN, w: BEARD }, tint: HAT_LIT },
     // One of his firework dragons, sparks flying.

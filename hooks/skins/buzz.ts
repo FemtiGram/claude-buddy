@@ -41,8 +41,9 @@ export const look: SkinLook = {
     Plan: { rows: ['#......#', '##.##.##', '.######.', '.kkkkkk.'], eye: 2, eyeColor: 0xff3a3a, colors: { '#': 0x6a48b8, k: 0x9a9aa8 }, tint: 0x8a5ad8 },
     // A mini Buzz: purple hood, white suit, chest buttons.
     fork: { rows: ['..####..', '.#ssss#.', '.wwrgbw.', '..gwwg..'], eye: 1, colors: { '#': PURPLE, s: SKIN, w: WHITE, r: RED, g: GREEN, b: 0x3a6fd8 }, tint: PURPLE },
-    // Rex: a green dino with purple back spikes and a toothy grin.
-    'general-purpose': { rows: ['..p####.', '..######', '.####www', '.##..##.'], eye: 1, eyes: [3, 6], colors: { '#': 0x58a84e, p: 0x8a5ad8, w: 0xf0f0e0 }, tint: 0x58a84e },
+    // Rex: a green dino, big head and toothy grin, purple back spikes and
+    // tiny arms.
+    'general-purpose': { rows: ['...#####', '.p####-#', 'p##wkwkw', '.###..-.'], eye: 1, eyes: [5], colors: { '#': 0x58a84e, p: 0x8a5ad8, w: 0xf0f0e0, k: 0x2a3a24 }, tint: 0x58a84e },
     // Hamm: the pink piggy bank, coin slot on top.
     other: { rows: ['.#.kk.#.', '.######.', '.##nn##.', '.-####-.'], eye: 1, colors: { '#': 0xf0a0b0, k: 0x3a2a2a, n: 0xd06a80 }, tint: 0xf0a0b0 },
   },

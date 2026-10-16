@@ -11,8 +11,8 @@ export const look: SkinLook = {
   said: 'Buddy blows a bubble: Ponyo loves Sosuke!',
   group: 'Ghibli',
   rows: [
-    '.......b..',
-    '...rrrr...',
+    '........b.',
+    '...rrrr..b',
     '..rggrrr..',
     '.rgffffrr.',
     '.rffffffr.',

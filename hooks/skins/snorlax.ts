@@ -32,15 +32,15 @@ export const look: SkinLook = {
   feet: { color: CREAM, at: [2, 7] },
   captions: { idle: 'ZZZ', happy: 'MUNCH!' },
   critters: {
-    // Zubat: a blue bat on purple wings.
-    Explore: { rows: ['p.#..#.p', 'pp####pp', '.######.', '..#..#..'], eye: 1, feet: false, colors: { '#': 0x5a8ad8, p: 0x9a5ab8 }, tint: 0x5a8ad8 },
-    // Slowpoke: pink, cream muzzle, in no hurry at all.
-    Plan: { rows: ['.#....#.', '.######.', '.#cccc#.', '..-##-..'], eye: 1, colors: { '#': 0xf0a0b8, c: 0xf6e2c8 }, tint: 0xf0a0b8 },
+    // Diglett: a brown nub with a pink nose, popping out of the ground.
+    Explore: { rows: ['..####..', '.######.', '.##pp##.', 'gggggggg'], eye: 1, eyes: [2, 5], feet: false, arms: false, colors: { '#': 0xa8743c, p: 0xf08aa8, g: 0x5a3a22 }, tint: 0xa8743c },
+    // Chansey: a pink egg of a Pokémon with a white egg in its belly pouch.
+    Plan: { rows: ['p.####.p', '.######.', '.##ww##.', '..#ww#..'], eye: 1, eyes: [2, 5], colors: { '#': 0xf4a0b8, p: 0xf4a0b8, w: 0xffffff }, tint: 0xf4a0b8 },
     // A little Snorlax with its cream belly.
     fork: { rows: ['.#....#.', '.#cccc#.', '########', '##cccc##'], eye: 1, colors: { '#': TEAL, c: CREAM }, tint: LIGHT },
-    // Psyduck: yellow, three hairs, a cream bill.
-    'general-purpose': { rows: ['..k.k...', '.######.', '.#oooo#.', '..####..'], eye: 1, colors: { '#': 0xf2d04a, k: 0x3a3a3a, o: 0xf2e8b8 }, tint: 0xf2d04a },
-    // Lapras: a blue neck over a grey shell.
-    other: { rows: ['...##...', '..####..', '.ssssss.', 'ssssssss'], eye: 1, feet: false, colors: { '#': 0x5ab0e0, s: 0x9a9aa8 }, tint: 0x5ab0e0 },
+    // Meowth: a cream cat with brown-tipped ears and the gold coin on its brow.
+    'general-purpose': { rows: ['.k#..#k.', '.##yy##.', '.######.', '..#..#..'], eye: 2, eyes: [2, 5], colors: { '#': 0xf2e0b0, k: 0x7a4a2a, y: 0xf0b820 }, tint: 0xf0b820 },
+    // Lapras: blue, with a cream belly and its grey-knobbed shell.
+    other: { rows: ['.h####h.', '.######.', 's#cccc#s', 'ss#cc#ss'], eye: 1, eyes: [2, 5], feet: false, colors: { '#': 0x4a9ae0, h: 0x4a9ae0, c: 0xf2e2bc, s: 0x8a8a98 }, tint: 0x4a9ae0 },
   },
 }

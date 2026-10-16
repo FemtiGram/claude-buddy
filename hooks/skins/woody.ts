@@ -6,7 +6,7 @@ const SHIRT = 0xe0b030
 const DENIM = 0x3a6ab8
 
 // Sheriff Woody: the wide brown cowboy hat, brown hair, red bandana, yellow
-// shirt under a cow-print vest with a gold sheriff badge, blue jeans.
+// shirt under a white cow-print vest with a gold sheriff badge, blue jeans.
 export const look: SkinLook = {
   said: "Buddy tips his hat: there's a snake in my boot!",
   group: 'Pixar & Disney',
@@ -16,9 +16,9 @@ export const look: SkinLook = {
     '..dssssd..',
     '..ssssss..',
     '..ssssss..',
-    '..yrrrry..',
-    '.wkyyyygk.',
+    '.wkyrrywk.',
     '.kwyyyykw.',
+    '.wwGyywkw.',
     '..llGlll..',
     '..bb..bb..',
   ],
@@ -30,8 +30,9 @@ export const look: SkinLook = {
   feet: { color: 0x7a4a24, at: [3, 6] },
   captions: { idle: 'HOWDY', happy: 'YEEHAW!' },
   critters: {
-    // Bullseye: the brown horse, dark mane, pale muzzle.
-    Explore: { rows: ['.#.kk.#.', '.##kk##.', '..####..', '..wwww..'], eye: 1, colors: { '#': 0xa86a3a, k: 0x3a2418, w: 0xe8d8c0 }, tint: 0xa86a3a },
+    // Bullseye: the brown horse, pointed ears, dark mane, a white blaze down
+    // his long face to a pale muzzle.
+    Explore: { rows: ['.#....#.', 'k##ww##k', '.k#ww#k.', '..wwww..'], eye: 1, eyes: [2, 5], arms: false, colors: { '#': 0xa86a3a, k: 0x3a2418, w: 0xf4ece0 }, tint: 0xa86a3a },
     // Mr. Potato Head: bowler hat, pink ears, orange nose, black mustache.
     Plan: { rows: ['..kkkk..', '.######.', 'p##rr##p', '.#mmmm#.'], eye: 1, colors: { '#': 0xc89a5a, k: 0x2a2a2a, p: 0xf08aa0, r: 0xf08a3a, m: 0x2a2018 }, tint: 0xc89a5a },
     // A mini Woody under his big hat.

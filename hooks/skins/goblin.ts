@@ -30,8 +30,9 @@ export const look: SkinLook = {
   critters: {
     // The goblin's portal: a blue-violet swirl he dives into.
     Explore: { rows: ['..####..', '.#pccp#.', '.#cppc#.', '..####..'], eye: 1, feet: false, arms: false, colors: { '#': 0x4a7ae8, p: 0x9a5ae0, c: 0xc8e8ff }, tint: 0x4a7ae8 },
-    // A legendary drop: an orange amulet in its pillar of light.
-    Plan: { rows: ['...oo...', '...##...', '.o####o.', '...##...'], eye: 2, feet: false, arms: false, colors: { '#': 0xff8a1e, o: 0xffd090 }, tint: 0xff8a1e },
+    // A legendary drop: an orange amulet on a gold chain, glinting in its
+    // pillar of light.
+    Plan: { rows: ['..lccl..', '.lc##cl.', '.l####l.', '.ll##ll.'], eye: 2, eyes: [3, 4], eyeColor: 0xfff0b0, feet: false, arms: false, colors: { '#': 0xff8a1e, c: 0xd8a838, l: 0xffd890 }, tint: 0xff8a1e },
     // A goblin pup with a sack of his own.
     fork: { rows: ['....yyy.', 'e###ssss', '.#k#ssss', '.##..ss.'], eye: 1, eyes: [1, 3], colors: { '#': SKIN, e: 0x5e7a3c, s: SACK, y: GOLD, k: 0x2a1810 }, tint: SKIN },
     // A flawless ruby, cut and glinting.

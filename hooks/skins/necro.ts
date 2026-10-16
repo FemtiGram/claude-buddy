@@ -34,8 +34,9 @@ export const look: SkinLook = {
   feet: { color: 0x24222c, at: [3, 6] },
   captions: { idle: 'RATHMA', happy: 'RISE!' },
   critters: {
-    // A raven of Rathma, black-winged with red eyes.
-    Explore: { rows: ['...##...', '..####o.', '-######.', '.-#..#-.'], eye: 1, eyes: [3, 4], eyeColor: 0xff4a4a, feet: false, arms: false, colors: { '#': 0x5a5470, o: 0xd0a040 }, tint: 0x5a5470 },
+    // A raven of Rathma: black feathers with a grey sheen at the edge, a
+    // raised wing, a yellow beak and a red eye.
+    Explore: { rows: ['R...RR..', 'Rw.R##y.', 'Rww####.', 'RR###-..'], eye: 1, eyes: [5], eyeColor: 0xff4a4a, feet: false, arms: false, colors: { '#': 0x2e2a3a, R: 0x6a6480, w: 0x46405a, y: 0xd0a040 }, tint: 0x6a6480 },
     // A skeletal mage: a bone skull, a green robe and a glowing staff.
     Plan: { rows: ['..####.g', '..####.l', '...#k#.l', '..pppp.l'], eye: 1, eyes: [2, 5], eyeColor: GLOW, colors: { '#': BONE, k: 0x3a3a30, p: 0x3a6a3a, l: 0x8a6a40, g: GLOW }, tint: 0x3a6a3a },
     // An apprentice necromancer in a little hood.

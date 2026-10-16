@@ -35,8 +35,8 @@ export const look: SkinLook = {
   critters: {
     // Milhouse: blue hair, thick glasses, pale skin, red shirt.
     Explore: { rows: ['.bbbbb..', '.######.', '.gwggwg.', '..rrrr..'], eye: 2, colors: { '#': 0xf2d88a, b: 0x3a5ad8, g: 0x8a8a9a, w: WHITE, r: RED }, tint: 0x3a5ad8 },
-    // Lisa: the star of spikes, yellow face, red dress.
-    Plan: { rows: ['#.#..#.#', '.######.', '.######.', '..rrrr..'], eye: 2, colors: { '#': YELLOW, r: 0xd8302a }, tint: 0xd8302a },
+    // Lisa: the star of spikes, pearl necklace, red dress.
+    Plan: { rows: ['#.#..#.#', '-######-', '.wwwwww.', '..rrrr..'], eye: 1, colors: { '#': YELLOW, w: WHITE, r: 0xd8302a }, tint: 0xd8302a },
     // A mini Bart, spikes and red shirt.
     fork: { rows: ['.#.#.#..', '.######.', '.######.', '.rrrrrr.'], eye: 2, colors: { '#': YELLOW, r: RED }, tint: RED },
     // Krusty the Clown: green hair tufts, white face, red nose and mouth.

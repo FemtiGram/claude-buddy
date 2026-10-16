@@ -32,8 +32,8 @@ export const look: SkinLook = {
   feet: { color: BLACK, at: [2, 3, 6, 7] },
   captions: { idle: 'BEEP', happy: 'BUMBLE!' },
   critters: {
-    // Ravage: a black panther cassette with a red eye.
-    Explore: { rows: ['.#..#...', '.####...', '.#######', '.##..##.'], eye: 1, eyes: [2, 4], eyeColor: 0xff3030, feet: false, arms: false, colors: { '#': 0x4a4a58 }, tint: 0x8a8a9a },
+    // Ravage: a black robot panther with a grey rim, one red eye, tail up.
+    Explore: { rows: ['##.....#', '#k#####.', '.kkkkkk#', '.#.#.#.#'], eye: 1, eyes: [1], eyeColor: 0xff3030, feet: false, arms: false, colors: { '#': 0x8a8a9c, k: 0x2a2a32 }, tint: 0x8a8a9a },
     // The Allspark: a grey cube etched with glowing blue glyphs.
     Plan: { rows: ['########', '#c#cc#c#', '#cc##cc#', '########'], eye: 1, eyeColor: 0x9af0ff, feet: false, arms: false, colors: { '#': 0x8a8a7a, c: 0x3ab4e8 }, tint: 0x3ab4e8 },
     // A mini Bumblebee in car mode: yellow Camaro, black stripes on the hood.

@@ -34,13 +34,13 @@ export const look: SkinLook = {
   critters: {
     // A Pegwin: navy penguin with a white face and orange beak.
     Explore: { rows: ['..####..', '.#w##w#.', '.#woow#.', '..wwww..'], eye: 1, colors: { '#': 0x3a4a6a, w: 0xf2f2f2, o: 0xf09a30 }, tint: 0x5a7ab0 },
-    // A golden egg from Egg Scramble.
-    Plan: { rows: ['...##...', '..####..', '.######.', '..----..'], eye: 2, feet: false, arms: false, colors: { '#': 0xf2c230 }, tint: 0xf2c230 },
+    // A golden egg from Egg Scramble, a shine on its narrow top.
+    Plan: { rows: ['...##...', '..w###..', '.######.', '..-##-..'], eye: 2, eyes: [3, 4], eyeColor: 0x7a5410, feet: false, arms: false, colors: { '#': 0xf2c230, w: 0xfff4c0 }, tint: 0xf2c230 },
     // A mini bean, cream face window and all.
     fork: { rows: ['..####..', '.#ffff#.', '.######.', '..####..'], eye: 1, colors: { '#': PINK, f: FACE }, tint: PINK },
     // The Slime Climb slime, rising and grinning.
     'general-purpose': { rows: ['........', '..#..#..', '.######.', '########'], eye: 2, feet: false, arms: false, colors: { '#': 0xe040a0 }, tint: 0xe040a0 },
-    // Big Yeetus: the giant hammer with a face.
-    other: { rows: ['.######.', '.######.', '...hh...', '...hh...'], eye: 1, feet: false, arms: false, colors: { '#': 0xf06a3a, h: 0xc8b090 }, tint: 0xf06a3a },
+    // Big Yeetus: the giant hammer with a face, swung on its side.
+    other: { rows: ['w####...', '#####hhh', '#####hhh', '-----...'], eye: 1, eyes: [1, 3], feet: false, arms: false, colors: { '#': 0xf06a3a, h: 0xc8b090, w: 0xffa880 }, tint: 0xf06a3a },
   },
 }

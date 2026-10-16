@@ -1,33 +1,35 @@
 import type { SkinLook } from './types'
 
 const SHELL = 0x7a8ca0
-const GROOVE = 0x4a5a70
+const GROOVE = 0x3e4e68
 const GLOW = 0x40d0ff
 
-// An Ohmu of the Sea of Corruption, head on: a dome of grey-blue armour
-// plates, a band of many glowing blue eyes, and under them the golden
-// tendrils that light up when it's pleased.
+// An Ohmu of the Sea of Corruption, head on: a broad arch of grey-blue
+// armour plates stepping down like an armadillo's shell, a band of many
+// small glowing blue eyes, and under them the golden tendrils that light
+// up when it's pleased.
 export const look: SkinLook = {
   said: 'Buddy curls up in grey-blue armour: an Ohmu, eyes glowing calm and blue.',
   group: 'Ghibli',
   rows: [
     '..........',
-    '...hhgg...',
-    '..hhgggd..',
-    '.hggggggd.',
-    '.dddddddd.',
-    'hggggggggd',
-    'dddddddddd',
-    'gekekkekeg',
-    '.dkkkkkkd.',
+    '..hhhhgg..',
+    '.hlhglglg.',
+    'hhlgglgggd',
+    'dbbbbbbbbd',
+    'glglglglgd',
+    'bbbbbbbbbb',
+    'kekekkekek',
+    'dkkkkkkkkd',
+    '.t.t..t.t.',
   ],
-  colors: { h: 0xb8c8d8, g: SHELL, d: GROOVE, k: 0x262c38, e: GLOW },
-  eyes: [[2, 7], [7, 7]],
+  colors: { h: 0xc8d6e4, l: 0xa4b4c8, g: SHELL, d: 0x5a6a80, b: GROOVE, k: 0x1c2230, e: GLOW, t: 0x8a6a28 },
+  eyes: [[3, 7], [6, 7]],
   eyeColor: GLOW,
-  smile: [[3, 8], [4, 8], [5, 8], [6, 8]],
+  smile: [[1, 9], [3, 9], [6, 9], [8, 9]],
   smileColor: 0xffc840,
   tear: [4, 8],
-  feet: { color: GROOVE, at: [1, 3, 6, 8] },
+  feet: { color: GROOVE, at: [2, 4, 5, 7] },
   captions: { idle: 'CALM', happy: 'GLOW!' },
   critters: {
     // An Ushiabu, a winged insect of the toxic jungle.

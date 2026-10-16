@@ -34,10 +34,11 @@ export const look: SkinLook = {
   feet: { color: 0x3a2a1a, at: [3, 6] },
   captions: { idle: 'MOO', happy: 'STOMP!' },
   critters: {
-    // Plainstrider: a big tan bird with a yellow beak.
-    Explore: { rows: ['..####..', '.######.', '..#yy#..', '.######.'], eye: 1, colors: { '#': 0xb89a6a, y: 0xf0b030 }, tint: 0xb89a6a },
-    // Kodo: a grey-brown beast with a plated head and horns.
-    Plan: { rows: ['h.pppp.h', '.######.', '########', '##-##-##'], eye: 1, colors: { '#': 0x8a7a6a, p: 0x5e5248, h: HORN }, tint: 0x8a7a6a },
+    // Plainstrider: a tall tan bird, long neck, yellow beak, long legs.
+    Explore: { rows: ['....###y', '-##..#..', '#--###..', '..-..-..'], eyes: [6], eye: 0, arms: false, colors: { '#': 0xc8a874, y: 0xf0b030 }, eyeColor: 0x1a0e08, tint: 0xc8a874 },
+    // Wind rider of Thunder Bluff: a tawny lion with a dark mane and broad
+    // leathery wings.
+    Plan: { rows: ['w..mm..w', 'ww####ww', 'ww#yy#ww', '..####..'], eye: 1, arms: false, colors: { '#': 0xd09a48, m: 0x6a3a1e, y: 0xf0d8a0, w: 0x8a4a6a }, tint: 0xd09a48 },
     // A little Tauren: ivory horns, muzzle and nose ring.
     fork: { rows: ['w......w', 'ww####ww', '.##mm##.', '..#gg#..'], eye: 1, colors: { '#': FUR, w: HORN, m: MUZZLE, g: 0xf2c230 }, tint: FUR },
     // A carved wooden totem with painted wings.

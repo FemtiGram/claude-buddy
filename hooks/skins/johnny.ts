@@ -6,13 +6,13 @@ const LENS = 0x1e2a3a
 const TREAD = 0x3a3a40
 
 // Johnny 5 of Short Circuit: a wide head of two big binocular lenses under
-// eyebrow flaps, on a thin neck, a steel chest with a blue panel and tank treads.
+// flat eyebrow flaps, on a thin neck, a steel chest with a blue panel and tank treads.
 export const look: SkinLook = {
   said: 'Buddy is Johnny 5. Number 5 is ALIVE!',
   group: 'Robots',
   rows: [
-    '.ff....ff.',
-    '.hssssssd.',
+    '..........',
+    '.fffhsfff.',
     '.sLLssLLd.',
     '.sLLssLLd.',
     '..dsssdd..',
@@ -36,7 +36,7 @@ export const look: SkinLook = {
     // A wood-cased TV, his favourite input.
     Plan: { rows: ['..k..k..', '.######.', '.#cccc#.', '.######.'], eye: 2, colors: { '#': 0x8a5a30, c: 0x8ad0e8, k: 0x9aa0a8 }, tint: 0xb07a40 },
     // A mini Johnny 5: lenses on a neck, treads.
-    fork: { rows: ['.######.', '.#L##L#.', '...##...', '.------.'], eye: 1, eyeColor: 0x9ad8ff, feet: false, colors: { '#': STEEL, L: LENS }, tint: STEEL },
+    fork: { rows: ['.--..--.', '#LL##LL#', '..-##-..', 'tTtTtTtT'], eye: 1, eyeColor: 0x9ad8ff, feet: false, colors: { '#': STEEL, L: LENS, t: TREAD, T: 0x8a8a90 }, tint: STEEL },
     // Stephanie's food truck, cream with big windows.
     'general-purpose': { rows: ['..#####.', '.#ww#ww#', '########', '.k....k.'], eye: 1, feet: false, colors: { '#': 0xe8dcc0, w: 0x8ac8e8, k: 0x2a2a2a }, tint: 0xe8dcc0 },
     // A Rubik's cube, the 1980s in a box.

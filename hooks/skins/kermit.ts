@@ -34,7 +34,7 @@ export const look: SkinLook = {
   captions: { idle: 'HI HO', happy: 'YAAAY!' },
   critters: {
     // Gonzo: blue fur, droopy eyes over the great hooked nose.
-    Explore: { rows: ['..####..', '.######.', '.###n##.', '..##nn..'], eye: 1, colors: { '#': 0x5a8ae8, n: 0x8a6ad0 }, tint: 0x5a8ae8 },
+    Explore: { rows: ['..####..', '.ll##ll.', '.##nn##.', '..#.n#..'], eye: 1, colors: { '#': 0x5a8ae8, l: 0x3a62b8, n: 0xc87ab0 }, tint: 0x5a8ae8 },
     // Sam Eagle: dark blue, stern brows, a big yellow beak.
     Plan: { rows: ['.######.', '.kk##kk.', '.######.', '..yyyy..'], eye: 2, colors: { '#': 0x2e4aa0, k: 0x141a30, y: 0xf0b030 }, tint: 0x4a6ad0 },
     // A mini Kermit, eyes on top, collar points.

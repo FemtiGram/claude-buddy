@@ -7,7 +7,7 @@ const SPARK = 0xe0a0ff
 
 // The Minecraft Enderman: a black block head with glowing magenta eye-bars,
 // a grey-violet rim so he shows on a dark terminal, purple particles drifting
-// over him, and the stolen grass block held in front of him.
+// over him, long thin arms reaching down to the stolen grass block he holds.
 export const look: SkinLook = {
   said: 'Buddy blinks out of the End: vwoop! An Enderman.',
   group: 'Games',
@@ -18,19 +18,19 @@ export const look: SkinLook = {
     '.rkkkkkkr.',
     '.rPPkkPPr.',
     '.rkkkkkkr.',
-    '..rkkkkr..',
-    '..rggggr..',
-    '..rddddr..',
-    '...r..r...',
-    '...r..r...',
+    'rrrkkrrgGg',
+    'r.rkkr.dDd',
+    'r.rkkrrddD',
+    'r.r..r....',
+    '..r..r....',
   ],
-  colors: { r: RIM, k: BLACK, P: MAGENTA, v: SPARK, g: 0x5ab04a, d: 0x8a5a3a },
+  colors: { r: RIM, k: BLACK, P: MAGENTA, v: SPARK, g: 0x5ab04a, G: 0x8ad86a, d: 0x8a5a3a, D: 0x5e3a22 },
   eyes: [[3, 4], [6, 4]],
   eyeColor: 0xf6d0ff,
   smile: [[4, 5], [5, 5]],
   smileColor: MAGENTA,
   tear: [3, 5],
-  feet: { color: RIM, at: [3, 6] },
+  feet: { color: RIM, at: [2, 5] },
   captions: { idle: 'VWOOP', happy: 'TELEPORT' },
   critters: {
     // An Endermite: a low violet bug trailing particles.

@@ -8,25 +8,26 @@ const HAIR = 0x2a2236
 const FEL = 0x4ad040
 
 // Illidan Stormrage, the Betrayer: purple night-elf skin, two great curved
-// horns, long black hair, a dark green blindfold with fel-green eyes glowing
-// through it and green fel tattoos across his bare chest.
+// horns, long black hair, broad bare shoulders, a dark green blindfold with
+// fel-green eyes glowing through it and green fel tattoos in a V down his
+// chest.
 export const look: SkinLook = {
   said: 'Buddy ties on the blindfold. You are not prepared!',
   group: 'Warcraft',
   rows: [
     'h........h',
     'hh......hh',
-    '.hhkkkkhh.',
-    '.kLLpppPk.',
-    '.kggggggk.',
-    '.kppppppk.',
-    '.kPppppPk.',
-    'kLppPPppPk',
-    '.ptpppptp.',
-    '.pptPPtpp.',
+    '.hhKKKKhh.',
+    'KkLLpppPkK',
+    'KkggggggkK',
+    'KkppppppkK',
+    '.kpppppPk.',
+    'LptpppptpP',
+    '.pptpptpp.',
+    '.pppttppP.',
     '..bbbbbb..',
   ],
-  colors: { h: HORN, k: HAIR, p: SKIN, L: LIGHT, P: DARK, g: 0x1e5a2a, t: FEL, b: 0x3a3a4a },
+  colors: { h: HORN, k: HAIR, K: 0x4a4060, p: SKIN, L: LIGHT, P: DARK, g: 0x1e5a2a, t: FEL, b: 0x3a3a4a },
   eyes: [[3, 4], [6, 4]],
   eyeColor: 0x9aff6a,
   smile: [[4, 6], [5, 6]],

@@ -43,7 +43,8 @@ export const look: SkinLook = {
     fork: { rows: ['.y.##.y.', 'yy#kk#yy', '.y#kk#y.', '..-gg-..'], eye: 1, eyes: [3, 4], eyeColor: GLOW, colors: { '#': HOOD, k: VOID, y: WING, g: GOLD }, tint: HOOD },
     // El'druin, the Sword of Justice, its blade glowing blue-white.
     'general-purpose': { rows: ['.g.....w', 'bgw#####', 'bgw#####', '.g.....w'], eye: 1, eyes: [4, 6], eyeColor: 0x2a4a7a, feet: false, arms: false, colors: { '#': 0xb8e0f8, g: GOLD, b: 0x6a4424, w: 0xe8f8ff }, tint: 0x9fd0f0 },
-    // A shard of the Worldstone, a lilac crystal.
-    other: { rows: ['...w#...', '..####..', '.##--##.', '..####..'], eye: 2, feet: false, arms: false, colors: { '#': 0xa888e8, w: 0xf0e8ff }, tint: 0xa888e8 },
+    // A shard of the Worldstone: a big pale blue-white crystal, cracked, with
+    // a glow deep inside.
+    other: { rows: ['..-ww-..', '.-#wk#-.', '.-#k##-.', '..-##-..'], eye: 2, eyes: [2, 5], eyeColor: 0x4a8ad8, feet: false, arms: false, colors: { '#': 0xc8e8ff, w: 0xffffff, k: 0x4a7ab0 }, tint: 0xa8d8ff },
   },
 }

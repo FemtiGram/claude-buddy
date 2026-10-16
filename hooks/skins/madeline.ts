@@ -39,8 +39,9 @@ export const look: SkinLook = {
     Plan: { rows: ['...##...', '.######.', '.#ssss#.', '..pppp..'], eye: 2, colors: { '#': 0xdcdce4, s: SKIN, p: 0x8a5aa8 }, tint: 0xdcdce4 },
     // Badeline, her purple-haired reflection with red eyes.
     fork: { rows: ['..####..', '#######.', '##ssss#.', '.#jjjj..'], eye: 2, eyeColor: 0xe02040, colors: { '#': 0x9a4ad0, s: 0xe8d8e8, j: 0x3a3060 }, tint: 0x9a4ad0 },
-    // Mr. Oshiro, the ghostly hotel keeper with his mustache.
-    'general-purpose': { rows: ['..####..', '.######.', '.######.', '.#mmmm#.'], eye: 1, feet: false, colors: { '#': 0x6a9ae8, m: 0x2a3a6a }, tint: 0x6a9ae8 },
+    // Mr. Oshiro, the ghostly hotel keeper: bald blue head, bushy grey mustache,
+    // a red bow tie, a wispy tail.
+    'general-purpose': { rows: ['..w###..', '.######.', 'mmm##mmm', '.-bkkb-.'], eye: 1, feet: false, colors: { '#': 0x6a9ae8, w: 0xb0d0ff, m: 0xdcdce8, b: 0xe03040, k: 0x8a1a2a }, tint: 0x6a9ae8 },
     // A Seeker: a spiky dark lump with one glaring eye.
     other: { rows: ['#..##..#', '.######.', '##wwww##', '.#-##-#.'], eye: 2, eyes: [3, 4], eyeColor: 0xe02040, feet: false, arms: false, colors: { '#': 0x6a6a90, w: 0xf0f0f0 }, tint: 0x8a8ab0 },
   },

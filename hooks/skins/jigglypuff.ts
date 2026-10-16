@@ -22,7 +22,7 @@ export const look: SkinLook = {
     '..pppppd..',
     '...dddd...',
   ],
-  colors: { p: PINK, h: LIGHT, d: SHADE, c: 0xe888b4, k: 0x3a2a3a, w: 0xffffff, t: TEAL },
+  colors: { p: PINK, h: LIGHT, d: SHADE, c: 0xc85090, k: 0x3a2a3a, w: 0xffffff, t: TEAL },
   eyes: [[3, 5], [7, 5]],
   eyeColor: 0x1c4a66,
   smile: [[4, 7], [5, 7]],

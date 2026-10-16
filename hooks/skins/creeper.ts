@@ -31,7 +31,7 @@ export const look: SkinLook = {
     fork: { rows: ['........', '.######.', '.######.', '.######.'], eye: 2, eyes: [2, 5], arms: false, colors: { '#': 0x7fd45f }, tint: 0x7fd45f },
     // A pig.
     'general-purpose': { rows: ['.#....#.', '.######.', '.#oooo#.', '.######.'], eye: 1, colors: { '#': 0xf0a0b0, o: 0xd9788a }, tint: 0xf0a0b0 },
-    // An Enderman: tall, dark, purple eyes.
-    other: { rows: ['..####..', '..####..', '..####..', '..#..#..'], eye: 1, eyes: [2, 5], eyeColor: 0xc060ff, feet: false, colors: { '#': 0x4a4458 }, tint: 0xa070d0 },
+    // A bee: a fuzzy yellow block with dark stripes and pale wings.
+    other: { rows: ['.ww..ww.', '.######.', '.kkkkkk.', '.######.'], eye: 1, eyeColor: 0x1a1410, feet: false, colors: { '#': 0xf2c23a, k: 0x3a2a1a, w: 0xcfe6f2 }, tint: 0xf2c23a },
   },
 }

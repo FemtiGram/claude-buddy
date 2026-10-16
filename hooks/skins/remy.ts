@@ -12,36 +12,36 @@ export const look: SkinLook = {
   said: 'Buddy grabs a wooden spoon: anyone can cook, says Remy!',
   group: 'Pixar & Disney',
   rows: [
-    '.dd....dd.',
-    'dppd..dppd',
-    'dppfffppd.',
+    '..gwwwg...',
+    '.ddgwwgdd.',
+    'dppdffdppd',
+    'dppfffffpd',
     '.dhfffffd.',
-    '.dhffffffd',
-    '..fffffnn.',
-    '..dffffd..',
-    '..dlllfd..',
-    '..dllllfd.',
-    '..dfffffdp',
-    '...dddddp.',
+    '.dhffffffn',
+    '..dfffffd.',
+    '..dllfd.p.',
+    '..dlllfd.p',
+    '..dllffd.p',
+    '...dddd.pp',
   ],
-  colors: { f: FUR, h: LIGHT, l: 0xd4dce8, d: DARK, p: PINK, n: NOSE },
+  colors: { f: FUR, h: LIGHT, l: 0xd4dce8, d: DARK, p: PINK, n: NOSE, w: 0xf6f6f2, g: 0xa0a6b4 },
   eyes: [[4, 4], [6, 4]],
   eyeColor: 0x1a1a22,
-  smile: [[3, 6], [6, 6]],
+  smile: [[5, 6], [6, 6]],
   tear: [4, 5],
-  arms: { color: PINK, down: [[1, 8], [9, 8]], up: [[1, 6], [9, 6]] },
+  arms: { color: LIGHT, down: [[1, 8], [8, 8]], up: [[1, 6], [9, 6]] },
   feet: { color: PINK, at: [3, 6] },
   captions: { idle: 'SNIFF', happy: 'BON!' },
   critters: {
-    // Emile, his round, always-hungry brother.
-    Explore: { rows: ['.p....p.', '.######.', '########', '########'], eye: 1, colors: { '#': 0x8a7a6a, p: PINK }, tint: 0x8a7a6a },
+    // Emile, his round, always-hungry brother, cream belly out.
+    Explore: { rows: ['.p.##.p.', '.######.', '##cccc##', '.#cccc#.'], eye: 1, colors: { '#': 0x8a7a6a, p: PINK, c: 0xe8dcc0 }, tint: 0x8a7a6a },
     // Git, the white lab rat with the red tag in his ear.
     Plan: { rows: ['.p....r.', '.######.', '.######.', '..-##-..'], eye: 1, colors: { '#': 0xeeeef2, p: PINK, r: 0xd83030 }, tint: 0xd83030 },
-    // A mini Remy: pink ears, pink nose.
-    fork: { rows: ['pp....pp', 'p######p', '.##pp##.', '..-##-..'], eye: 1, colors: { '#': FUR, p: PINK }, tint: FUR },
-    // Django, his big dark-grey father.
-    'general-purpose': { rows: ['.##..##.', '########', '#-####-#', '.######.'], eye: 1, colors: { '#': 0x5e5e6a }, tint: 0x5e5e6a },
-    // The mushroom he roasts in the lightning storm.
-    other: { rows: ['..####..', '.######.', '..cccc..', '..cccc..'], eye: 2, arms: false, feet: false, colors: { '#': 0x9a6a3a, c: 0xe8d8b8 }, tint: 0x9a6a3a },
+    // A mini Remy: pink ears, pink nose, a little toque.
+    fork: { rows: ['pp.wg.pp', 'p######p', '.##pp##.', '..-##-..'], eye: 1, colors: { '#': FUR, p: PINK, w: 0xf6f6f2, g: 0xa0a6b4 }, tint: FUR },
+    // Django, his big dark-grey father: one ear torn, a paler muzzle.
+    'general-purpose': { rows: ['##....#.', '########', '#-#mm#-#', '.######.'], eye: 1, colors: { '#': 0x5e5e6a, m: 0x9a9aa8 }, tint: 0x5e5e6a },
+    // The spotted mushroom he roasts in the lightning storm.
+    other: { rows: ['..#w##..', '#w####w#', '..cccc..', '..cccc..'], eye: 2, arms: false, feet: false, colors: { '#': 0xb04a2a, w: 0xf6eee0, c: 0xe8d8b8 }, tint: 0xb04a2a },
   },
 }

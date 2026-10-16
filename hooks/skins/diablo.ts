@@ -35,8 +35,9 @@ export const look: SkinLook = {
   feet: { color: DARK, at: [2, 7] },
   captions: { idle: 'TERROR', happy: 'BURN!' },
   critters: {
-    // A Fallen: a little red imp with big pointed ears.
-    Explore: { rows: ['#......#', '.######.', '..#yy#..', '..-..-..'], eye: 1, eyeColor: GLOW, colors: { '#': 0xd8482a, y: 0xe8c890 }, tint: 0xd8482a },
+    // A Fallen: a small red imp with pointed ears, big white eyes, a wide
+    // toothy grin and a little bone club.
+    Explore: { rows: ['#.###.#b', '.#####.b', '#kwwwk#b', '..#.#...'], eye: 1, eyes: [1, 5], eyeColor: 0xfff4d8, feet: false, arms: false, colors: { '#': 0xd0402a, w: 0xfff4d8, k: 0x3a0a08, b: 0xe8dcc0 }, tint: 0xd8482a },
     // A soulstone: a floating red crystal with a pale glint.
     Plan: { rows: ['...##...', '..#ss#..', '.######.', '..-##-..'], eye: 2, eyeColor: 0xffe0e0, feet: false, arms: false, colors: { '#': 0xd0203a, s: 0xff9aa8 }, tint: 0xff5a70 },
     // A mini Diablo: horns, red hide, glowing eyes.

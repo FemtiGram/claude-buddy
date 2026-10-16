@@ -16,9 +16,9 @@ export const look: SkinLook = {
   rows: [
     '....lp....',
     '...lppd...',
-    '...kkkk...',
-    '...wwww...',
-    'lppppppppd',
+    '...kppk...',
+    '...wppw...',
+    'lppwppwppd',
     '.lpmppmdd.',
     '..pmmmpd..',
     '..gvggvg..',
@@ -26,7 +26,7 @@ export const look: SkinLook = {
     '..dd..dd..',
   ],
   colors: { l: LIGHT, p: PINK, d: DEEP, k: 0x6a2a3a, m: 0xe07890, w: WHITE, g: GREEN, v: PURPLE },
-  eyes: [[4, 3], [5, 3]],
+  eyes: [[3, 4], [6, 4]],
   smile: [[3, 5], [4, 6], [5, 6], [6, 5]],
   tear: [3, 4],
   arms: { color: PINK, down: [[0, 5], [9, 5]], up: [[0, 3], [9, 3]] },
@@ -41,7 +41,7 @@ export const look: SkinLook = {
     fork: { rows: ['...##...', '.######.', '########', '..gvvg..'], eye: 1, colors: { '#': PINK, g: GREEN, v: PURPLE }, tint: PINK },
     // A Krabby Patty: sesame bun, lettuce, patty, bun.
     'general-purpose': { rows: ['.#w##w#.', '.######.', 'gggggggg', '.bbbbbb.'], eye: 1, feet: false, arms: false, colors: { '#': 0xe0a050, w: 0xf6ecd0, g: 0x5ac040, b: 0x7a4020 }, tint: 0xe0a050 },
-    // Larry the Lobster, red and buff, claws up.
-    other: { rows: ['#-....-#', '.######.', '.######.', '..-..-..'], eye: 1, colors: { '#': 0xe0402a }, tint: 0xe0402a },
+    // Plankton: tiny and green, antennae up, one red eye.
+    other: { rows: ['..-..-..', '..####..', '..#ww#..', '...##...'], eye: 2, eyes: [4], eyeColor: 0xd82020, colors: { '#': 0x3a9a40, w: 0xf2f2e0 }, tint: 0x3a9a40 },
   },
 }

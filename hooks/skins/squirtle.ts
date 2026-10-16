@@ -42,7 +42,7 @@ export const look: SkinLook = {
     // A little Squirtle in his shell.
     fork: { rows: ['..####..', '.######.', 'sccyycc.', '.cyyyyct'], eye: 1, eyes: [2, 5], colors: { '#': BLUE, s: SHELL, c: RIM, y: BELLY, t: DARK }, tint: BLUE },
     // Poliwag: a round blue tadpole with the swirl on its belly.
-    'general-purpose': { rows: ['..####..', '.######.', '#wkkww#.', '.#wwkw#.'], eye: 1, eyes: [2, 5], arms: false, colors: { '#': 0x3a6ad0, w: 0xf0f0f8, k: 0x1a1a3a }, tint: 0x5a8ae0 },
+    'general-purpose': { rows: ['..####..', '.######.', '.#wkkw#.', '.#wwkw#.'], eye: 1, eyes: [2, 5], arms: false, colors: { '#': 0x3a6ad0, w: 0xf0f0f8, k: 0x1a1a3a }, tint: 0x5a8ae0 },
     // Krabby: an orange crab with one big claw up.
     other: { rows: ['oo....oo', 'o.####.o', '.######.', '.cccccc.'], eye: 1, eyes: [2, 5], colors: { '#': 0xe0602a, o: 0xe0602a, c: 0xf4d8b0 }, tint: 0xe0602a },
   },

@@ -30,7 +30,7 @@ export const look: SkinLook = {
   eyeColor: 0x1a2a6a,
   smile: [[2, 5], [8, 5]],
   tear: [2, 4],
-  arms: { color: 0xf4f4f4, down: [[1, 8], [8, 8]], up: [[0, 6], [9, 6]] },
+  arms: { color: 0xdcdce4, down: [[1, 8], [8, 8]], up: [[0, 6], [9, 6]] },
   feet: { color: 0x6b3e1e, at: [2, 7] },
   captions: { idle: 'MARIO!', happy: 'LUIGI!' },
   critters: {

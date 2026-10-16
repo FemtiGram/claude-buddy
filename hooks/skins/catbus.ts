@@ -32,7 +32,7 @@ export const look: SkinLook = {
   captions: { idle: 'PURR', happy: 'MEOW!' },
   critters: {
     // Big Totoro: grey, pointed ears, the pale chevron belly.
-    Explore: { rows: ['.#....#.', '.######.', '.#wwww#.', '.#w--w#.'], eye: 1, colors: { '#': 0x7a8296, w: 0xe8e0c8 }, tint: 0x9aa2b6 },
+    Explore: { rows: ['.#....#.', '.######.', '#w-ww-w#', '#ww--ww#'], eye: 1, colors: { '#': 0x7a8296, w: 0xe8e0c8 }, tint: 0x9aa2b6 },
     // Chu Totoro, the middle-sized blue one.
     Plan: { rows: ['..#..#..', '..####..', '.######.', '.##ww##.'], eye: 2, colors: { '#': 0x5a8ad8, w: 0xd8e4f4 }, tint: 0x5a8ad8 },
     // A kitten catbus: grin, stripes, legs.

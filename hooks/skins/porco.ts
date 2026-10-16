@@ -13,7 +13,7 @@ export const look: SkinLook = {
   rows: [
     '...cccc...',
     '..chhccc..',
-    '.cccccccc.',
+    'pccccccccp',
     '.cppppppc.',
     '.ckkppkkc.',
     '.cpsnnspc.',
