@@ -75,6 +75,16 @@ import { look as anansi } from './anansi'
 import { look as sphinx } from './sphinx'
 import { look as gillman } from './gillman'
 import { look as bonnie } from './bonnie'
+import { look as xwing } from './xwing'
+import { look as tie } from './tie'
+import { look as falcon } from './falcon'
+import { look as destroyer } from './destroyer'
+import { look as enterprise } from './enterprise'
+import { look as borg } from './borg'
+import { look as birdofprey } from './birdofprey'
+import { look as rocinante } from './rocinante'
+import { look as serenity } from './serenity'
+import { look as tardis } from './tardis'
 
 // Every skin drawn from data, by its `/buddy` word.
-export const LOOKS = { mario, moogle, pikachu, slime, barba, moomin, tomte, kirby, creeper, soot, stripe, sam, alien, jason, chucky, freddy, ghostface, predator, pennywise, frank, vader, trooper, chewie, yoda, grogu, threepio, mando, leia, ewok, jawa, noface, calcifer, kodama, jiji, kiki, doraemon, naruto, usagi, kitsune, link, sonic, pacman, shovel, junimo, hollow, blackmage, megaman, companion, goose, bomber, rayman, redbird, minion, walle, baymax, mike, gizmo, toothless, dalek, slimer, irongiant, jack, joy, pippi, tintin, gromit, smurf, calavera, lion, troll, yaga, anansi, sphinx, gillman, bonnie } satisfies Record<string, SkinLook>
+export const LOOKS = { mario, moogle, pikachu, slime, barba, moomin, tomte, kirby, creeper, soot, stripe, sam, alien, jason, chucky, freddy, ghostface, predator, pennywise, frank, vader, trooper, chewie, yoda, grogu, threepio, mando, leia, ewok, jawa, noface, calcifer, kodama, jiji, kiki, doraemon, naruto, usagi, kitsune, link, sonic, pacman, shovel, junimo, hollow, blackmage, megaman, companion, goose, bomber, rayman, redbird, minion, walle, baymax, mike, gizmo, toothless, dalek, slimer, irongiant, jack, joy, pippi, tintin, gromit, smurf, calavera, lion, troll, yaga, anansi, sphinx, gillman, bonnie, xwing, tie, falcon, destroyer, enterprise, borg, birdofprey, rocinante, serenity, tardis } satisfies Record<string, SkinLook>

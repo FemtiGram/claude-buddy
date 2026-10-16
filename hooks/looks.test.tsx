@@ -33,7 +33,7 @@ for (const [name, look] of Object.entries(LOOKS) as [keyof typeof LOOKS, SkinLoo
   })
 
   test(`${name}: whole in every mood, never clipped, never covered by a season`, () => {
-    const mine = new Set([...Object.values(look.colors), look.eyeColor ?? EYE, EYE, TEAR, look.arms?.color, look.feet?.color])
+    const mine = new Set([...Object.values(look.colors), look.eyeColor ?? EYE, EYE, TEAR, look.arms?.color, look.feet?.color, look.smileColor])
     const drawn = (px: number[]) => px.filter(c => c !== NONE && c !== SPARK && c !== DOT && mine.has(c)).length
     for (const mood of MOODS) {
       const plain = drawn(frame(mood, 0, undefined, undefined, name))

@@ -107,7 +107,7 @@ const lookOf = (skin?: Skin): SkinLook | undefined => (LOOKS as Record<string, S
 
 // Where `/buddy list` puts each skin, in this order, then any other groups.
 const BUILTIN_GROUP: Record<BuiltinSkin, string> = { classic: 'Buddy', forest: 'Ghibli', mask: 'Ghibli', r2d2: 'Star Wars' }
-const GROUP_ORDER = ['Buddy', 'Ghibli', 'Star Wars', 'Games', 'Film & TV', 'Anime', 'Cartoons & folklore', 'Horror']
+const GROUP_ORDER = ['Buddy', 'Ghibli', 'Star Wars', 'Sci-fi ships', 'Games', 'Film & TV', 'Anime', 'Cartoons & folklore', 'Horror']
 export const groupOf = (skin: Skin) => lookOf(skin)?.group ?? BUILTIN_GROUP[skin as BuiltinSkin] ?? 'Other'
 // Every skin by group, for `/buddy list`.
 export const skinGroups = (): [string, Skin[]][] => {
@@ -500,7 +500,7 @@ function drawLook(set: Draw, look: SkinLook, mood: Mood, tick: number, ox: numbe
       set(ox + nx, top + y, look.eyeColor ?? EYE)
     }
   }
-  if (mood === 'happy') for (const [x, y] of look.smile ?? []) set(ox + x, top + y, EYE)
+  if (mood === 'happy') for (const [x, y] of look.smile ?? []) set(ox + x, top + y, look.smileColor ?? EYE)
   if (mood === 'sad' && tick % 16 < 10) set(ox + look.tear[0], top + look.tear[1], TEAR)
 }
 

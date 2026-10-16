@@ -43,8 +43,10 @@ export type SkinLook = {
   // His eyes, each on a pixel of his face.
   eyes: Cell[]
   eyeColor?: number
-  // Drawn dark when he's happy, on pixels of his face.
+  // Drawn when he's happy, on pixels of his face: dark unless `smileColor`
+  // says (a lamp or lights that switch on, say).
   smile?: Cell[]
+  smileColor?: number
   // Where his tear shows when he's sad, on a pixel of his face.
   tear: Cell
   // Hands or paws beside him, on empty cells: `down` most of the time, `up`
