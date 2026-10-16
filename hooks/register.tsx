@@ -18,6 +18,8 @@ const TH = 6
 const MINI_ROWS = TH / 2 + 1 // its three lines plus a gap
 const MAX_MINIS = 8
 const MINI_LINGER_MS = 30_000 // how long a finished agent stays listed, dimmed
+const CREW_MS = 1500 // how long buddy cheers or flinches when one of his agents ends
+const CREW_CAPTION = 'GO GO GO' // while he watches his agents work
 const SWEEP_MS = 5000
 const CLOCK_MS = 1000 // elapsed times tick once a second
 // The desktop, the editor and the phone have no Raster to repaint in place:
@@ -102,6 +104,17 @@ export type LookSkin = keyof typeof LOOKS
 export type Skin = BuiltinSkin | LookSkin
 export const SKINS: Skin[] = ['classic', 'forest', 'mask', 'r2d2', ...(Object.keys(LOOKS) as LookSkin[])]
 const lookOf = (skin?: Skin): SkinLook | undefined => (LOOKS as Record<string, SkinLook>)[skin ?? '']
+
+// Where `/buddy list` puts each skin, in this order, then any other groups.
+const BUILTIN_GROUP: Record<BuiltinSkin, string> = { classic: 'Buddy', forest: 'Ghibli', mask: 'Ghibli', r2d2: 'Star Wars' }
+const GROUP_ORDER = ['Buddy', 'Ghibli', 'Star Wars', 'Games', 'Cartoons & folklore', 'Horror']
+export const groupOf = (skin: Skin) => lookOf(skin)?.group ?? BUILTIN_GROUP[skin as BuiltinSkin] ?? 'Other'
+// Every skin by group, for `/buddy list`.
+export const skinGroups = (): [string, Skin[]][] => {
+  const groups = new Map<string, Skin[]>(GROUP_ORDER.map(g => [g, []]))
+  for (const skin of SKINS) groups.set(groupOf(skin), [...(groups.get(groupOf(skin)) ?? []), skin])
+  return [...groups].filter(([, skins]) => skins.length > 0)
+}
 
 // Rotation: `/buddy rotate daily` puts on a different skin each day,
 // `session` one per session, `off` keeps the one picked.
@@ -929,14 +942,34 @@ export const register: Register = on => {
     return mini
   }
 
+  // Buddy leads his agents: idle while they work, he watches them; he cheers
+  // when one finishes and flinches when one fails.
+  let crewCheerUntil = 0
+  let crewFlinchUntil = 0
+  const mainLook = (now: number): { mood: Mood; caption: string } => {
+    const own = moodOf(main, now)
+    const crewBusy = [...minis.values()].some(b => !b.leaveAt)
+    const mood: Mood =
+      own !== 'run' && now < crewFlinchUntil ? 'sad'
+      : own !== 'run' && own !== 'sad' && now < crewCheerUntil ? 'happy'
+      : own === 'idle' && crewBusy ? 'think'
+      : own
+    const watching = own === 'idle' && crewBusy && mood === 'think'
+    return { mood, caption: watching ? CREW_CAPTION : captionFor(mood, season, skin) }
+  }
+  const crewEnded = (now: number, ok: boolean) => {
+    if (ok) crewCheerUntil = now + CREW_MS
+    else crewFlinchUntil = now + CREW_MS
+  }
+
   // Everything a pane draws at `now`: the big buddy, the caption, each mini.
   const sprites = (now: number) => {
-    const mood = moodOf(main, now)
+    const { mood, caption } = mainLook(now)
     return {
       mood,
-      caption: captionFor(mood, season, skin),
+      caption,
       body: frame(mood, tick, BODY, season, skin),
-      captionPx: captionPixels(captionFor(mood, season, skin), tick, mood === 'think'),
+      captionPx: captionPixels(caption, tick, mood === 'think'),
       mini: (b: Buddy) => tinyFrame(moodOf(b, now), tick + (b.phase ?? 0), b.body, season, skin, critterFor(b.type ?? '', skin)),
     }
   }
@@ -961,7 +994,7 @@ export const register: Register = on => {
   }
 
   on('session.start', async ($, e, next) => {
-    await $.command.register({ name: 'buddy', description: 'Show or hide your pixel buddy', argumentHint: `[${['rotate daily|session|off', ...SKINS.slice(1), 'classic', ...SEASONS, 'normal', 'auto'].join('|')}]` })
+    await $.command.register({ name: 'buddy', description: 'Show or hide your pixel buddy', argumentHint: '[list|random|<skin>|rotate daily|session|off|halloween|christmas|normal|auto]' })
     const stored = await $.store.get('skin').catch(() => undefined)
     if ((SKINS as unknown[]).includes(stored)) chosenSkin = stored as Skin
     const rotate = await $.store.get('rotate').catch(() => undefined)
@@ -997,10 +1030,10 @@ export const register: Register = on => {
         b.last = cells
         await $.ui.blit({ requestId: PANE, key, cells })
       }
-      await paint(main, KEY, encode(frame(moodOf(main, now), tick, BODY, season, skin), scale, W, heightOf(season, skin)))
+      const shown = mainLook(now)
+      await paint(main, KEY, encode(frame(shown.mood, tick, BODY, season, skin), scale, W, heightOf(season, skin)))
       if (scale >= 2) {
-        const mood = moodOf(main, now)
-        const caption = encode(captionPixels(captionFor(mood, season, skin), tick, mood === 'think'), 1, CAPTION_W, CAPTION_H)
+        const caption = encode(captionPixels(shown.caption, tick, shown.mood === 'think'), 1, CAPTION_W, CAPTION_H)
         if (caption !== main.lastCaption) {
           main.lastCaption = caption
           await $.ui.blit({ requestId: PANE, key: 'caption', cells: caption })
@@ -1028,6 +1061,7 @@ export const register: Register = on => {
           mini.leaveAt = now + MINI_LINGER_MS
           mini.endedAt = now
           mini.activity = agent?.status === 'failed' ? '✗ failed' : agent?.status === 'completed' ? '✓ done' : '■ stopped'
+          if (agent?.status === 'failed') crewEnded(now, false)
           $.ui.invalidate('ui.render')
         }
       }
@@ -1047,6 +1081,33 @@ export const register: Register = on => {
         await $.ui.open({ id: PANE, title: 'Buddy', rows: 18, columns: PANE_COLUMNS })
       }
     }
+    const wearSkin = async (next: Skin) => {
+      chosenSkin = next
+      await $.store.set('skin', chosenSkin)
+      // Picking a skin, by hand or at random, stops the rotation.
+      if (rotation !== 'off') {
+        rotation = 'off'
+        await $.store.set('rotate', rotation)
+      }
+      await showPane()
+      const said: Record<BuiltinSkin, string> = { classic: 'Buddy is himself again.', forest: 'Buddy turns into a forest spirit!', mask: 'Buddy puts on the mask!', r2d2: 'Buddy rolls out as R2-D2!' }
+      return lookOf(chosenSkin)?.said ?? said[chosenSkin as BuiltinSkin]
+    }
+    // `/buddy list` names every skin by group, and what he's wearing now.
+    if (arg === 'list') {
+      const now = await $.clock.now()
+      const width = Math.max(...skinGroups().map(([g]) => g.length)) + 2
+      const wearing = rotation === 'off' ? `Buddy is wearing ${skinAt(now)}.` : `Buddy is wearing ${skinAt(now)} (rotating ${rotation}).`
+      const lines = skinGroups().map(([g, skins]) => `${`${g}:`.padEnd(width)}${skins.join(', ')}`)
+      return { text: [wearing, '', ...lines, '', `${SKINS.length} skins. /buddy <name> puts one on, /buddy random picks one, /buddy rotate daily|session|off changes them for you.`].join('\n') }
+    }
+    // `/buddy random` puts on any skin but the one he's wearing.
+    if (arg === 'random') {
+      const now = await $.clock.now()
+      const others = SKINS.filter(s => s !== skinAt(now))
+      const pick = others[Math.floor(Math.random() * others.length)]!
+      return { text: `Buddy picks ${pick} at random. ${await wearSkin(pick)}` }
+    }
     // `/buddy rotate` (daily unless said) changes skins on its own.
     if (arg === 'rotate' || arg.startsWith('rotate ')) {
       const mode = arg.slice('rotate'.length).trim() || 'daily'
@@ -1063,23 +1124,12 @@ export const register: Register = on => {
           : `Buddy stops rotating and keeps ${chosenSkin}.`,
       }
     }
-    if ((SKINS as string[]).includes(arg)) {
-      chosenSkin = arg as Skin
-      await $.store.set('skin', chosenSkin)
-      // Picking a skin by hand stops the rotation.
-      if (rotation !== 'off') {
-        rotation = 'off'
-        await $.store.set('rotate', rotation)
-      }
-      await showPane()
-      const said: Record<BuiltinSkin, string> = { classic: 'Buddy is himself again.', forest: 'Buddy turns into a forest spirit!', mask: 'Buddy puts on the mask!', r2d2: 'Buddy rolls out as R2-D2!' }
-      return { text: lookOf(chosenSkin)?.said ?? said[chosenSkin as BuiltinSkin] }
-    }
+    if ((SKINS as string[]).includes(arg)) return { text: await wearSkin(arg as Skin) }
     if (arg) {
       if (arg === 'auto') preview = undefined
       else if (arg === 'normal') preview = 'none'
       else if ((SEASONS as string[]).includes(arg)) preview = arg as Season
-      else return { text: `Buddy doesn't know "${arg}". Try ${[...SKINS, ...SEASONS, 'normal', 'auto', 'rotate'].join(', ')}.` }
+      else return { text: `Buddy doesn't know "${arg}". /buddy list shows every skin; there's also random, rotate, ${[...SEASONS, 'normal', 'auto'].join(', ')}.` }
       $.ui.invalidate('ui.render')
       if (!(await $.ui.panes()).some(pane => pane.id === PANE)) {
         await $.ui.open({ id: PANE, title: 'Buddy', rows: 18, columns: PANE_COLUMNS })
@@ -1180,6 +1230,7 @@ export const register: Register = on => {
         b.leaveAt = now + MINI_LINGER_MS
         b.endedAt = now
         b.activity = e.reason === 'answer' ? '✓ done' : e.reason === 'aborted' ? '■ stopped' : '✗ failed'
+        if (e.reason !== 'aborted') crewEnded(now, e.reason === 'answer')
       }
       $.clock.after(MOOD_MS + 100, () => $.ui.invalidate('ui.render'))
       $.ui.invalidate('ui.render')
@@ -1189,11 +1240,10 @@ export const register: Register = on => {
 
   on('ui.render', { component: 'Pane', requestId: PANE }, async ($, e) => {
     const now = await $.clock.now()
-    const mood = moodOf(main, now)
     season = seasonAt(now)
     skin = skinAt(now)
+    const { mood, caption } = mainLook(now)
     const spriteH = heightOf(season, skin) // not `h`: that's the JSX factory
-    const caption = captionFor(mood, season, skin)
     if (e.surface !== 'terminal') {
       // No Raster here: every sprite is an SVG, and the whole pane redraws as it moves.
       const { Box, Text, Svg } = $.ui.resolve(e)

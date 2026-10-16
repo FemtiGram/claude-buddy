@@ -36,6 +36,8 @@ export type Cell = [x: number, y: number]
 export type SkinLook = {
   // What `/buddy <name>` answers.
   said: string
+  // Where `/buddy list` puts it, e.g. 'Games', 'Star Wars', 'Horror'.
+  group: string
   rows: string[]
   colors: Record<string, number>
   // His eyes, each on a pixel of his face.

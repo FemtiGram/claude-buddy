@@ -1,6 +1,6 @@
 import { test, expect, mock } from 'claude-code/testing'
 import {
-  dailySkin, halloweenSkin, HORROR, heightOf, SKINS, describeTool, CAPTIONS, SEASON_CAPTIONS, SKIN_CAPTIONS, CRITTERS, critterFor, captionFor, captionPixels, captionWidth, elapsed, encode, frame, listOrder, moodOf,
+  dailySkin, halloweenSkin, HORROR, groupOf, skinGroups, heightOf, SKINS, describeTool, CAPTIONS, SEASON_CAPTIONS, SKIN_CAPTIONS, CRITTERS, critterFor, captionFor, captionPixels, captionWidth, elapsed, encode, frame, listOrder, moodOf,
   remotePx, seasonFor, size, svgOf, tinyFrame, tintFor,
 } from './register'
 
@@ -486,11 +486,12 @@ test('the desktop, the editor and the phone draw buddy and his agents as SVG', a
     const svgs = await view.findAll({ type: 'Svg' })
     expect(svgs).toHaveLength(3) // buddy, his caption, one mini
     const [body, caption, mini] = svgs.map(s => s.props as { source: string; alt: string })
-    expect(body!.alt).toBe('Buddy, chilling')
+    // idle while his agent works, buddy watches it
+    expect(body!.alt).toBe('Buddy, go go go')
     // with an agent listed, buddy steps down to 12 CSS pixels a pixel
     expect(body!.source).toContain('width="192" height="168"')
     expect(body!.source).toContain('fill="#d97757"')
-    expect(caption!.alt).toBe('CHILLING')
+    expect(caption!.alt).toBe('GO GO GO')
     expect(caption!.source).toContain('width="192"') // as wide as buddy
     expect(mini!.alt).toBe('Explore, think')
     expect(mini!.source).toContain('width="32" height="24"')
@@ -670,4 +671,72 @@ test('on Halloween buddy wears the day\'s monster over his own skin; /buddy norm
   expect(await body()).toBe(svgOf(frame('idle', 0, undefined, 'halloween', monster), 16, 16, remotePx(36, false).body))
   await $.command.run({ command: 'buddy', args: 'normal' })
   expect(await body()).toBe(svgOf(frame('idle', 0, undefined, undefined, 'forest'), 16, 16, remotePx(36, false).body))
+})
+
+test('/buddy list names every skin once, by group, and what he wears', async ($, on) => {
+  mock.clock(on, { now: SUMMER })
+  on('store.set', () => ({ value: undefined }))
+  on('ui.panes', () => ({ value: [{ id: 'buddy' }] as never }))
+  const listed = skinGroups().flatMap(([, skins]) => skins)
+  expect([...listed].sort()).toEqual([...SKINS].sort())
+  expect(skinGroups()[0]).toEqual(['Buddy', ['classic']])
+  expect(groupOf('r2d2')).toBe('Star Wars')
+  expect(groupOf('jason')).toBe('Horror')
+  await $.command.run({ command: 'buddy', args: 'r2d2' })
+  const text = (await $.command.run({ command: 'buddy', args: 'list' })).text
+  expect(text.split('\n')[0]).toBe('Buddy is wearing r2d2.')
+  for (const [group, skins] of skinGroups()) {
+    expect(text).toContain(`${group}:`)
+    expect(text).toContain(skins.join(', '))
+  }
+  expect(text).toContain(`${SKINS.length} skins.`)
+})
+
+test('/buddy random puts on another skin and stops the rotation', async ($, on) => {
+  mock.clock(on, { now: SUMMER })
+  const store = new Map<string, unknown>()
+  on('store.set', ($, e) => (store.set(e.key, e.value), { value: undefined }))
+  on('ui.panes', () => ({ value: [{ id: 'buddy' }] as never }))
+  await $.command.run({ command: 'buddy', args: 'rotate' })
+  let last = dailySkin(SUMMER) as string
+  for (let i = 0; i < 20; i++) {
+    const text = (await $.command.run({ command: 'buddy', args: 'random' })).text
+    const pick = /^Buddy picks (\w+) at random\. /.exec(text)?.[1]
+    expect(SKINS).toContain(pick)
+    expect(pick).not.toBe(last) // never the one he's already wearing
+    expect(store.get('skin')).toBe(pick)
+    last = pick!
+  }
+  expect(store.get('rotate')).toBe('off')
+})
+
+test('buddy watches his agents work, cheers when one finishes and flinches when one fails', async ($, on) => {
+  const clock = mock.clock(on, { now: SUMMER })
+  on('turn.complete', () => ({ text: '' }) as never)
+  let n = 0
+  on('agent.spawn', () => ({ model: 'test', agentId: `agent-${++n}` }))
+  const spawn = (i: number) => $.agent.spawn({
+    tool_use_id: `toolu_${i}`, prompt: 'x', description: `Task ${i}`, subagentType: 'Explore',
+    provider: { plugin: 'engine', tier: 'core' }, parentModel: 'test', background: true, fork: false,
+  })
+  const end = (agentId: string, reason: 'answer' | 'error') =>
+    $.turn.complete({ answer: '', durationMs: 1, isAborted: false, turnId: agentId, agentId, reason } as never)
+  const mood = async () => {
+    const view = await $.ui.mount({ plugin: 'buddy', surface: 'desktop', component: 'Pane', requestId: 'buddy', props: pane(36, 40) })
+    const alt = ((await view.find({ type: 'Svg' }))?.props as { alt: string }).alt
+    await view.unmount()
+    return alt
+  }
+  expect(await mood()).toBe('Buddy, chilling')
+  await spawn(1)
+  await spawn(2)
+  expect(await mood()).toBe('Buddy, go go go')
+  await end('agent-1', 'answer')
+  expect(await mood()).toBe('Buddy, done!')
+  await clock.advance(2000)
+  expect(await mood()).toBe('Buddy, go go go') // agent-2 still works
+  await end('agent-2', 'error')
+  expect(await mood()).toBe('Buddy, oh no...')
+  await clock.advance(2000)
+  expect(await mood()).toBe('Buddy, chilling') // the crew is done
 })

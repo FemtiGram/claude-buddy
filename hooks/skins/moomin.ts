@@ -7,6 +7,7 @@ const SHADE = 0xb9b09a
 
 export const look: SkinLook = {
   said: 'Buddy turns into a Moomin!',
+  group: 'Cartoons & folklore',
   rows: [
     '..MM..MM..',
     '..MM..MM..',

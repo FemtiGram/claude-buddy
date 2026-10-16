@@ -9,6 +9,7 @@ const SHOE = 0xc83030
 // smirk, a red-white striped shirt under blue denim overalls, red sneakers.
 export const look: SkinLook = {
   said: 'Buddy turns into a Good Guy doll. Wanna play?',
+  group: 'Horror',
   rows: [
     '..h.hh.h..',
     '.hhhhhhhh.',

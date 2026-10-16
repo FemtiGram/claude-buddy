@@ -11,6 +11,7 @@ const CLOUD = 0xe6ecf2
 // blue overalls with two yellow buttons.
 export const look: SkinLook = {
   said: "Buddy puts on the cap: it's-a Mario!",
+  group: 'Games',
   rows: [
     '..rrrrr...',
     '.rrrrrrrrr',

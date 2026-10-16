@@ -3,6 +3,7 @@ import type { SkinLook } from './types'
 // The Minecraft Creeper: a mottled green block with the iconic frown, no arms.
 export const look: SkinLook = {
   said: 'Buddy turns into a creeper. Sss...',
+  group: 'Games',
   rows: [
     '..........',
     '.gLggLgLg.',

@@ -3,6 +3,7 @@ import type { SkinLook } from './types'
 // Barbapapa: a pink pear-shaped blob, and the Barba family as minis.
 export const look: SkinLook = {
   said: 'Buddy turns into Barbapapa!',
+  group: 'Cartoons & folklore',
   rows: [
     '..........',
     '....pp....',

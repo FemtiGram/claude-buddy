@@ -10,6 +10,7 @@ const SUIT = 0xcfd2d8
 // pompoms and a red balloon on a string beside him.
 export const look: SkinLook = {
   said: 'Buddy turns into Pennywise. Want a balloon?',
+  group: 'Horror',
   rows: [
     '........RR',
     '...###..RR',

@@ -8,6 +8,7 @@ const ORANGE = 0xf08a24
 // with a stitched seam and mouth, two button eyes and a pink lollipop.
 export const look: SkinLook = {
   said: 'Buddy pulls on the sack: trick or treat!',
+  group: 'Horror',
   rows: [
     '...t..t...',
     '..tttttt..',

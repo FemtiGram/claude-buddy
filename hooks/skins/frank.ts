@@ -6,6 +6,7 @@ const SKIN = 0x7fa860
 // scar over a heavy brow, a stitched mouth, grey neck bolts, a too-small jacket.
 export const look: SkinLook = {
   said: "Buddy turns into Frankenstein's monster. It's alive!",
+  group: 'Horror',
   rows: [
     '..........',
     '..HHHHHH..',

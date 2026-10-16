@@ -7,6 +7,7 @@ const WING = 0x7a5fb0
 // antenna, little purple bat wings for arms and a pink nose.
 export const look: SkinLook = {
   said: 'Buddy turns into a moogle, kupo!',
+  group: 'Games',
   rows: [
     '....RR....',
     '..#.a..#..',

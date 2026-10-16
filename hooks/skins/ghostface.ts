@@ -9,6 +9,7 @@ const DARK = 0x3c3456
 // screaming mouth, inside a lifted slate hood and robe with a jagged hem.
 export const look: SkinLook = {
   said: 'Buddy puts on the Ghostface mask.',
+  group: 'Horror',
   rows: [
     '...hhhh...',
     '..hHHHHh..',

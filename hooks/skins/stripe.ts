@@ -8,6 +8,7 @@ const CREAM = 0xe6e0c8
 // ears, red eyes, a yellow-cream belly and a wide toothy grin.
 export const look: SkinLook = {
   said: "Buddy turns into Stripe. Don't feed him after midnight!",
+  group: 'Horror',
   rows: [
     '...W..W...',
     '..eWWWWe..',

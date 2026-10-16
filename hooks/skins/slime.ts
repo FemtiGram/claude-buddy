@@ -4,6 +4,7 @@ import type { SkinLook } from './types'
 // highlight, a darker belly and the famous wide smile.
 export const look: SkinLook = {
   said: 'Buddy turns into a slime!',
+  group: 'Games',
   rows: [
     '.....bb...',
     '....bbb...',

@@ -8,6 +8,7 @@ const JACKET = 0x5e6e74
 // a grey-teal work jacket, dark trousers and boots. No weapon.
 export const look: SkinLook = {
   said: 'Buddy puts on the hockey mask.',
+  group: 'Horror',
   rows: [
     '..........',
     '..........',

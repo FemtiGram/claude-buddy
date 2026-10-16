@@ -3,6 +3,7 @@ import type { SkinLook } from './types'
 // A Scandinavian tomte: a tall red cap flopping over, a big beard, a wool jacket.
 export const look: SkinLook = {
   said: 'Buddy turns into a tomte!',
+  group: 'Cartoons & folklore',
   rows: [
     '....rrr...',
     '..rrrrrrrr',

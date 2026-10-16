@@ -6,6 +6,7 @@ const TAN = 0xa8935a
 // four pale mandibles round a dark mouth, a grey mesh chest and a red laser dot.
 export const look: SkinLook = {
   said: 'Buddy turns into a Predator. The hunt is on!',
+  group: 'Horror',
   rows: [
     '...DDDD...',
     '..DDDDDD..',

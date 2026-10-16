@@ -10,6 +10,7 @@ const STAR = 0xe58fb4
 // A soot sprite (susuwatari): a fuzzy charcoal ball, big white eyes, stick limbs.
 export const look: SkinLook = {
   said: 'Buddy turns into a soot sprite!',
+  group: 'Ghibli',
   rows: [
     '..f...f...',
     '.f.ffff.f.',

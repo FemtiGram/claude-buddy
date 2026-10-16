@@ -12,6 +12,7 @@ const BLADE = 0xb8bcc4
 // striped sweater, one clawed glove.
 export const look: SkinLook = {
   said: 'Buddy puts on the striped sweater. Sweet dreams!',
+  group: 'Horror',
   rows: [
     '...hhhh...',
     '.hhhhhhhh.',

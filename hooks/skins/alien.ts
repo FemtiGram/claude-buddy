@@ -8,6 +8,7 @@ const TEETH = 0xe9e6d8
 // speak of, pale teeth in the jaw, a ribbed thin body and a tail curling beside.
 export const look: SkinLook = {
   said: 'Buddy turns into a xenomorph. Hiss!',
+  group: 'Horror',
   rows: [
     '.SS.......',
     'SSSD......',
