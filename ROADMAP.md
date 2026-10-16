@@ -12,6 +12,7 @@ Where buddy is and what comes next. Written 2026-10-10 to pick work up in a fres
 | 4 | Seasons, Christmas (Dec 1–26): Santa hat, snow behind buddy, present, `HO HO HO` / `MERRY!`; `/buddy christmas` | committed `28a61ed` |
 | 5 | Skins, forest: a grey 16×16 spirit with ears, belly chevron, grin, `WHEEE!`; minis become critters by agent type (sprout, owl, acorn, spirit, mushroom), names in the critter's colour; `/buddy forest\|classic`, remembered in `$.store` | committed `ab1200b` |
 | 6 | Skins, mask: a forest girl with hair, a carved cream mask (red stripe, eyeholes), fur cape and tunic; the mask goes up to show her face when happy or sad; `WILD!`; forest critters as minis; `/buddy mask` | committed `b7644f1` |
+| 7 | Mask skin redrawn: a round red mask with two horns, two yellow-rimmed eyeholes side by side and white stripes, over a white fur cape; her pupils show her mood | committed `9e825be` |
 
 A test run with three Explore agents showed the agent list working live. `/buddy halloween` and `/buddy normal` were tried in a real session and worked. Christmas and the forest and mask skins have not been looked at in a real pane yet.
 
@@ -44,7 +45,7 @@ A test run with three Explore agents showed the agent list working live. `/buddy
 
 ## Next iterations
 
-1. **Look at Christmas and the forest and mask skins in a real pane.** The girl: her dark hair on a dark background, the cream mask on a light one. The spirit: the white eyes and cream belly on a light background, the grey on a dark one; the mushroom's cream stem and the owl's brown on both. Check the white brim, pom-pom and pale snow on light and dark backgrounds, and that the red hat stands out from buddy's orange.
+1. **Look at Christmas and the forest and mask skins in a real pane.** The girl: the white fur and stripes on a light background, the dark red mask on a dark one. The spirit: the white eyes and cream belly on a light background, the grey on a dark one; the mushroom's cream stem and the owl's brown on both. Check the white brim, pom-pom and pale snow on light and dark backgrounds, and that the red hat stands out from buddy's orange.
 2. **Easter:** Good Friday to Easter Monday, computed each year (anonymous Gregorian algorithm). In 2027 Easter Sunday is March 28. Ideas: bunny ears, a bobbing egg, `HOPPY!`.
 3. **New Year** (Dec 31–Jan 1): confetti or fireworks, a party hat, a countdown caption?
 4. More options: Valentine's Day, a birthday, or national days if wanted.
