@@ -3,7 +3,7 @@ import type { SkinLook } from './types'
 // Pikachu: tall black-tipped ears, red cheeks, a zigzag tail.
 export const look: SkinLook = {
   said: 'Buddy turns into Pikachu!',
-  group: 'Games',
+  group: 'Pokémon',
   rows: [
     '.k......k.',
     '.k......k.',

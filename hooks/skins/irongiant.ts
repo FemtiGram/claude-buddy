@@ -10,7 +10,7 @@ const RUST = 0xb04a2e
 // dark visor and glowing yellow eyes, heavy jaw, wide shoulders and rivets.
 export const look: SkinLook = {
   said: 'Buddy turns into the Iron Giant. Superb.',
-  group: 'Film & TV',
+  group: 'Robots',
   rows: [
     '..........',
     '..........',

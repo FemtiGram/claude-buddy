@@ -1,6 +1,6 @@
 # Skin ideas
 
-A catalog of skins buddy could wear, gathered 2026-10-16 by seven research agents (anime, games, film/TV, folklore; then deeper passes on Nordic/European culture, cult film and indie games). Built so far: everything in this file, the Sci-fi ships, Marvel, DC and a big anime batch: 129 skins (see `/buddy list`). Two art passes have polished 65 of them. New ideas are at the end.
+A catalog of skins buddy could wear, gathered 2026-10-16 by seven research agents (anime, games, film/TV, folklore; then deeper passes on Nordic/European culture, cult film and indie games). Built so far: everything in this file, the Sci-fi ships, Marvel, DC, a big anime batch, and in 0.13.0 every group under "Next groups" except the seasonal skins, plus Warcraft and Diablo: 208 skins (see `/buddy list`). Two art passes have polished 65 of them. New ideas are at the end.
 
 Every skin needs: a 16×16 sprite (body ~10 px wide, 2 rows of headroom), the five moods (chilling, thinking, working, done, oh no), captions of ≤ 8 letters in the pixel font (A–Z, `!`, `.` and space; at most 32 pixels wide), and five 8×6 creatures for the agent roles: Explore, Plan, fork (a copy of its parent), general-purpose, anything else.
 
@@ -69,7 +69,7 @@ With several skins, buddy could change on his own, for example `/buddy rotate da
 - **session**: a new one each session;
 - the choice saved in `$.store` like the skin; seasons still dress him on top.
 
-## Next groups (not researched yet)
+## Next groups (built in 0.13.0, except the seasonal skins)
 
 - **Pokémon:** Bulbasaur, Charmander, Squirtle, Eevee, Snorlax, Gengar, Jigglypuff, Mewtwo (Pikachu exists).
 - **Nintendo:** Luigi, Yoshi, Bowser, Peach, Donkey Kong, Samus, Isabelle, Inkling.

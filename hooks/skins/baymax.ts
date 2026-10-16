@@ -8,7 +8,7 @@ const RED = 0xc23a35
 // dot eyes joined by a thin line, stubby arms, a red heart on his chest.
 export const look: SkinLook = {
   said: 'Buddy turns into Baymax. Hello!',
-  group: 'Film & TV',
+  group: 'Pixar & Disney',
   rows: [
     '..........',
     '..........',

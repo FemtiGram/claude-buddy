@@ -8,7 +8,7 @@ const BOOT = 0x6b3e1e
 // hair, pointy ears, green tunic and belt, the blue shield on his arm.
 export const look: SkinLook = {
   said: 'Buddy turns into Link. Hyah!',
-  group: 'Games',
+  group: 'Nintendo',
   rows: [
     '.gg.......',
     '.ggggg....',

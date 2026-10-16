@@ -10,7 +10,7 @@ const BLUE = 0x3a7bd5
 // on light.
 export const look: SkinLook = {
   said: 'Buddy glows: Joy!',
-  group: 'Film & TV',
+  group: 'Pixar & Disney',
   rows: [
     '.h..hh..h.',
     '..hhhhhH..',

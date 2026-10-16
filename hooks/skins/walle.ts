@@ -9,7 +9,7 @@ const TREAD = 0x4a4a4a
 // grabber arms and tank treads.
 export const look: SkinLook = {
   said: 'Buddy turns into WALL-E!',
-  group: 'Film & TV',
+  group: 'Pixar & Disney',
   rows: [
     '.LwL..LwL.',
     '.LLL..LLL.',

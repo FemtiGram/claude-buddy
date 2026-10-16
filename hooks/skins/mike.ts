@@ -7,7 +7,7 @@ const DARK = 0x5ba832
 // horns, a wide mouth, thin arms and legs.
 export const look: SkinLook = {
   said: 'Buddy turns into Mike Wazowski!',
-  group: 'Film & TV',
+  group: 'Pixar & Disney',
   rows: [
     '..........',
     '...h..h...',

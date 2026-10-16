@@ -7,7 +7,7 @@ const FEET = 0xd23a5c
 // Kirby: a round pink ball with stubby arms, tall eyes, blush and red feet.
 export const look: SkinLook = {
   said: 'Buddy turns into Kirby!',
-  group: 'Games',
+  group: 'Nintendo',
   rows: [
     '..........',
     '..........',
