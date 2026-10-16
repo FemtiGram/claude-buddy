@@ -38,6 +38,6 @@ export const look: SkinLook = {
     // Goomba: brown dome, angry brows, cream face.
     'general-purpose': { rows: ['.######.', '.#k##k#.', '.#cccc#.', '..cccc..'], eye: 2, colors: { '#': 0x9a5a2a, k: 0x3a2010, c: 0xf0d8a8 }, tint: 0x9a5a2a },
     // Boo: a white ghost, tongue out.
-    other: { rows: ['..wwww..', '.wwwwww.', '.wwkkww.', '..wrrw..'], eye: 1, feet: false, colors: { '#': 0xe9e9f0, w: 0xe9e9f0, k: 0x3a3a50, r: 0xe0527a }, tint: 0xb9b9d8 },
+    other: { rows: ['..####..', '.######.', '.##kk##.', '..#rr#..'], eye: 1, feet: false, colors: { '#': 0xe9e9f0, k: 0x3a3a50, r: 0xe0527a }, tint: 0xb9b9d8 },
   },
 }

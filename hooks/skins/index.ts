@@ -10,5 +10,16 @@ import { look as kirby } from './kirby'
 import { look as creeper } from './creeper'
 import { look as soot } from './soot'
 
+import { look as stripe } from './stripe'
+import { look as sam } from './sam'
+import { look as alien } from './alien'
+import { look as jason } from './jason'
+import { look as chucky } from './chucky'
+import { look as freddy } from './freddy'
+import { look as ghostface } from './ghostface'
+import { look as predator } from './predator'
+import { look as pennywise } from './pennywise'
+import { look as frank } from './frank'
+
 // Every skin drawn from data, by its `/buddy` word.
-export const LOOKS = { mario, moogle, pikachu, slime, barba, moomin, tomte, kirby, creeper, soot } satisfies Record<string, SkinLook>
+export const LOOKS = { mario, moogle, pikachu, slime, barba, moomin, tomte, kirby, creeper, soot, stripe, sam, alien, jason, chucky, freddy, ghostface, predator, pennywise, frank } satisfies Record<string, SkinLook>

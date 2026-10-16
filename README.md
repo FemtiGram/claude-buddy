@@ -40,6 +40,8 @@ Answer `y` to add the marketplace and pick the **user** scope to have buddy in e
 - `/buddy mask` turns buddy into a forest girl behind a round red horned mask with two yellow-rimmed eyeholes, white stripes and a shaggy fur cape. Her eyes show through the holes: up when she's happy, drifting apart when she's sad, darting while she thinks. She says `WILD!` when done, and her agents are the same forest critters.
 - `/buddy r2d2` turns buddy into R2-D2: his dome turns to look about while he thinks, his light flashes when he's done, and he says `BEEP!`. His agents are droids: a probe droid, a protocol droid, a mouse droid, a ball droid and a little astromech.
 - Ten more skins, each with its own crew of creatures for the agent list: `/buddy mario`, `moogle`, `pikachu`, `slime` (Dragon Quest), `barba` (Barbapapa), `moomin`, `tomte`, `kirby`, `creeper` and `soot` (a soot sprite). Each lives in its own small file in `hooks/skins/`; see `hooks/skins/types.ts` to add one.
+- Horror skins too, cute-creepy: `/buddy stripe` (Gremlins), `sam` (Trick 'r Treat), `alien`, `jason`, `chucky`, `freddy`, `ghostface`, `predator`, `pennywise` and `frank` (Frankenstein's monster).
+- `/buddy rotate` puts on a different skin every day (the same one all day), `/buddy rotate session` a new one each session, `/buddy rotate off` stops. Picking a skin by hand stops the rotation too, and the choice is remembered across sessions.
 - Works in the terminal, the Claude desktop app, VS Code and the mobile app. The terminal repaints buddy's pixels in place; the others draw him as an SVG that grows to fit the pane, and redraw it up to about 7 times a second, so he moves a little less smoothly there.
 
 ## Develop

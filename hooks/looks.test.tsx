@@ -65,6 +65,7 @@ for (const [name, look] of Object.entries(LOOKS) as [keyof typeof LOOKS, SkinLoo
     for (const c of minis) {
       expect(CRITTERS[c].rows.length).toBe(4)
       expect(CRITTERS[c].colors['#'], `${c} needs a main colour '#'`).toBeDefined()
+      expect(CRITTERS[c].rows.join(''), `${c} must use its main colour '#' in its rows`).toContain('#')
     }
   })
 

@@ -1,6 +1,6 @@
 import { test, expect, mock } from 'claude-code/testing'
 import {
-  describeTool, CAPTIONS, SEASON_CAPTIONS, SKIN_CAPTIONS, CRITTERS, critterFor, captionFor, captionPixels, captionWidth, elapsed, encode, frame, listOrder, moodOf,
+  dailySkin, heightOf, SKINS, describeTool, CAPTIONS, SEASON_CAPTIONS, SKIN_CAPTIONS, CRITTERS, critterFor, captionFor, captionPixels, captionWidth, elapsed, encode, frame, listOrder, moodOf,
   remotePx, seasonFor, size, svgOf, tinyFrame, tintFor,
 } from './register'
 
@@ -592,4 +592,56 @@ test('R2-D2\'s agents are droids, and the forest skins keep their critters', asy
   expect(store.get('skin')).toBe('r2d2')
   const term = await $.ui.mount({ plugin: 'buddy', surface: 'terminal', component: 'Pane', requestId: 'buddy', props: pane(50, 40) })
   expect((await term.find({ type: 'Text', text: 'Plan' }))?.props.color).toBe(`#${CRITTERS.protocol.tint.toString(16)}`)
+})
+
+// A plain summer day, far from any season.
+const SUMMER = new Date(2026, 6, 15, 12).getTime()
+const DAY = 86_400_000
+// What the desktop pane draws for `skin` before any frame has ticked.
+const desktopBody = (skin: (typeof SKINS)[number]) => svgOf(frame('idle', 0, undefined, undefined, skin), 16, heightOf(undefined, skin), remotePx(36, false).body)
+
+test('the daily skin holds all day, changes at midnight and goes through every skin', () => {
+  const day = new Date(2026, 6, 15).getTime()
+  expect(dailySkin(day + 1)).toBe(dailySkin(day + DAY - 1))
+  expect(dailySkin(day + DAY)).not.toBe(dailySkin(day))
+  const seen = new Set(Array.from({ length: SKINS.length }, (_, i) => dailySkin(day + i * DAY + 12 * 3_600_000)))
+  expect(seen.size).toBe(SKINS.length)
+})
+
+test('/buddy rotate daily wears the day\'s skin; picking one by hand stops it', async ($, on) => {
+  mock.clock(on, { now: SUMMER })
+  const store = new Map<string, unknown>()
+  on('store.set', ($, e) => (store.set(e.key, e.value), { value: undefined }))
+  on('ui.panes', () => ({ value: [{ id: 'buddy' }] as never }))
+  const body = async () => {
+    const view = await $.ui.mount({ plugin: 'buddy', surface: 'desktop', component: 'Pane', requestId: 'buddy', props: pane(36, 40) })
+    const source = ((await view.find({ type: 'Svg' }))?.props as { source: string }).source
+    await view.unmount()
+    return source
+  }
+  const today = dailySkin(SUMMER)
+  expect((await $.command.run({ command: 'buddy', args: 'rotate' })).text).toBe(`Buddy wears a different skin every day. Today: ${today}.`)
+  expect(store.get('rotate')).toBe('daily')
+  expect(await body()).toBe(desktopBody(today))
+
+  const other = SKINS.find(s => s !== today)!
+  await $.command.run({ command: 'buddy', args: other })
+  expect(store.get('rotate')).toBe('off')
+  expect(await body()).toBe(desktopBody(other))
+
+  expect((await $.command.run({ command: 'buddy', args: 'rotate session' })).text).toMatch(/^Buddy wears a different skin every session\. This one: \w+\.$/)
+  expect(store.get('rotate')).toBe('session')
+  expect((await $.command.run({ command: 'buddy', args: 'rotate off' })).text).toBe(`Buddy stops rotating and keeps ${other}.`)
+  expect((await $.command.run({ command: 'buddy', args: 'rotate weekly' })).text).toBe('Buddy can rotate daily, session, off.')
+})
+
+test('a daily rotation picked in an earlier session comes back', async ($, on) => {
+  mock.clock(on, { now: SUMMER })
+  mock.store(on, { rotate: 'daily', skin: 'classic' })
+  on('command.register', () => ({ value: undefined }))
+  on('ui.panes', () => ({ value: [{ id: 'buddy' }] as never }))
+  on('session.start', ($, e) => ({ cwd: e.cwd }))
+  await $.session.start({ cwd: '/tmp', surface: 'desktop', isInteractive: true })
+  const view = await $.ui.mount({ plugin: 'buddy', surface: 'desktop', component: 'Pane', requestId: 'buddy', props: pane(36, 40) })
+  expect(((await view.find({ type: 'Svg' }))?.props as { source: string }).source).toBe(desktopBody(dailySkin(SUMMER)))
 })
