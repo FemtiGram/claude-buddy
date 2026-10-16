@@ -14,6 +14,7 @@ Where buddy is and what comes next. Written 2026-10-10 to pick work up in a fres
 | 6 | Skins, mask: a forest girl with hair, a carved cream mask (red stripe, eyeholes), fur cape and tunic; the mask goes up to show her face when happy or sad; `WILD!`; forest critters as minis; `/buddy mask` | committed `b7644f1` |
 | 7 | Mask skin redrawn: a round red mask with two horns, two yellow-rimmed eyeholes side by side and white stripes, over a white fur cape; her pupils show her mood | committed `9e825be` |
 | 8 | Desktop, VS Code and mobile: the pane draws buddy, his caption and the agent list as SVG (`svgOf`), redrawn whole every other frame when a sprite changed; buddy grows to fit the pane (`remotePx`) | committed `d48ec5c` |
+| 9 | Skins, R2-D2: silver dome, sliding lens, flashing light, `BEEP!`; droids as minis; each skin now has its own creature universe (`UNIVERSE`, `critterFor(type, skin)`) | committed (this commit) |
 
 A test run with three Explore agents showed the agent list working live. `/buddy halloween` and `/buddy normal` were tried in a real session and worked. The desktop drawing was tried in the desktop app and works. Christmas and the forest and mask skins have not been looked at in a real pane yet.
 
@@ -52,6 +53,9 @@ A test run with three Explore agents showed the agent list working live. `/buddy
 - **Auto mode blocks file edits here:** Edit calls fail with "classifier gave no verdict". An `Edit(hooks/**)` allow rule in `.claude/settings.local.json` didn't help (perhaps until a restart). Accept-edits mode, or leaving auto mode, works. Something to try: start with `CLAUDE_CODE_AUTO_MODE_SERVER=0`.
 
 ## Next iterations
+
+Skin ideas, researched and ranked, are in `SKIN-IDEAS.md`.
+
 
 1. **Look at buddy in the desktop app, and at Christmas and the forest and mask skins in a real pane.** On the desktop: how smooth the redraw feels, and that it doesn't slow the app. The girl: the white fur and stripes on a light background, the dark red mask on a dark one. The spirit: the white eyes and cream belly on a light background, the grey on a dark one; the mushroom's cream stem and the owl's brown on both. Check the white brim, pom-pom and pale snow on light and dark backgrounds, and that the red hat stands out from buddy's orange.
 2. **Easter:** Good Friday to Easter Monday, computed each year (anonymous Gregorian algorithm). In 2027 Easter Sunday is March 28. Ideas: bunny ears, a bobbing egg, `HOPPY!`.

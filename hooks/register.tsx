@@ -62,6 +62,13 @@ const STRIPE = 0xf4f4f4
 const PELT = 0xece6d6
 const SKIN = 0xf0c8a0
 const SHOE = 0x5a3d2b
+// The R2-D2 skin: a silver dome with blue panels over a white body.
+const DOME = 0xb8c2cc
+const DROID_BLUE = 0x2f5fa8
+const DROID_WHITE = 0xe8ecf0
+const DROID_RED = 0xd64541
+const DROID_FOOT = 0x7a828c
+const DROID_LIGHT = 0x6fb6ff
 
 type Mood = 'idle' | 'think' | 'run' | 'happy' | 'sad'
 
@@ -86,8 +93,8 @@ export function seasonFor(ms: number): Season | undefined {
 }
 
 // Skins change who buddy is, all year round; `/buddy forest` picks one and it's remembered.
-export type Skin = 'classic' | 'forest' | 'mask'
-export const SKINS: Skin[] = ['classic', 'forest', 'mask']
+export type Skin = 'classic' | 'forest' | 'mask' | 'r2d2'
+export const SKINS: Skin[] = ['classic', 'forest', 'mask', 'r2d2']
 
 export const heightOf = (season?: Season, skin?: Skin) => (season || (skin && skin !== 'classic') ? H_TALL : H)
 
@@ -99,6 +106,7 @@ export const SKIN_CAPTIONS: Record<Skin, Partial<Record<Mood, string>>> = {
   classic: {},
   forest: { happy: 'WHEEE!' },
   mask: { happy: 'WILD!' },
+  r2d2: { idle: 'BOOP', happy: 'BEEP!' },
 }
 export const captionFor = (mood: Mood, season?: Season, skin: Skin = 'classic') =>
   (season && SEASON_CAPTIONS[season][mood]) || SKIN_CAPTIONS[skin][mood] || CAPTION[mood]
@@ -384,6 +392,49 @@ function maskBody(set: Draw, mood: Mood, tick: number, ox: number, oy: number) {
   }
 }
 
+// The R2-D2 skin, 10 wide: a silver dome 'S' with a blue panel, the lens row
+// (drawn per mood), the blue band 'B', a white body 'W' with blue panels, two
+// legs and three feet 'F'. `oy` is the top of the dome.
+const R2_ROWS = [
+  '...SSSS...',
+  '..SSBBSS..',
+  '.SSSSSSSS.',
+  '.BBBBBBBB.',
+  'B.WWBBWW.B',
+  'W.WBWWBW.W',
+  'W.WWWWWW.W',
+  'W.WBBBBW.W',
+  'W..WWWW..W',
+]
+const R2_COLORS: Record<string, number> = { S: DOME, B: DROID_BLUE, W: DROID_WHITE }
+
+function r2Body(set: Draw, mood: Mood, tick: number, ox: number, oy: number) {
+  R2_ROWS.forEach((row, y) => {
+    for (let x = 0; x < row.length; x++) if (row[x] !== '.') set(ox + x, oy + y, R2_COLORS[row[x]!]!)
+  })
+  // Two side feet, and the middle one that rolls while he works.
+  for (const fx of [0, 1, 8, 9]) set(ox + fx, oy + 9, DROID_FOOT)
+  const roll = mood === 'run' && tick % 4 < 2 ? 1 : 0
+  set(ox + 4 + roll, oy + 9, DROID_FOOT)
+  set(ox + 5 - roll * 2, oy + 9, DROID_FOOT)
+
+  // The dome turns to look about: his black lens and red light slide around it.
+  // Thinking, it swings side to side; sad, he looks down to the left; happy,
+  // the light flashes red and blue.
+  const look = mood === 'think' ? ([0, 1, 0, -1][Math.floor(tick / 10) % 4] ?? 0) : mood === 'sad' ? -1 : 0
+  const lens = ox + 3 + look
+  set(lens, oy + 2, EYE)
+  set(lens + 1, oy + 2, EYE)
+  const blink = mood === 'idle' && tick % 48 >= 46
+  const light = mood === 'happy' ? (tick % 6 < 3 ? DROID_RED : DROID_LIGHT) : blink || mood === 'sad' ? DOME : DROID_RED
+  set(lens + 4, oy + 2, light)
+
+  if (mood === 'sad') {
+    // A tear drips beside him.
+    set(ox, oy + 2 + Math.min((tick % 16) >> 3, 1), TEAR)
+  }
+}
+
 export function frame(mood: Mood, tick: number, body = BODY, season?: Season, skin: Skin = 'classic'): number[] {
   const forest = skin === 'forest'
   const classic = skin === 'classic'
@@ -405,7 +456,8 @@ export function frame(mood: Mood, tick: number, body = BODY, season?: Season, sk
   if (mood === 'happy') dy = -Math.round(Math.abs(Math.sin(tick / 3)) * 3)
   if (mood === 'sad') dy = 1
 
-  const ox = 3
+  // R2-D2 is wide at the feet: in a season he steps left of the props.
+  const ox = skin === 'r2d2' && season ? 1 : 3
   // The spirit and the girl are taller: ears or a raised mask reach the top at the
   // height of a jump, feet the bottom when sad.
   const oy = (classic ? 5 + top : 6) + dy
@@ -427,6 +479,7 @@ export function frame(mood: Mood, tick: number, body = BODY, season?: Season, sk
 
   if (forest) spiritBody(set, mood, tick, ox, oy, BODY, SHADE)
   else if (skin === 'mask') maskBody(set, mood, tick, ox, oy)
+  else if (skin === 'r2d2') r2Body(set, mood, tick, ox, oy)
   else classicBody(set, mood, tick, ox, oy, BODY, SHADE)
 
   // Sparkles when happy, thought dots when thinking, clear of arms and ears.
@@ -483,11 +536,16 @@ export function frame(mood: Mood, tick: number, body = BODY, season?: Season, sk
   return px
 }
 
-// In the forest every agent type is a creature of its own, told apart by
-// shape: 4 rows over a pair of feet, '#' its colour, '-' that colour shaded,
-// other letters from `colors`; `eye` is the row its eyes sit on.
-export type Critter = 'spirit' | 'sprout' | 'owl' | 'acorn' | 'mushroom'
-export const CRITTERS: Record<Critter, { rows: string[]; eye: number; colors: Record<string, number>; tint: number }> = {
+// Outside the classic skin every agent type is a creature of its own, told
+// apart by shape: 4 rows over a pair of feet, '#' its colour, '-' that colour
+// shaded, other letters from `colors`; `eye` is the row its eyes sit on, `eyes`
+// their columns (2 and 5 unless said), `eyeColor` theirs (dark unless said),
+// `feet: false` for one that rolls or floats, `arms: false` for one with none.
+export type Critter =
+  | 'spirit' | 'sprout' | 'owl' | 'acorn' | 'mushroom'
+  | 'probe' | 'protocol' | 'mouse' | 'ball' | 'astromech'
+type CritterLook = { rows: string[]; eye: number; eyes?: number[]; eyeColor?: number; feet?: boolean; arms?: boolean; colors: Record<string, number>; tint: number }
+export const CRITTERS: Record<Critter, CritterLook> = {
   // The big spirit's little cousin: ears and a belly.
   spirit: { rows: ['.#.##.#.', '.######.', '.##==##.', '.------.'], eye: 1, colors: { '#': 0x7f9fc0, '=': BELLY }, tint: 0x7f9fc0 },
   // A moss blob with a sprout on top, out looking around.
@@ -498,12 +556,26 @@ export const CRITTERS: Record<Critter, { rows: string[]; eye: number; colors: Re
   acorn: { rows: ['cccccccc', '.######.', '.######.', '..----..'], eye: 1, colors: { '#': 0xc8954f, c: 0x7a5230 }, tint: 0xc8954f },
   // Anyone else: a spotted mushroom, its face on the stem.
   mushroom: { rows: ['.rrwrrr.', 'rwrrrrwr', '.######.', '..----..'], eye: 2, colors: { '#': 0xefe3c8, r: 0xd04a3a, w: TRIM }, tint: 0xd65a4a },
+
+  // R2-D2's galaxy. A probe droid with antennae and red eyes, out searching.
+  probe: { rows: ['..#..#..', '.######.', '.######.', '..####..'], eye: 1, eyeColor: DROID_RED, colors: { '#': 0x5b616b }, tint: 0x8a919b },
+  // A gold protocol droid, fluent in planning.
+  protocol: { rows: ['..####..', '..####..', '.######.', '.######.'], eye: 1, eyeColor: 0xfff1a8, colors: { '#': 0xd9a93b }, tint: 0xd9a93b },
+  // A mouse droid, a little black box on wheels: the copy that scurries off.
+  mouse: { rows: ['........', '.######.', '.##-###.', '.------.'], eye: 1, eyes: [6], eyeColor: DROID_RED, arms: false, colors: { '#': 0x6b7078 }, tint: 0x8a919b },
+  // A rolling ball droid, a small head on an orange-ringed body.
+  ball: { rows: ['...##...', '.######.', '.#o##o#.', '..####..'], eye: 0, eyes: [4], feet: false, arms: false, colors: { '#': DROID_WHITE, o: 0xe8822a }, tint: 0xe8822a },
+  // Anyone else: a little astromech, silver dome and blue panels.
+  astromech: { rows: ['..ssss..', '.##bb##.', '.#b##b#.', '.-####-.'], eye: 0, eyes: [3], colors: { '#': DROID_WHITE, s: DOME, b: DROID_BLUE }, tint: DROID_BLUE },
 }
-const CRITTER_FOR: Record<string, Critter> = { Explore: 'sprout', Plan: 'owl', fork: 'acorn', 'general-purpose': 'spirit' }
-export const critterFor = (type: string) => CRITTER_FOR[type] ?? 'mushroom'
+// Which creature each agent type is, in each skin's universe; `other` for the rest.
+const FOREST: Record<string, Critter> = { Explore: 'sprout', Plan: 'owl', fork: 'acorn', 'general-purpose': 'spirit', other: 'mushroom' }
+const GALAXY: Record<string, Critter> = { Explore: 'probe', Plan: 'protocol', fork: 'mouse', 'general-purpose': 'ball', other: 'astromech' }
+const UNIVERSE: Record<Skin, Record<string, Critter>> = { classic: FOREST, forest: FOREST, mask: FOREST, r2d2: GALAXY }
+export const critterFor = (type: string, skin: Skin = 'forest') => UNIVERSE[skin][type] ?? UNIVERSE[skin].other!
 
 function critterFrame(mood: Mood, tick: number, critter: Critter): number[] {
-  const { rows, eye, colors } = CRITTERS[critter]
+  const { rows, eye, eyes = [2, 5], eyeColor = EYE, feet = true, arms = true, colors } = CRITTERS[critter]
   const main = colors['#']!
   const SHADE = darken(main)
   const px: number[] = new Array(TW * TH).fill(NONE)
@@ -526,31 +598,32 @@ function critterFrame(mood: Mood, tick: number, critter: Critter): number[] {
   const armUp = mood === 'happy' || (mood === 'run' && tick % 4 < 2)
   const armRow = eye + (armUp ? 0 : 1)
   const row = rows[armRow]!
-  set(row.search(/[^.]/) - 1, oy + armRow, main)
-  set(row.length - [...row].reverse().join('').search(/[^.]/), oy + armRow, main)
+  if (arms) {
+    set(row.search(/[^.]/) - 1, oy + armRow, main)
+    set(row.length - [...row].reverse().join('').search(/[^.]/), oy + armRow, main)
+  }
   const step = mood === 'run' && tick % 4 < 2
-  set(step ? 1 : 2, oy + 4, SHADE)
-  set(step ? 6 : 5, oy + 4, SHADE)
+  if (feet) {
+    set(step ? 1 : 2, oy + 4, SHADE)
+    set(step ? 6 : 5, oy + 4, SHADE)
+  }
 
   const e = oy + eye
   const blink = mood === 'idle' && tick % 48 >= 46
   if (mood === 'happy') {
     // Eyes and a smile.
-    set(2, e, EYE)
+    for (const x of eyes) set(x, e, eyeColor)
     set(3, e + 1, EYE)
     set(4, e + 1, EYE)
-    set(5, e, EYE)
   } else if (mood === 'sad') {
-    set(2, e, EYE)
-    set(5, e, EYE)
-    if (tick % 16 < 10) set(2, e + 1, TEAR)
+    for (const x of eyes) set(x, e, eyeColor)
+    if (tick % 16 < 10) set(eyes[0]!, e + 1, TEAR)
   } else if (blink) {
-    set(2, e, SHADE)
-    set(5, e, SHADE)
+    for (const x of eyes) set(x, e, SHADE)
   } else {
+    // Eyes dart while thinking, but never off the face.
     const look = mood === 'think' ? ([0, 1, 0, -1][Math.floor(tick / 10) % 4] ?? 0) : 0
-    set(2 + look, e, EYE)
-    set(5 + look, e, EYE)
+    for (const x of eyes) set((rows[eye]![x + look] ?? '.') === '.' ? x : x + look, e, eyeColor)
   }
   // A sparkle or a thought dot in the corner, unless an ear or a cap is there.
   const free = px[7] === NONE
@@ -779,7 +852,7 @@ export const register: Register = on => {
       caption: captionFor(mood, season, skin),
       body: frame(mood, tick, BODY, season, skin),
       captionPx: captionPixels(captionFor(mood, season, skin), tick, mood === 'think'),
-      mini: (b: Buddy) => tinyFrame(moodOf(b, now), tick + (b.phase ?? 0), b.body, season, skin, critterFor(b.type ?? '')),
+      mini: (b: Buddy) => tinyFrame(moodOf(b, now), tick + (b.phase ?? 0), b.body, season, skin, critterFor(b.type ?? '', skin)),
     }
   }
   // A cheap fingerprint of what a remote pane shows, to tell when to redraw it.
@@ -795,7 +868,7 @@ export const register: Register = on => {
     const activity = mini.activity ?? '▸ starting…'
     return {
       isDone,
-      nameColor: isDone ? undefined : hex(skin !== 'classic' ? CRITTERS[critterFor(mini.type ?? '')].tint : (mini.body ?? BODY)),
+      nameColor: isDone ? undefined : hex(skin !== 'classic' ? CRITTERS[critterFor(mini.type ?? '', skin)].tint : (mini.body ?? BODY)),
       meta: `${mini.tools ? `${mini.tools} tool${mini.tools === 1 ? '' : 's'} · ` : ''}${time}`,
       activity,
       statusColor: activity.startsWith('✓') ? 'success' : activity.startsWith('✗') ? 'error' : undefined,
@@ -803,7 +876,7 @@ export const register: Register = on => {
   }
 
   on('session.start', async ($, e, next) => {
-    await $.command.register({ name: 'buddy', description: 'Show or hide your pixel buddy', argumentHint: '[forest|mask|classic|halloween|christmas|normal|auto]' })
+    await $.command.register({ name: 'buddy', description: 'Show or hide your pixel buddy', argumentHint: '[forest|mask|r2d2|classic|halloween|christmas|normal|auto]' })
     const stored = await $.store.get('skin').catch(() => undefined)
     if ((SKINS as unknown[]).includes(stored)) chosenSkin = stored as Skin
     isShown = (await $.ui.panes()).some(pane => pane.id === PANE)
@@ -846,7 +919,7 @@ export const register: Register = on => {
         }
       }
       for (const [id, mini] of minis) {
-        await paint(mini, miniKey(id), encode(tinyFrame(moodOf(mini, now), tick + (mini.phase ?? 0), mini.body, season, skin, critterFor(mini.type ?? '')), 1, TW, TH))
+        await paint(mini, miniKey(id), encode(tinyFrame(moodOf(mini, now), tick + (mini.phase ?? 0), mini.body, season, skin, critterFor(mini.type ?? '', skin)), 1, TW, TH))
       }
     })
 
@@ -887,7 +960,7 @@ export const register: Register = on => {
       if (!(await $.ui.panes()).some(pane => pane.id === PANE)) {
         await $.ui.open({ id: PANE, title: 'Buddy', rows: 18, columns: PANE_COLUMNS })
       }
-      const said: Record<Skin, string> = { classic: 'Buddy is himself again.', forest: 'Buddy turns into a forest spirit!', mask: 'Buddy puts on the mask!' }
+      const said: Record<Skin, string> = { classic: 'Buddy is himself again.', forest: 'Buddy turns into a forest spirit!', mask: 'Buddy puts on the mask!', r2d2: 'Buddy rolls out as R2-D2!' }
       return { text: said[chosenSkin] }
     }
     if (arg) {
@@ -1086,7 +1159,7 @@ export const register: Register = on => {
           </Box>
         )}
         {shown.map(([id, mini]) => {
-          mini.last = encode(tinyFrame(moodOf(mini, now), tick + (mini.phase ?? 0), mini.body, season, skin, critterFor(mini.type ?? '')), 1, TW, TH)
+          mini.last = encode(tinyFrame(moodOf(mini, now), tick + (mini.phase ?? 0), mini.body, season, skin, critterFor(mini.type ?? '', skin)), 1, TW, TH)
           const { isDone, nameColor, meta, activity, statusColor } = rowOf(mini, now)
           return (
             <Box flexDirection="row" gap={1} marginTop={1}>

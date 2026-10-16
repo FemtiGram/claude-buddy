@@ -537,3 +537,59 @@ test('on the desktop buddy grows to fit the pane, up to a limit', async ($, on) 
   expect(remotePx(400, false).mini).toBe(8)
   expect(remotePx(400, true).body).toBe(12)
 })
+
+test('R2-D2 is 16×16, never clipped, and steps aside for the season\'s props', () => {
+  const DOME = 0xb8c2cc
+  const BLUE = 0x2f5fa8
+  const WHITE = 0xe8ecf0
+  const FOOT = 0x7a828c
+  const RED = 0xd64541
+  const LIGHT = 0x6fb6ff
+  const HAT = 0x6a3d9a
+  const SANTA = 0xd63a3a
+  const count = (px: number[], ...cs: number[]) => px.filter(p => cs.includes(p)).length
+  expect(size(2, undefined, 'r2d2')).toEqual({ columns: 32, rows: 16 })
+  for (const mood of MOODS) {
+    const plain = frame(mood, 0, undefined, undefined, 'r2d2')
+    for (let tick = 0; tick < 96; tick++) {
+      const px = frame(mood, tick, undefined, undefined, 'r2d2')
+      expect(px).toHaveLength(256)
+      // his light blinks and changes colour over the dome, so they count together
+      expect(count(px, DOME, RED, LIGHT)).toBe(count(plain, DOME, RED, LIGHT))
+      for (const c of [BLUE, WHITE]) expect(count(px, c)).toBe(count(plain, c))
+      expect(count(px, FOOT)).toBe(6)
+      for (const season of ['halloween', 'christmas'] as const) {
+        const dressed = frame(mood, tick, undefined, season, 'r2d2')
+        expect(dressed.some(c => c === HAT || c === SANTA)).toBe(false)
+        for (const c of [BLUE, WHITE, FOOT]) expect(count(dressed, c)).toBe(count(px, c))
+      }
+    }
+  }
+  // thinking, his dome turns: the lens moves
+  expect(frame('think', 0, undefined, undefined, 'r2d2')).not.toEqual(frame('think', 10, undefined, undefined, 'r2d2'))
+  expect(captionFor('happy', undefined, 'r2d2')).toBe('BEEP!')
+  expect(captionFor('idle', undefined, 'r2d2')).toBe('BOOP')
+})
+
+test('R2-D2\'s agents are droids, and the forest skins keep their critters', async ($, on) => {
+  expect(critterFor('Explore', 'r2d2')).toBe('probe')
+  expect(critterFor('Plan', 'r2d2')).toBe('protocol')
+  expect(critterFor('fork', 'r2d2')).toBe('mouse')
+  expect(critterFor('general-purpose', 'r2d2')).toBe('ball')
+  expect(critterFor('something-new', 'r2d2')).toBe('astromech')
+  expect(critterFor('Explore', 'mask')).toBe('sprout')
+  mock.clock(on)
+  const store = new Map<string, unknown>()
+  on('store.set', ($, e) => (store.set(e.key, e.value), { value: undefined }))
+  on('ui.panes', () => ({ value: [] }))
+  on('ui.open', () => ({ value: { isPlaced: true } as never }))
+  on('agent.spawn', () => ({ model: 'test', agentId: 'agent-1' }))
+  await $.agent.spawn({
+    tool_use_id: 'toolu_1', prompt: 'x', description: 'Plan the route', subagentType: 'Plan',
+    provider: { plugin: 'engine', tier: 'core' }, parentModel: 'test', background: true, fork: false,
+  })
+  expect((await $.command.run({ command: 'buddy', args: 'R2D2' })).text).toBe('Buddy rolls out as R2-D2!')
+  expect(store.get('skin')).toBe('r2d2')
+  const term = await $.ui.mount({ plugin: 'buddy', surface: 'terminal', component: 'Pane', requestId: 'buddy', props: pane(50, 40) })
+  expect((await term.find({ type: 'Text', text: 'Plan' }))?.props.color).toBe(`#${CRITTERS.protocol.tint.toString(16)}`)
+})
