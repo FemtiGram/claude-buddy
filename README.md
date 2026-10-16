@@ -37,6 +37,7 @@ Answer `y` to add the marketplace and pick the **user** scope to have buddy in e
 - `/buddy` toggles it (opens it at any width).
 - `/buddy halloween` or `/buddy christmas` tries a costume on now, `/buddy normal` takes it off, `/buddy auto` follows the calendar again.
 - `/buddy forest` turns buddy into a grey forest spirit with ears and a belly, and his agents into forest critters: a sprout for Explore, an owl for Plan, an acorn for forks, a little spirit for general-purpose, a mushroom for anyone else. `/buddy classic` turns them back. The skin is remembered across sessions, and seasons still bring their props, just no hat over the ears.
+- `/buddy mask` turns buddy into a forest girl in a carved mask and a fur cape. She pushes the mask up to show her face when she's happy or sad, says `WILD!` when done, and her agents are the same forest critters.
 - Terminal only for now; the desktop and VS Code surfaces show a one-line text status.
 
 ## Develop

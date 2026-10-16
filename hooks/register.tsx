@@ -39,6 +39,14 @@ const GIFT = 0x3f9b4f
 // The forest skin: a grey-blue spirit with a cream belly.
 const FUR = 0x8b9099
 const BELLY = 0xeee4c8
+// The mask skin: a forest girl in a carved mask and a fur cape.
+const HAIR = 0x5b4339
+const MASK = 0xe8dcc0
+const PAINT = 0xc0392b
+const SKIN = 0xf0c8a0
+const CAPE = 0xa77b4f
+const TUNIC = 0x4a6b4a
+const SHOE = 0x5a3d2b
 
 type Mood = 'idle' | 'think' | 'run' | 'happy' | 'sad'
 
@@ -63,10 +71,10 @@ export function seasonFor(ms: number): Season | undefined {
 }
 
 // Skins change who buddy is, all year round; `/buddy forest` picks one and it's remembered.
-export type Skin = 'classic' | 'forest'
-export const SKINS: Skin[] = ['classic', 'forest']
+export type Skin = 'classic' | 'forest' | 'mask'
+export const SKINS: Skin[] = ['classic', 'forest', 'mask']
 
-export const heightOf = (season?: Season, skin?: Skin) => (season || skin === 'forest' ? H_TALL : H)
+export const heightOf = (season?: Season, skin?: Skin) => (season || (skin && skin !== 'classic') ? H_TALL : H)
 
 export const SEASON_CAPTIONS: Record<Season, Partial<Record<Mood, string>>> = {
   halloween: { idle: 'SPOOKY', happy: 'BOO!' },
@@ -75,6 +83,7 @@ export const SEASON_CAPTIONS: Record<Season, Partial<Record<Mood, string>>> = {
 export const SKIN_CAPTIONS: Record<Skin, Partial<Record<Mood, string>>> = {
   classic: {},
   forest: { happy: 'WHEEE!' },
+  mask: { happy: 'WILD!' },
 }
 export const captionFor = (mood: Mood, season?: Season, skin: Skin = 'classic') =>
   (season && SEASON_CAPTIONS[season][mood]) || SKIN_CAPTIONS[skin][mood] || CAPTION[mood]
@@ -304,8 +313,74 @@ function spiritBody(set: Draw, mood: Mood, tick: number, ox: number, oy: number,
   }
 }
 
+// The mask skin, 10 wide: hair framing a carved mask ('M', a red 'R' stripe,
+// 'X' eyeholes), a fur cape 'F' over a tunic 'T'. `oy` is the top of her hair.
+const MASK_ROWS = [
+  '..HHHHHH..',
+  '.HHHHHHHH.',
+  '.HMMRRMMH.',
+  '.HMXMMXMH.',
+  '.HMMMMMMH.',
+  '.HHMMMMHH.',
+  'FFFFFFFFFF',
+  '.FTTTTTTF.',
+  '..TTTTTT..',
+]
+// Happy or sad, she pushes the mask up onto her head and shows her face.
+const FACE_ROWS = ['.HSSSSSSH.', '.HSSSSSSH.', '.HSSSSSSH.', '.HHSSSSHH.']
+const MASK_UP = '..MXRRXM..'
+const MASK_COLORS: Record<string, number> = { H: HAIR, M: MASK, R: PAINT, X: EYE, S: SKIN, F: CAPE, T: TUNIC }
+
+function maskBody(set: Draw, mood: Mood, tick: number, ox: number, oy: number) {
+  const unmasked = mood === 'happy' || mood === 'sad'
+  const rows = unmasked ? [...MASK_ROWS.slice(0, 2), ...FACE_ROWS, ...MASK_ROWS.slice(6)] : MASK_ROWS
+  const draw = (row: string, y: number) => {
+    for (let x = 0; x < row.length; x++) if (row[x] !== '.') set(ox + x, y, MASK_COLORS[row[x]!]!)
+  }
+  rows.forEach((row, y) => draw(row, oy + y))
+  if (unmasked) draw(MASK_UP, oy - 1)
+
+  // Hands out from under the cape, up when happy or running.
+  const armUp = mood === 'happy' || (mood === 'run' && tick % 4 < 2)
+  set(ox - 1, oy + (armUp ? 5 : 6), SKIN)
+  set(ox + 10, oy + (armUp ? 5 : 6), SKIN)
+  if (mood === 'happy') {
+    set(ox - 2, oy + 4, SKIN)
+    set(ox + 11, oy + 4, SKIN)
+  }
+
+  // Boots that stride while running.
+  const feet = mood === 'run' ? (tick % 4 < 2 ? [1, 2, 7, 8] : [2, 3, 6, 7]) : [2, 3, 6, 7]
+  for (const fx of feet) set(ox + fx, oy + 9, SHOE)
+
+  if (mood === 'happy') {
+    // ^ ^ and a smile.
+    for (const ex of [ox + 2, ox + 5]) {
+      set(ex, oy + 3, EYE)
+      set(ex + 1, oy + 2, EYE)
+      set(ex + 2, oy + 3, EYE)
+    }
+    set(ox + 4, oy + 5, EYE)
+    set(ox + 5, oy + 5, EYE)
+  } else if (mood === 'sad') {
+    // Worried brows and a tear down the cheek.
+    set(ox + 3, oy + 3, EYE)
+    set(ox + 6, oy + 3, EYE)
+    set(ox + 2, oy + 2, EYE)
+    set(ox + 7, oy + 2, EYE)
+    set(ox + 3, oy + 4 + Math.min((tick % 16) >> 3, 1), TEAR)
+  } else {
+    // Behind the mask her eyes catch the light now and then, and dart while thinking.
+    const look = mood === 'think' ? ([0, 1, 0, -1][Math.floor(tick / 10) % 4] ?? 0) : 0
+    const glint = mood === 'idle' && tick % 48 >= 46
+    if (glint || look < 0) set(ox + 3, oy + 3, SPARK)
+    if (glint || look > 0) set(ox + 6, oy + 3, SPARK)
+  }
+}
+
 export function frame(mood: Mood, tick: number, body = BODY, season?: Season, skin: Skin = 'classic'): number[] {
   const forest = skin === 'forest'
+  const classic = skin === 'classic'
   const BODY = forest ? FUR : body
   const SHADE = darken(BODY)
   const h = heightOf(season, skin)
@@ -325,8 +400,9 @@ export function frame(mood: Mood, tick: number, body = BODY, season?: Season, sk
   if (mood === 'sad') dy = 1
 
   const ox = 3
-  // The spirit is taller: his ears reach row 1 at the top of a jump, his feet row 16 when sad.
-  const oy = (forest ? 6 : 5 + top) + dy
+  // The spirit and the girl are taller: ears or a raised mask reach the top at the
+  // height of a jump, feet the bottom when sad.
+  const oy = (classic ? 5 + top : 6) + dy
 
   // Snow falls and the bat flits behind buddy.
   if (season === 'christmas') {
@@ -344,6 +420,7 @@ export function frame(mood: Mood, tick: number, body = BODY, season?: Season, sk
   }
 
   if (forest) spiritBody(set, mood, tick, ox, oy, BODY, SHADE)
+  else if (skin === 'mask') maskBody(set, mood, tick, ox, oy)
   else classicBody(set, mood, tick, ox, oy, BODY, SHADE)
 
   // Sparkles when happy, thought dots when thinking, clear of arms and ears.
@@ -358,8 +435,8 @@ export function frame(mood: Mood, tick: number, body = BODY, season?: Season, sk
     for (let i = 0; i < n; i++) set(11 + i * 2, forest ? 1 : 1 + top, SHADE)
   }
 
-  // The spirit's ears leave no room for a hat; he still gets the props.
-  if (season === 'halloween' && !forest) {
+  // Ears or a mask leave no room for a hat; the other skins still get the props.
+  if (season === 'halloween' && classic) {
     // A witch hat in the headroom, bent at the tip, with a green band.
     for (let x = ox + 1; x <= ox + 8; x++) set(x, oy - 1, HAT)
     for (let x = ox + 3; x <= ox + 6; x++) set(x, oy - 2, BAND)
@@ -378,7 +455,7 @@ export function frame(mood: Mood, tick: number, body = BODY, season?: Season, sk
     set(13, 16, glow)
   }
 
-  if (season === 'christmas' && !forest) {
+  if (season === 'christmas' && classic) {
     // A Santa hat: white brim, red cone, its pom-pom flopped to the side.
     for (let x = ox + 1; x <= ox + 8; x++) set(x, oy - 1, TRIM)
     for (let x = ox + 2; x <= ox + 7; x++) set(x, oy - 2, SANTA)
@@ -479,7 +556,7 @@ function critterFrame(mood: Mood, tick: number, critter: Critter): number[] {
 // The mini, 8×6 pixels: a body with two eyes, arms and legs, enough room for
 // a bob, a blink, happy ^^ eyes and a tear. In the forest it's a critter.
 export function tinyFrame(mood: Mood, tick: number, body = BODY, season?: Season, skin: Skin = 'classic', critter: Critter = 'spirit'): number[] {
-  if (skin === 'forest') return critterFrame(mood, tick, critter)
+  if (skin !== 'classic') return critterFrame(mood, tick, critter)
   const SHADE = darken(body)
   const px: number[] = new Array(TW * TH).fill(NONE)
   const set = (x: number, y: number, c: number) => {
@@ -669,7 +746,7 @@ export const register: Register = on => {
   }
 
   on('session.start', async ($, e, next) => {
-    await $.command.register({ name: 'buddy', description: 'Show or hide your pixel buddy', argumentHint: '[forest|classic|halloween|christmas|normal|auto]' })
+    await $.command.register({ name: 'buddy', description: 'Show or hide your pixel buddy', argumentHint: '[forest|mask|classic|halloween|christmas|normal|auto]' })
     const stored = await $.store.get('skin').catch(() => undefined)
     if ((SKINS as unknown[]).includes(stored)) chosenSkin = stored as Skin
     isShown = (await $.ui.panes()).some(pane => pane.id === PANE)
@@ -749,7 +826,8 @@ export const register: Register = on => {
       if (!(await $.ui.panes()).some(pane => pane.id === PANE)) {
         await $.ui.open({ id: PANE, title: 'Buddy', rows: 18, columns: PANE_COLUMNS })
       }
-      return { text: chosenSkin === 'forest' ? 'Buddy turns into a forest spirit!' : 'Buddy is himself again.' }
+      const said: Record<Skin, string> = { classic: 'Buddy is himself again.', forest: 'Buddy turns into a forest spirit!', mask: 'Buddy puts on the mask!' }
+      return { text: said[chosenSkin] }
     }
     if (arg) {
       if (arg === 'auto') preview = undefined
@@ -926,7 +1004,7 @@ export const register: Register = on => {
               </Box>
               <Box flexDirection="column" width={textColumns}>
                 <Box flexDirection="row" justifyContent="space-between">
-                  <Text bold color={isDone ? undefined : hex(skin === 'forest' ? CRITTERS[critterFor(mini.type ?? '')].tint : (mini.body ?? BODY))} dimColor={isDone} wrap="truncate">
+                  <Text bold color={isDone ? undefined : hex(skin !== 'classic' ? CRITTERS[critterFor(mini.type ?? '')].tint : (mini.body ?? BODY))} dimColor={isDone} wrap="truncate">
                     {mini.name ?? 'agent'}
                   </Text>
                   <Text dimColor>{meta}</Text>

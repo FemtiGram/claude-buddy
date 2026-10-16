@@ -399,3 +399,51 @@ test('in the forest an agent\'s name takes its critter\'s colour', async ($, on)
   const term = await $.ui.mount({ plugin: 'buddy', surface: 'terminal', component: 'Pane', requestId: 'buddy', props: pane(50, 40) })
   expect((await term.find({ type: 'Text', text: 'Plan' }))?.props.color).toBe(`#${CRITTERS.owl.tint.toString(16)}`)
 })
+
+test('the masked girl is 16×16 and never clips her hair, her mask or her boots', () => {
+  const HAIR = 0x5b4339
+  const MASK = 0xe8dcc0
+  const SHOE = 0x5a3d2b
+  const SKIN = 0xf0c8a0
+  const HAT = 0x6a3d9a
+  const SANTA = 0xd63a3a
+  expect(size(2, undefined, 'mask')).toEqual({ columns: 32, rows: 16 })
+  for (const mood of MOODS) {
+    const plain = frame(mood, 0, undefined, undefined, 'mask')
+    const count = (px: number[], c: number) => px.filter(p => p === c).length
+    for (let tick = 0; tick < 96; tick++) {
+      const px = frame(mood, tick, undefined, undefined, 'mask')
+      expect(px).toHaveLength(256)
+      for (const c of [HAIR, MASK, SHOE]) expect(count(px, c)).toBe(count(plain, c))
+      expect(count(px, SHOE)).toBe(4)
+      expect(px.some(c => c === 0xd97757)).toBe(false)
+      // the mask comes off when she's happy or sad: her face shows, not just her hands
+      if (mood === 'happy' || mood === 'sad') expect(count(px, SKIN)).toBeGreaterThan(10)
+      else expect(count(px, SKIN)).toBeLessThanOrEqual(4)
+      // seasons bring props but no hat, and never cover her
+      const spooky = frame(mood, tick, undefined, 'halloween', 'mask')
+      const merry = frame(mood, tick, undefined, 'christmas', 'mask')
+      expect(spooky.some(c => c === HAT)).toBe(false)
+      expect(merry.some(c => c === SANTA)).toBe(false)
+      for (const c of [HAIR, MASK]) {
+        expect(count(spooky, c)).toBe(count(px, c))
+        expect(count(merry, c)).toBe(count(px, c))
+      }
+    }
+  }
+  expect(captionFor('happy', undefined, 'mask')).toBe('WILD!')
+  // her agents are forest critters too
+  expect(tinyFrame('idle', 0, 0xe8a87c, undefined, 'mask', 'owl')).toEqual(tinyFrame('idle', 0, 0xe8a87c, undefined, 'forest', 'owl'))
+})
+
+test('/buddy mask puts the mask on, and it is remembered', async ($, on) => {
+  mock.clock(on)
+  const store = new Map<string, unknown>()
+  on('store.set', ($, e) => (store.set(e.key, e.value), { value: undefined }))
+  on('ui.panes', () => ({ value: [] }))
+  on('ui.open', () => ({ value: { isPlaced: true } as never }))
+  expect((await $.command.run({ command: 'buddy', args: 'mask' })).text).toBe('Buddy puts on the mask!')
+  expect(store.get('skin')).toBe('mask')
+  const term = await $.ui.mount({ plugin: 'buddy', surface: 'terminal', component: 'Pane', requestId: 'buddy', props: pane(36, 40) })
+  expect((await term.find({ type: 'Raster', key: 'sprite' }))?.props.rows).toBe(16)
+})
