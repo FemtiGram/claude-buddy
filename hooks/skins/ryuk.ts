@@ -1,11 +1,11 @@
 import type { SkinLook } from './types'
 
-const HAIR = 0x3a3a48
-const WING = 0x4a4a5e
-const FACE = 0xc8c8d2
-const LEATHER = 0x40404e
-const CHAIN = 0xb0b8c4
-const TEETH = 0xe8e8ee
+const DARK = 0x4a4a60
+const RIM = 0x8484a4
+const FACE_HI = 0xb4b4c6
+const FACE = 0x8e8ea8
+const CHAIN = 0xd0d6e0
+const TEETH = 0xf0f0f6
 
 // Ryuk: gangly shinigami, spiky dark hair, dark wings, pale face with a huge
 // toothy grin and round yellow-red eyes, leather and chains.
@@ -13,24 +13,25 @@ export const look: SkinLook = {
   said: 'Buddy turns into Ryuk. Got any apples?',
   group: 'Anime',
   rows: [
-    'w..h..h..w',
-    'wwhhhhhhww',
-    '.whhhhhhw.',
-    '.wggggggw.',
-    '.wgrggrgw.',
-    '..mmmmmm..',
+    'H..H..h..h',
+    'hhHhhhhhhh',
+    '.hhhhhhhh.',
+    '.hGgggggh.',
+    '.hGrggrgh.',
+    '..hhhhhh..',
     '..tttttt..',
-    '.kkkkkkkk.',
-    '.kcccccck.',
-    '..kk..kk..',
+    '..gggggg..',
+    '.HhhhhhhH.',
+    '.hccccchh.',
+    '..hh..hh..',
   ],
-  colors: { w: WING, h: HAIR, g: FACE, r: 0xd04848, m: HAIR, t: TEETH, k: LEATHER, c: CHAIN },
+  colors: { h: DARK, H: RIM, G: FACE_HI, g: FACE, r: 0xd04848, t: TEETH, c: CHAIN },
   eyes: [[3, 3], [6, 3]],
   eyeColor: 0xf2c040,
   smile: [[3, 6], [4, 6], [5, 6], [6, 6]],
   tear: [2, 4],
-  arms: { color: FACE, down: [[0, 8], [9, 8]], up: [[0, 6], [9, 6]] },
-  feet: { color: LEATHER, at: [3, 6] },
+  arms: { color: FACE_HI, down: [[0, 9], [9, 9]], up: [[0, 7], [9, 7]] },
+  feet: { color: DARK, at: [3, 6] },
   captions: { happy: 'YUMMY', idle: 'BORED' },
   critters: {
     // A red apple.

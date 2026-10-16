@@ -1,8 +1,8 @@
 import type { SkinLook } from './types'
 
-const HAIR = 0x3a5a4a
+const HAIR = 0x3f6a54
 const SKIN = 0xf0c8a0
-const SUIT = 0x2f5088
+const SUIT = 0x2f5aa0
 
 // Spike Spiegel: big fluffy dark-green mop, slim face, blue suit over a
 // yellow shirt with a thin tie, long legs, dark shoes.
@@ -10,18 +10,18 @@ export const look: SkinLook = {
   said: 'Buddy turns into Spike. See you, space cowboy.',
   group: 'Anime',
   rows: [
-    '..hHhhHh..',
-    '.hhhHhhhh.',
-    '.hhhhhhhh.',
-    '.hhsssshh.',
-    '..ssssss..',
-    '.bbyttybb.',
-    '.bbbyybbb.',
-    '.bbbbbbbb.',
-    '..bb..bb..',
-    '..bb..bb..',
+    '..HHhhh...',
+    '.HHhhhhhd.',
+    'hHhhhhhhdd',
+    '.hhssssdd.',
+    '..hssssd..',
+    '.bbyttyBB.',
+    '.bbbtyBBB.',
+    '.bbbbbBBB.',
+    '..bb..BB..',
+    '..bb..BB..',
   ],
-  colors: { h: HAIR, H: 0x5a7a6a, s: SKIN, b: SUIT, y: 0xe8c860, t: 0x4a5a78 },
+  colors: { h: HAIR, H: 0x7fb092, d: 0x274636, s: SKIN, b: SUIT, B: 0x1f3d70, y: 0xe8c860, t: 0x1e2a4a },
   eyes: [[3, 3], [6, 3]],
   smile: [[4, 4], [5, 4]],
   tear: [3, 4],

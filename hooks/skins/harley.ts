@@ -1,30 +1,33 @@
 import type { SkinLook } from './types'
 
 const RED = 0xd8304a
-const BLACK = 0x2e2e3a
+const PINK = 0xf0607a
+const BLACK = 0x40405a
+const SHEEN = 0x7a7a98
 const WHITE = 0xf0eee8
+const GREY = 0xb8b4c4
 
-// Harley Quinn: a two-tone jester hat with bells, a white face and black eye
-// mask, a harlequin bodysuit, a white ruff and a big mallet.
+// Harley Quinn: a two-tone jester hat with white bells, a white face and
+// black eye mask, a white ruff, a harlequin bodysuit and a big mallet.
 export const look: SkinLook = {
   said: "Buddy suits up as Harley Quinn. Hiya, puddin'!",
   group: 'DC',
   rows: [
-    'wr......bw',
-    '.rrrrbbbb.',
+    'ww......ww',
+    '.Pr....kb.',
+    '.Prrrkbbb.',
     '.wwwwwwww.',
-    '.wkkwwkkw.',
+    '.wbbwwbbwm',
     '.wwwrrwwwm',
-    '.wwwwwwwwm',
+    '.wgwgwgwg.',
     '.rbrbrbrb.',
     '.brbrbrbr.',
-    '.rbrbrbrb.',
-    '..brbrbr..',
+    '..rbrbrb..',
   ],
-  colors: { w: WHITE, r: RED, b: BLACK, k: BLACK, m: 0x8a8a98 },
-  eyes: [[3, 3], [6, 3]],
+  colors: { w: WHITE, r: RED, P: PINK, b: BLACK, k: SHEEN, g: GREY, m: 0xa0a0b4 },
+  eyes: [[3, 4], [6, 4]],
   eyeColor: WHITE,
-  smile: [[4, 4], [5, 4]],
+  smile: [[4, 5], [5, 5]],
   smileColor: 0x2c2c38,
   tear: [2, 4],
   arms: { color: 0xc08a50, down: [[0, 7], [9, 6], [9, 7], [9, 8]], up: [[0, 5], [9, 6], [9, 7], [9, 8]] },

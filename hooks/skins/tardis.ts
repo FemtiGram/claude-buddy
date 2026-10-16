@@ -1,28 +1,26 @@
 import type { SkinLook } from './types'
 
-const BLUE = 0x1f4f9a
-const DARK = 0x163a72
-const EDGE = 0x3a6ab8
+const BLUE = 0x2f66c0
 
-// The TARDIS: a blue police box with a lamp on top, the black POLICE BOX sign,
-// white-framed windows and door panels. Its lamp goes dark when it's happy
-// (the flash), a faint time vortex swirls below.
+// The TARDIS: a blue police box in a 3-tone ramp with a lamp on top, the dark
+// POLICE BOX sign, white-framed windows and door panels. Its lamp flashes on
+// when it's happy.
 export const look: SkinLook = {
   said: 'Buddy steps into the TARDIS. Allons-y!',
   group: 'Sci-fi ships',
   rows: [
     '....yy....',
-    '...ldbl...',
-    '..lbbbbl..',
-    '.nwnwnwnn.',
-    '.dfgffgfd.',
-    '.dfgffgfd.',
-    '.dbbddbbd.',
-    '.dlbddblb.',
-    '.dbbddbbd.',
-    '.dddddddd.',
+    '...HyyS...',
+    '..HbbbbS..',
+    '.HnwnwnwS.',
+    '.HWgWWgWS.',
+    '.HWgWWgWS.',
+    '.HHbSSHbS.',
+    '.HbbSSbbS.',
+    '.HHbSSHbS.',
+    '.SSSSSSSS.',
   ],
-  colors: { y: 0xffe9a0, l: EDGE, d: DARK, b: BLUE, n: 0x26344f, w: 0xe8e8e8, f: 0xe8e8e8, g: 0x9fc8f0 },
+  colors: { y: 0xffe9a0, H: 0x6a9cf0, b: BLUE, S: 0x1d4a96, n: 0x1c2438, w: 0xe8e8e8, W: 0xf0f0f0, g: 0x9fc8f0 },
   eyes: [[3, 4], [6, 4]],
   smile: [[4, 0], [5, 0]],
   smileColor: 0xfff6c8, // the lamp flashes on when he's happy

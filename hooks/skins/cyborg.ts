@@ -1,33 +1,35 @@
 import type { SkinLook } from './types'
 
+const LIGHT = 0xdce0e8
 const METAL = 0xb8bec8
 const DARK = 0x7e868e
 const SKIN = 0x8a5a3e
+const SKIN_DARK = 0x6a4430
 const PANEL = 0x5a6a88
 const RED = 0xe83a3a
 
 // Cyborg (Victor Stone): half silver metal head with a glowing red eye, half
-// brown skin; an armoured body with panels and red lights and a sonic cannon.
+// brown skin with a normal eye; an armoured body with blue-grey panels, red
+// lights and a sonic cannon for an arm.
 export const look: SkinLook = {
   said: 'Buddy boots up as Cyborg!',
   group: 'DC',
   rows: [
-    '..........',
-    '..mmmbbb..',
-    '.mmmmbbbb.',
-    '.mrMmbbbb.',
-    '.mmmMbbbb.',
-    '..mmbbbb..',
-    '.mmnnnnMm.',
-    '.mnrnnrnM.',
-    '.mmnnnnMm.',
-    '..mm..Mm..',
+    '..Lmmbbb..',
+    '.Lmmmbbbb.',
+    '.mMrMLLbb.',
+    '.mmmmbbbB.',
+    '..mmMbbB..',
+    '.LmnnnnMm.',
+    '.mnrnnrnML',
+    '.mmnnnnMMM',
+    '..mm..MM..',
   ],
-  colors: { m: METAL, M: DARK, b: SKIN, n: PANEL, r: RED },
-  eyes: [[6, 3]],
-  smile: [[5, 5], [6, 5]],
-  tear: [6, 3],
-  arms: { color: DARK, down: [[0, 7], [9, 7]], up: [[0, 5], [9, 5]] },
+  colors: { L: LIGHT, m: METAL, M: DARK, n: PANEL, r: RED, b: SKIN, B: SKIN_DARK },
+  eyes: [[6, 2]],
+  smile: [[5, 4], [6, 4]],
+  tear: [6, 2],
+  arms: { color: DARK, down: [[0, 6], [0, 7]], up: [[0, 4], [0, 5]] },
   feet: { color: DARK, at: [2, 7] },
   captions: { happy: 'ONLINE', idle: 'BEEP' },
   critters: {

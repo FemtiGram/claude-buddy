@@ -1,29 +1,33 @@
 import type { SkinLook } from './types'
 
 const WHITE = 0xeeeef4
-const SHADE = 0xbcbccc
-const BLUE = 0x3050d0
+const SHADE = 0xa4aac0
+const BLUE = 0x3858d8
+const BLUE_DK = 0x22389a
 const PINK = 0xf4a6b8
+const VISOR = 0x232638
 
-// Bomberman: round white helmet with a pink-red antenna ball, a small face,
-// blue suit, pink gloves and boots.
+// Bomberman: round white helmet shaded grey, a dark visor with bright eyes,
+// a pink antenna ball, blue suit, pink gloves and boots.
 export const look: SkinLook = {
   said: 'Buddy lights the fuse: Bomberman!',
   group: 'Games',
   rows: [
-    '....rr....',
-    '...hhhh...',
-    '..hhhhhs..',
-    '..hffffs..',
-    '..hffffs..',
-    '..hhhhss..',
-    '...bbbb...',
-    '..bbbbbb..',
-    '...bbbb...',
+    '....pp....',
+    '...swws...',
+    '..swwwws..',
+    '..wvvvvs..',
+    '..wvvvvs..',
+    '..wwwwss..',
+    '...BBBn...',
+    '..BBBBBn..',
+    '...BB.nn..',
   ],
-  colors: { r: 0xe8506a, h: WHITE, s: SHADE, f: 0xf6d2b8, b: BLUE },
+  colors: { p: 0xe8506a, w: WHITE, s: SHADE, v: VISOR, B: BLUE, n: BLUE_DK },
   eyes: [[3, 3], [6, 3]],
+  eyeColor: 0x8ff0ff,
   smile: [[4, 4], [5, 4]],
+  smileColor: 0x8ff0ff,
   tear: [3, 4],
   arms: {
     color: PINK,

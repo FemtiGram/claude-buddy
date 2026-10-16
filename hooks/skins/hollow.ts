@@ -2,33 +2,31 @@ import type { SkinLook } from './types'
 
 const MASK = 0xe9ecef
 const SHADE = 0xc2c6cc
-const DARK = 0x1b1b2a
-const BODY = 0x3c3c5a
-const CAPE = 0x3a4a7a
+const DARK = 0x14141f
 
-// The Knight from Hollow Knight: a pale horned mask with black eye holes, a
-// tiny dark body, a navy cape and the nail for a sword.
+// The Knight from Hollow Knight: a pale horned mask with a grey shade and black
+// eye holes, a small lifted body with a light rim, a navy cape and the nail.
 export const look: SkinLook = {
   said: 'Buddy turns into the Knight from Hollow Knight.',
   group: 'Games',
   rows: [
-    '...w..w...',
-    '..ww..ww..',
-    '.wwwwwwww.',
-    '.wwwwwwww.',
-    '.wkwwwwkw.',
-    '.wkwwwwkw.',
-    '..cccccc..',
-    '.nddddddnp',
-    '.nnddddnnp',
+    '...s..s...',
+    '..sH..#s..',
+    '.sHHH###s.',
+    '.sHH####s.',
+    '.skk##kks.',
+    '.skk##kks.',
+    '..ssssss..',
+    '.NrbbbbrnP',
+    '.Nnrbbrnnp',
   ],
-  colors: { w: MASK, c: SHADE, k: DARK, d: BODY, n: CAPE, p: 0xb8bcc4 },
+  colors: { H: 0xf0f2f5, '#': 0xdadee4, s: 0xa2a8b2, k: DARK, b: 0x5a5a8a, r: 0x9090c8, N: 0x6a82c8, n: 0x3e5290, P: 0xdde0e6, p: 0xb8bcc4 },
   eyes: [[3, 4], [6, 4], [3, 5], [6, 5]],
   eyeColor: DARK,
   smile: [[4, 6], [5, 6]],
   tear: [3, 5],
-  arms: { color: MASK, down: [[0, 7]], up: [[0, 6]] },
-  feet: { color: BODY, at: [3, 6] },
+  arms: { color: 0xa2a8b2, down: [[0, 7]], up: [[0, 6]] },
+  feet: { color: 0x9090c8, at: [3, 6] },
   captions: { happy: 'REST', idle: '...' },
   critters: {
     // Vengefly: a winged bug.

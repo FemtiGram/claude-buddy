@@ -1,7 +1,7 @@
 import type { SkinLook } from './types'
 
 const WHITE = 0xf2f0e8
-const SHADE = 0xc8c4b8
+const SHADE = 0xd6d2c4
 const ORANGE = 0xff8a1f
 
 // The Untitled Goose Game goose: white, a long neck, orange bill and feet,
@@ -10,21 +10,21 @@ export const look: SkinLook = {
   said: 'Buddy turns into a goose. Honk!',
   group: 'Games',
   rows: [
-    '...www....',
-    '...wwwoo..',
-    '...www....',
-    '....ww....',
-    '....ws....',
-    '.wwwwwwww.',
-    '.wwwwwwss.',
-    '..wsssss..',
+    '...eee....',
+    '..ewwwoo..',
+    '..ewwwoO..',
+    '...ewwe...',
+    '...ewse...',
+    '.ewwwwwwse',
+    '.ewwwwsse.',
+    '..eesssee.',
   ],
-  colors: { w: WHITE, s: SHADE, o: ORANGE },
+  colors: { w: WHITE, s: SHADE, e: 0x9c9a8c, o: ORANGE, O: 0xd9620f },
   eyes: [[4, 1]],
   smile: [[5, 2]],
   tear: [4, 2],
   arms: {
-    color: SHADE,
+    color: 0x9c9a8c,
     down: [[0, 6], [9, 6]],
     up: [[0, 4], [9, 4]],
   },

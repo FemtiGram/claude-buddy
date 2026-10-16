@@ -1,27 +1,28 @@
 import type { SkinLook } from './types'
 
 const RED = 0xc8302c
-const HULL = 0xd8dce0
-const SHADE = 0xa8aeb6
+const LIGHT = 0xe2e6ea
+const HULL = 0xb4bac2
+const SHADE = 0x7c848e
 
 // An X-wing head on: four S-foils in an X with red stripes, a dark canopy
-// with the R2 dome behind it, engine intakes on each wing, blue-white exhaust.
+// with the R2 dome above it, engine pods at the wing roots, blue exhaust.
 export const look: SkinLook = {
   said: 'Buddy jumps in an X-wing. Red Five standing by.',
   group: 'Sci-fi ships',
   rows: [
     'r........r',
-    'rw......wr',
-    '.we.bb.ew.',
-    '..wwkkww..',
-    '...wkkw...',
-    '..wwssww..',
-    '.we.ss.ew.',
-    'rw..ss..wr',
+    'rl......hr',
+    '.rl.dd.hr.',
+    '..lekkeh..',
+    '...lkkh...',
+    '..hehhes..',
+    '.rh.ss.sr.',
+    'rh..ss..sr',
     'r........r',
   ],
-  colors: { r: RED, w: HULL, s: SHADE, k: 0x2a3a5c, b: 0x9ccaf0, e: 0x5a6068 },
-  eyes: [[4, 3], [5, 3]],
+  colors: { r: RED, l: LIGHT, h: HULL, s: SHADE, k: 0x1c2a48, d: 0x4a86d8, e: 0x484e58 },
+  eyes: [[4, 4], [5, 4]],
   eyeColor: 0x9ad0ff,
   smile: [[4, 5], [5, 5]],
   tear: [4, 7],

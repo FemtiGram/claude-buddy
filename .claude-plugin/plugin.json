@@ -1,6 +1,6 @@
 {
   "name": "buddy",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "A small animated pixel companion that reacts to what Claude is doing, with mini-buddies for each running agent",
   "author": { "name": "Anders Gram" }
 }

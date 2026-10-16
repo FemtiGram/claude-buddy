@@ -1,12 +1,14 @@
 import type { SkinLook } from './types'
 
-const HAT = 0x8a5a3c
-const FACE = 0xd9a98a
-const SCAR = 0xb87a62
+const HAT_HI = 0xa87048
+const HAT = 0x7a4e32
+const HAT_SH = 0x4e2e20
+const FACE = 0xe0b090
+const SCAR = 0xb06a58
 const RED = 0xc8383a
-const GREEN = 0x5e8f3a
+const GREEN = 0x5e9a3c
 const PANTS = 0x6b4a34
-const BLADE = 0xb8bcc4
+const BLADE = 0xdfe4ea
 
 // Freddy Krueger, cute-creepy: brown fedora, scarred face, red and green
 // striped sweater, one clawed glove.
@@ -14,22 +16,23 @@ export const look: SkinLook = {
   said: 'Buddy puts on the striped sweater. Sweet dreams!',
   group: 'Horror',
   rows: [
-    '...hhhh...',
-    '.hhhhhhhh.',
-    '..ffffss..',
-    '..ffffff..',
-    '..ffffff..',
-    '..rrrrrr..',
+    '...HHhh...',
+    '..HHhhdd..',
+    'HHhhhhhhdd',
+    '..ssssss..',
+    '..ffffsf..',
+    '..fddddf..',
+    '.rrrrrrrr.',
     '.gggggggg.',
     '.rrrrrrrr.',
-    '..gggggg..',
+    '.gggggggg.',
     '..pppppp..',
   ],
-  colors: { h: HAT, f: FACE, s: SCAR, r: RED, g: GREEN, p: PANTS },
-  eyes: [[3, 3], [6, 3]],
-  smile: [[3, 4], [4, 4], [5, 4], [6, 4]],
-  tear: [3, 4],
-  arms: { color: BLADE, down: [[9, 6], [9, 7], [9, 8]], up: [[9, 3], [9, 4], [9, 5]] },
+  colors: { H: HAT_HI, h: HAT, d: HAT_SH, f: FACE, s: SCAR, r: RED, g: GREEN, p: PANTS },
+  eyes: [[3, 4], [6, 4]],
+  smile: [[3, 5], [4, 5], [5, 5], [6, 5]],
+  tear: [2, 5],
+  arms: { color: BLADE, down: [[9, 7], [9, 8], [9, 9]], up: [[9, 4], [9, 5], [9, 6]] },
   feet: { color: 0x5a3a28, at: [3, 6] },
   captions: { happy: 'SWEET', idle: 'NOD' },
   critters: {

@@ -1,29 +1,31 @@
 import type { SkinLook } from './types'
 
+const LIGHT = 0xa9cc86
 const GREEN = 0x8db36b
 const DARK = 0x6b8f4e
 const ROBE = 0xb58b5a
+const SHADE = 0x8a6238
 const SAND = 0xd8c29a
 const HAIR = 0xe8e4d8
-const CANE = 0x7a5230
+const CANE = 0x9a6a3a
 
-// Master Yoda: long ears out to the sides, wispy white hair, heavy brow,
+// Master Yoda: long ears out to the sides, wispy white hair, wrinkled brow,
 // brown robe with a sand-coloured tunic, a wooden cane for one arm.
 export const look: SkinLook = {
   said: 'Buddy turns into Yoda. Wise, he is.',
   group: 'Star Wars',
   rows: [
-    '...w..w...',
-    'e..gwwg..e',
-    'eegddddgee',
-    '.egkggkge.',
-    '...gggg...',
-    '...gddg...',
-    '..bbbbbb..',
-    '.bbbttbbb.',
-    '.bbbbbbbb.',
+    '...w.ww.w.',
+    'g..gwwwg.g',
+    'ggLgdgdggg',
+    '.gWkggkWg.',
+    '...Lgggd..',
+    '...gddgd..',
+    '..bbttbB..',
+    '.bbbttbbB.',
+    '.bbbbbbBB.',
   ],
-  colors: { g: GREEN, e: GREEN, d: DARK, w: HAIR, k: 0x2a3a22, b: ROBE, t: SAND },
+  colors: { L: LIGHT, g: GREEN, d: DARK, w: HAIR, W: 0xf0f0e0, k: 0x2a3a22, b: ROBE, B: SHADE, t: SAND },
   eyes: [[3, 3], [6, 3]],
   smile: [[4, 5], [5, 5]],
   tear: [3, 4],

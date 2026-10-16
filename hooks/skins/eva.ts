@@ -1,33 +1,33 @@
 import type { SkinLook } from './types'
 
+const LIGHT = 0x9a78d8
 const PURPLE = 0x6a4aa8
-const DARK = 0x4a3478
+const DARK = 0x3c2870
 const LIME = 0x7ae04a
 const ORANGE = 0xe8702a
 
-// Eva Unit-01: purple mecha, one tall horn, green jaw plate, glowing eyes,
-// narrow armoured shoulders with pylons.
+// Eva Unit-01: purple mecha in three tones, one tall horn, green jaw plate,
+// glowing eyes, wide armoured shoulders with pylons.
 export const look: SkinLook = {
   said: 'Buddy boards Eva Unit-01.',
   group: 'Anime',
   rows: [
-    '.....g....',
-    '.....p....',
-    '...pppp...',
-    '..pppppp..',
-    '..pppppp..',
-    '..pggggp..',
-    '.ddppppdd.',
-    '..dppppd.o',
-    '..dppppd.o',
-    '...pp.pp..',
+    '....o.....',
+    '...lpp....',
+    '..lpppps..',
+    '..lppppd..',
+    '..lppppd..',
+    '..pggggd..',
+    '.olppppdo.',
+    '..lppppd..',
+    '..lp..pd..',
   ],
-  colors: { p: PURPLE, d: DARK, g: LIME, o: ORANGE },
+  colors: { l: LIGHT, p: PURPLE, d: DARK, g: LIME, o: ORANGE, s: 0x523a8c },
   eyes: [[3, 4], [6, 4]],
   eyeColor: 0xd8f03a,
   smile: [[4, 5], [5, 5]],
   tear: [3, 5],
-  arms: { color: PURPLE, down: [[1, 7], [1, 8]], up: [[1, 5], [8, 5]] },
+  arms: { color: LIGHT, down: [[1, 7], [8, 7]], up: [[1, 5], [8, 5]] },
   feet: { color: DARK, at: [3, 7] },
   captions: { happy: 'SYNC!', idle: 'GET IN' },
   critters: {

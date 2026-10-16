@@ -1,37 +1,37 @@
 import type { SkinLook } from './types'
 
 const BONE = 0xf0ebdd
-const SUIT = 0x2e2e40
 const SOCKET = 0x2a2a38
 
-// Jack Skellington: round white skull, dark sockets, stitched grin, a slim
-// pinstriped suit and a bat bow tie.
+// Jack Skellington: a round white skull with a grey shade, big dark sockets, a
+// stitched grin, and a lifted pinstriped suit with a rim and a bat bow tie.
 export const look: SkinLook = {
   said: "Buddy is the Pumpkin King: what's this?",
   group: 'Film & TV',
   rows: [
     '..........',
     '..........',
-    '..wwwwww..',
-    '.wwwwwwww.',
-    '.wkkwwkkw.',
-    '.wkkwwkkw.',
-    '.wmwmwmwm.',
-    '..vvwwvv..',
-    '..uwuuwu..',
-    '..uu..uu..',
+    '..gwwwwg..',
+    '.gwwwwwwg.',
+    '.gkkwwkkg.',
+    '.gkkwwkkg.',
+    '.gmwmwmwg.',
+    '..gwwwwg..',
+    '..RkkkkS..',
+    '..RpwwpS..',
+    '..RS..pS..',
   ],
-  colors: { w: BONE, k: SOCKET, m: 0x4a4a60, v: 0x7a7a9c, u: SUIT },
+  colors: { w: BONE, g: 0xa6a090, k: 0x20202c, m: 0x3a3a4c, S: 0x4a4a6c, R: 0x8080b0, p: 0x9c9cc8 },
   eyes: [[3, 4], [6, 4]],
-  eyeColor: 0x9a9ac0,
+  eyeColor: 0xb0b0d0,
   smile: [[2, 6], [4, 6], [6, 6]],
   tear: [3, 5],
   arms: {
-    color: SUIT,
+    color: 0x6a6a98,
     down: [[1, 8], [8, 8], [1, 9], [8, 9]],
     up: [[0, 6], [9, 6], [0, 5], [9, 5]],
   },
-  feet: { color: SOCKET, at: [2, 7] },
+  feet: { color: 0x8080b0, at: [2, 7] },
   captions: { happy: 'BOO!', idle: 'HMM' },
   critters: {
     // Zero, the ghost dog with his glowing nose.

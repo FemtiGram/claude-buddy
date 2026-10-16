@@ -1,7 +1,7 @@
 import type { SkinLook } from './types'
 
 const BODY = 0x3a3a46
-const FUZZ = 0x585870
+const FUZZ = 0x6c6c84 // charcoal fuzz: still black, but it shows on a dark terminal
 const WHITE = 0xf2f2ee
 const PUPIL = 0x1c1c26
 const LIMB = 0x4a4a58
@@ -12,14 +12,14 @@ export const look: SkinLook = {
   said: 'Buddy turns into a soot sprite!',
   group: 'Ghibli',
   rows: [
-    '..f...f...',
+    '..f..f.f..',
     '.f.ffff.f.',
-    'f########f',
-    '.#ww##ww#.',
-    'f#ww##ww#f',
-    '.########.',
-    'f########f',
-    '.f######f.',
+    'ffffffffff',
+    '.fww##wwf.',
+    'ffww##wwff',
+    '.ff####ff.',
+    'ff######ff',
+    '.ff####ff.',
     '..f.ff.f..',
   ],
   colors: { '#': BODY, f: FUZZ, w: WHITE },

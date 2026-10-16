@@ -1,7 +1,10 @@
 import type { SkinLook } from './types'
 
-const ROBE = 0x3c3850
+const ROBE = 0x4c4668
+const RIM = 0x8c86b4
+const DEEP = 0x2a2438
 const MASK = 0xf1ede0
+const MASK_SH = 0xc4bfae
 const PURPLE = 0x7a4fa0
 
 // No-Face: a tall dark purple-grey robe, a white mask with slit eyes, a small
@@ -13,22 +16,22 @@ export const look: SkinLook = {
     '..........',
     '..........',
     '...mmmm...',
-    '..mmmmmm..',
+    '..mmmmmn..',
     '..PmmmmP..',
-    '...mkkm...',
-    '..rrrrrr..',
-    '.rrrrrrrr.',
-    '.rrrrrrrr.',
-    '.rrrrrrrr.',
-    '..rrrrrr..',
+    '...mDDn...',
+    '..RRRRRR..',
+    '.RrrrrrrR.',
+    '.RrrrrrrR.',
+    '.RrrrrrrR.',
+    '..RrrrrR..',
   ],
-  colors: { m: MASK, P: PURPLE, k: 0x4a3f5c, r: ROBE },
+  colors: { m: MASK, n: MASK_SH, P: PURPLE, D: DEEP, r: ROBE, R: RIM },
   eyes: [[3, 3], [6, 3]],
-  eyeColor: 0x3a3048,
+  eyeColor: 0x2a2438,
   smile: [[4, 5], [5, 5]],
   tear: [3, 4],
   arms: {
-    color: 0x58547a,
+    color: RIM,
     down: [[0, 7], [0, 8], [9, 7], [9, 8]],
     up: [[0, 5], [0, 6], [9, 5], [9, 6]],
   },

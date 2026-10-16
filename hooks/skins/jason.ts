@@ -4,31 +4,31 @@ const MASK = 0xe8e4d8
 const RED = 0xd23a32
 const JACKET = 0x5e6e74
 
-// Jason Voorhees: an off-white hockey mask with red chevrons and dark eye holes,
-// a grey-teal work jacket, dark trousers and boots. No weapon.
+// Jason Voorhees: an off-white hockey mask with a grey edge and shade, crisp
+// red chevrons and dark eye holes, a grey-teal work jacket, dark trousers and boots.
 export const look: SkinLook = {
   said: 'Buddy puts on the hockey mask.',
   group: 'Horror',
   rows: [
     '..........',
     '..........',
-    '..######..',
-    '..#R##R#..',
-    '.########.',
-    '.########.',
-    '.R######R.',
-    '..##dd##..',
-    '.JJJJJJJJ.',
-    '.JJJJJJJJ.',
+    '..mmmmmm..',
+    '.mHRHHRsm.',
+    '.mHkkHksm.',
+    '.mH####sm.',
+    '.mRH##sRm.',
+    '..mskksm..',
+    '.hJJJJJJs.',
+    '.hJJJJJJs.',
     '..pppppp..',
   ],
-  colors: { '#': MASK, R: RED, d: 0x8a8478, J: JACKET, p: 0x4a525a },
+  colors: { m: 0x7a766c, H: 0xf4f0e6, '#': MASK, s: 0xa8a498, R: RED, k: 0x20222a, J: JACKET, h: 0x8aa0a6, p: 0x4a525a },
   eyes: [[3, 4], [6, 4]],
-  eyeColor: 0x4a4458,
+  eyeColor: 0x20222a,
   smile: [[4, 7], [5, 7]],
   tear: [3, 5],
   arms: {
-    color: 0x74868c,
+    color: 0x8aa0a6,
     down: [[0, 8], [0, 9], [9, 8], [9, 9]],
     up: [[0, 5], [0, 6], [9, 5], [9, 6]],
   },

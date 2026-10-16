@@ -3,25 +3,26 @@ import type { SkinLook } from './types'
 const GREEN = 0x5ae07a
 const PALE = 0xc0c8bc
 
-// A Borg cube: grey-green hull in a grid of dark seams, lit green panels.
+// A Borg cube: a pale rim catching the light, grey-green panels in a grid of
+// dark seams, green lights.
 export const look: SkinLook = {
   said: 'Buddy is assimilated. Resistance is futile.',
   group: 'Sci-fi ships',
   rows: [
-    'dddddddddd',
-    'dlkkdkklkd',
-    'dkgkdkgkkd',
-    'dkkkdkkkkd',
-    'dddddddddd',
-    'dlkkdkkgkd',
-    'dkkgdkkkld',
-    'dkkkdlkkkd',
-    'dddddddddd',
+    'rrrrrrrrrr',
+    'rhhkdhhhkm',
+    'rhdhdhhdhm',
+    'rkkkdkkkkm',
+    'rddddddddm',
+    'rhhkdhhhkm',
+    'rhkgdhkkkm',
+    'rkkkdkgkkm',
+    'rmmmmmmmmm',
   ],
-  colors: { d: 0x2e3a32, k: 0x4a5a4e, l: 0x6a7a6c, g: GREEN },
-  eyes: [[2, 3], [7, 3]],
+  colors: { r: 0xb4c4b8, h: 0x8ba090, k: 0x5a6c5e, m: 0x84948a, d: 0x232c26, g: GREEN },
+  eyes: [[2, 2], [7, 2]],
   eyeColor: GREEN,
-  smile: [[2, 2], [6, 2]],
+  smile: [[2, 3], [7, 3]],
   tear: [7, 6],
   feet: { color: GREEN, at: [2, 7] },
   captions: { happy: 'BORG', idle: 'RESIST' },

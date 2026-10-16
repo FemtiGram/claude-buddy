@@ -4,35 +4,35 @@ const WHITE = 0xe6e8ec
 const SHADE = 0xb8bec8
 const DARK = 0x2c3038
 
-// An Imperial stormtrooper: white helmet with angled dark lenses, a dark brow
-// band and frowning vents, white armour, a dark belt and joints, white boots.
+// An Imperial stormtrooper: white helmet with a grey edge, angled dark lenses,
+// frowning vents, white armour, a dark belt and joints, white boots.
 export const look: SkinLook = {
   said: 'Buddy suits up as a stormtrooper.',
   group: 'Star Wars',
   rows: [
     '..........',
     '..........',
-    '..######..',
-    '.bbbbbbbb.',
+    '..sHHH##s.',
+    '.sHH####s.',
     '.sD####Ds.',
     '.sDD##DDs.',
-    '..#sddS#..',
-    '..#d##d#..',
-    '.########.',
-    '.#sbbbbs#.',
-    '..##..##..',
+    '..s#DD#s..',
+    '..sD##Ds..',
+    '.sH#####s.',
+    '.sHbbbbbs.',
+    '..H#..#s..',
   ],
-  colors: { '#': WHITE, s: SHADE, D: DARK, b: 0x4a505a, d: 0x5a606a, S: SHADE },
+  colors: { H: 0xf2f4f7, '#': 0xd6dae0, s: 0x9aa2ae, D: DARK, b: 0x4a505a },
   eyes: [[3, 5], [6, 5]],
   eyeColor: DARK,
   smile: [[4, 6], [5, 6]],
   tear: [2, 6],
   arms: {
-    color: 0xd8dce2,
+    color: 0x9aa2ae,
     down: [[0, 8], [0, 9], [9, 8], [9, 9]],
     up: [[0, 6], [0, 5], [9, 6], [9, 5]],
   },
-  feet: { color: WHITE, at: [3, 6] },
+  feet: { color: 0x9aa2ae, at: [3, 6] },
   captions: { idle: 'HOLD', happy: 'ROGER' },
   critters: {
     // A scout trooper on a speeder bike.

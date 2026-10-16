@@ -1,9 +1,11 @@
 import type { SkinLook } from './types'
 
-const HAIR = 0x2e2e38
+const HAIR = 0x4a4a60
+const HAIR_HI = 0x8686a6
 const SKIN = 0xf5d0b0
 const WHITE = 0xe4e4ec
-const JACKET = 0x8a6a44
+const JACKET = 0x9a7650
+const JACKET_SH = 0x6e5034
 const BLUE = 0x3a6ac0
 const GEAR = 0x8890a0
 const STEEL = 0xb8c4d4
@@ -14,18 +16,18 @@ export const look: SkinLook = {
   said: 'Buddy turns into Levi.',
   group: 'Anime',
   rows: [
-    '..kkkkkk..',
-    '.kkkkkkkk.',
-    '.kkkkkkkk.',
+    '..HHkkkk..',
+    '.HHkkkkkk.',
+    '.Hkkkkkkk.',
     '.kssssssk.',
     '..ssssss..',
-    '..jjwwjj..',
-    '.jjjwwjjj.',
-    '.jbwjjwbj.',
-    '.jjjjjjjj.',
-    '.gwwwwwwg.',
+    '..jwwwwj..',
+    '.jjjwwjjJ.',
+    '.jjbwwbjJ.',
+    '.jjjbbjjJ.',
+    '.JJJJJJJJ.',
   ],
-  colors: { k: HAIR, s: SKIN, w: WHITE, j: JACKET, b: BLUE, g: GEAR },
+  colors: { k: HAIR, H: HAIR_HI, s: SKIN, w: WHITE, j: JACKET, J: JACKET_SH, b: BLUE },
   eyes: [[3, 3], [6, 3]],
   eyeColor: 0x303040,
   smile: [[4, 4], [5, 4]],

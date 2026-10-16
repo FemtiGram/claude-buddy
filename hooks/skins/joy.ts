@@ -1,29 +1,32 @@
 import type { SkinLook } from './types'
 
+const LIGHT = 0xffe97a
 const YELLOW = 0xf7d84a
 const GOLD = 0xc9a21e
 const BLUE = 0x3a7bd5
 
-// Joy of Inside Out: a glowing yellow star of a girl, spiky blue hair, a
-// wide smile and a green dress. Darker gold edges keep her readable on light.
+// Joy of Inside Out: a glowing yellow star of a girl, spiky blue hair, big
+// eyes, a wide smile and a green dress. Darker gold edges keep her readable
+// on light.
 export const look: SkinLook = {
   said: 'Buddy glows: Joy!',
   group: 'Film & TV',
   rows: [
     '.h..hh..h.',
-    '..hhhhhh..',
-    '..yyyyyy..',
-    'oyyyyyyyyo',
-    '.oyyyyyyo.',
-    '.yyammayy.',
-    '..oyyyyo..',
-    '.gggggggg.',
+    '..hhhhhH..',
+    '.hLyyyyyH.',
+    'oLLyyyyyyo',
+    '.oWWyyWWo.',
+    '.oymyymyo.',
+    '..oymmyo..',
+    '.gggggggd.',
+    '.ggggggdd.',
     '..oo..oo..',
   ],
-  colors: { h: BLUE, y: YELLOW, o: GOLD, a: GOLD, m: 0x9a3a2a, g: 0x7bc86c },
+  colors: { h: BLUE, H: 0x2a5aa8, L: LIGHT, y: YELLOW, o: GOLD, W: 0xffffff, m: 0x9a3a2a, g: 0x7bc86c, d: 0x4f9a48 },
   eyes: [[3, 4], [6, 4]],
   eyeColor: 0x1f2f7a,
-  smile: [[4, 5], [5, 5]],
+  smile: [[4, 6], [5, 6]],
   tear: [3, 4],
   arms: {
     color: YELLOW,

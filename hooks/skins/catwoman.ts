@@ -1,34 +1,35 @@
 import type { SkinLook } from './types'
 
 const SUIT = 0x46465a // lifted off black, so she shows on a dark terminal
-const SHEEN = 0x5a5670
-const SILVER = 0xb4b8c4
+const SHEEN = 0x8a8aac
+const SILVER = 0xc4c8d4
 const SKIN = 0xe8b898
-const LIPS = 0xc8283a
+const LIPS = 0xd8283a
+const WHIP = 0xc8944a
 
 // Catwoman: a sleek catsuit and cowl with cat ears, silver goggles, red lips,
-// a whip for an arm and claws.
+// a whip for an arm and a sheen rim on her ears, head and shoulders.
 export const look: SkinLook = {
   said: 'Buddy turns into Catwoman. Meow.',
   group: 'DC',
   rows: [
-    '.kk....kk.',
-    '.kkk..kkk.',
-    '.kkkkkkkk.',
-    '.kggkkggk.',
-    '.kkSSSSkk.',
-    '..SSllSS..',
-    '.kkksskkk.',
-    '.kksskskk.',
-    '.kkkkkkkk.',
-    '..kk..kk..',
+    '.ss....ss.',
+    '.skk..kks.',
+    '.skgkkgks.',
+    '.kgkkkkgk.',
+    '.kkgSSgkk.',
+    '..kSllSk..',
+    '.sskkkkss.',
+    '.skksskkk.',
+    '.skkkkkkk.',
+    '..sk..sk..',
   ],
   colors: { k: SUIT, s: SHEEN, g: SILVER, S: SKIN, l: LIPS },
   eyes: [[3, 3], [6, 3]],
   eyeColor: 0x6ae07a,
   smile: [[4, 5], [5, 5]],
   tear: [3, 3],
-  arms: { color: SILVER, down: [[0, 7], [9, 7]], up: [[0, 5], [9, 5]] },
+  arms: { color: WHIP, down: [[0, 7], [9, 7]], up: [[0, 5], [9, 5]] },
   feet: { color: SUIT, at: [2, 7] },
   captions: { happy: 'PURR!', idle: 'MEOW' },
   critters: {

@@ -2,24 +2,25 @@ import type { SkinLook } from './types'
 
 const TAN = 0xa8935a
 
-// The Predator: dark dreadlocks framing a wide mottled tan face, yellow eyes,
-// four pale mandibles round a dark mouth, a grey mesh chest and a red laser dot.
+// The Predator: dark dreadlocks framing a wide mottled tan face, yellow eyes
+// under a dark brow, four pale mandibles round a dark mouth, a grey mesh chest
+// and a red laser dot.
 export const look: SkinLook = {
   said: 'Buddy turns into a Predator. The hunt is on!',
   group: 'Horror',
   rows: [
-    '...DDDD...',
-    '..DDDDDD..',
-    'DDTTrTTTDD',
-    'DDTTTTTTDD',
-    'DTTTTTTTTD',
+    '...DhDD...',
+    '..DhDDDD..',
+    'DhHHTrTTDD',
+    'DDTkkkkTDD',
+    'DTTkTTkTTD',
     'DDTsTTsTDD',
     'D.TmkkmT.D',
     'D..mkkm..D',
-    '..gggggg..',
-    '..gGggGg..',
+    '..gLgggg..',
+    '..gggGgg..',
   ],
-  colors: { D: 0x5e4a32, T: TAN, s: 0x7a6838, r: 0xe24d4d, m: 0xc9be8a, k: 0x4a3a4a, g: 0x8d9aa6, G: 0x6c7886 },
+  colors: { D: 0x5e4a32, h: 0x8c7048, T: TAN, H: 0xc8b878, s: 0x7a6838, r: 0xe24d4d, m: 0xeee4b8, k: 0x2e2030, g: 0x8d9aa6, L: 0xc4d0da, G: 0x6c7886 },
   eyes: [[3, 4], [6, 4]],
   eyeColor: 0xe8d84a,
   smile: [[4, 6], [5, 6]],
