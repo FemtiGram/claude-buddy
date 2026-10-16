@@ -19,7 +19,7 @@ Every agent Claude starts gets a row in the **agent list** below the big buddy: 
 
 Drawn with half-block pixels in the terminal's own colours, so empty space stays transparent.
 
-Around the holidays buddy dresses up. In the week up to **Halloween** (Oct 24–31) he wears a witch hat, a bat flits over his shoulder, a jack-o'-lantern flickers at his feet, and he says `SPOOKY` and `BOO!`.
+Around the holidays buddy dresses up. In the week up to **Halloween** (Oct 24–31) he wears a witch hat, a bat flits over his shoulder, a jack-o'-lantern flickers at his feet, and he says `SPOOKY` and `BOO!`. Through **Christmas** (Dec 1–26) he wears a Santa hat, snow falls behind him, a present waits at his feet, and he says `HO HO HO` and `MERRY!`.
 
 ## Install
 
@@ -35,7 +35,7 @@ Answer `y` to add the marketplace and pick the **user** scope to have buddy in e
 
 - Opens as a side pane on its own when the terminal is ≥ 144 columns wide.
 - `/buddy` toggles it (opens it at any width).
-- `/buddy halloween` tries the costume on now, `/buddy normal` takes it off, `/buddy auto` follows the calendar again.
+- `/buddy halloween` or `/buddy christmas` tries a costume on now, `/buddy normal` takes it off, `/buddy auto` follows the calendar again.
 - Terminal only for now; the desktop and VS Code surfaces show a one-line text status.
 
 ## Develop

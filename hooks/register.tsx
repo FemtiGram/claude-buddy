@@ -31,6 +31,11 @@ const BAND = 0x8bc34a
 const BAT = 0x8e6bbf
 const PUMPKIN = 0xf0882a
 const EMBER = 0xc0541c
+// Christmas: a Santa hat, snow and a present.
+const SANTA = 0xd63a3a
+const TRIM = 0xf4f4f4
+const SNOW = 0xcfe3f2
+const GIFT = 0x3f9b4f
 
 type Mood = 'idle' | 'think' | 'run' | 'happy' | 'sad'
 
@@ -43,13 +48,14 @@ const CAPTION: Record<Mood, string> = {
 }
 
 // Seasons dress buddy up for a few days a year.
-export type Season = 'halloween'
-export const SEASONS: Season[] = ['halloween']
+export type Season = 'halloween' | 'christmas'
+export const SEASONS: Season[] = ['halloween', 'christmas']
 
-// The week up to Halloween, by the local calendar.
+// The week up to Halloween and December up to Boxing Day, by the local calendar.
 export function seasonFor(ms: number): Season | undefined {
   const d = new Date(ms)
   if (d.getMonth() === 9 && d.getDate() >= 24) return 'halloween'
+  if (d.getMonth() === 11 && d.getDate() <= 26) return 'christmas'
   return undefined
 }
 
@@ -57,6 +63,7 @@ export const heightOf = (season?: Season) => (season ? H_SEASON : H)
 
 export const SEASON_CAPTIONS: Record<Season, Partial<Record<Mood, string>>> = {
   halloween: { idle: 'SPOOKY', happy: 'BOO!' },
+  christmas: { idle: 'HO HO HO', happy: 'MERRY!' },
 }
 export const captionFor = (mood: Mood, season?: Season) => (season && SEASON_CAPTIONS[season][mood]) || CAPTION[mood]
 
@@ -71,6 +78,7 @@ const FONT: Record<string, string[]> = {
   I: ['#', '#', '#', '#', '#'],
   K: ['#.#', '#.#', '##.', '#.#', '#.#'],
   L: ['#..', '#..', '#..', '#..', '###'],
+  M: ['#...#', '##.##', '#.#.#', '#...#', '#...#'],
   N: ['#..#', '##.#', '#.##', '#..#', '#..#'],
   O: ['###', '#.#', '#.#', '#.#', '###'],
   P: ['###', '#.#', '###', '#..', '#..'],
@@ -155,6 +163,13 @@ export function frame(mood: Mood, tick: number, body = BODY, season?: Season): n
 
   const ox = 3
   const oy = 5 + top + dy
+
+  // Snow falls first, so buddy stands in front of it.
+  if (season === 'christmas') {
+    for (const [x, phase] of [[0, 0], [2, 9], [8, 5], [13, 3], [15, 12]] as const) {
+      set(x, 1 + (Math.floor(tick / 4 + phase) % 16), SNOW)
+    }
+  }
 
   BODY_ROWS.forEach((row, y) => {
     for (let x = 0; x < row.length; x++) {
@@ -258,6 +273,24 @@ export function frame(mood: Mood, tick: number, body = BODY, season?: Season): n
     set(13, 16, glow)
   }
 
+  if (season === 'christmas') {
+    // A Santa hat: white brim, red cone, its pom-pom flopped to the side.
+    for (let x = ox + 1; x <= ox + 8; x++) set(x, oy - 1, TRIM)
+    for (let x = ox + 2; x <= ox + 7; x++) set(x, oy - 2, SANTA)
+    for (let x = ox + 4; x <= ox + 7; x++) set(x, oy - 3, SANTA)
+    set(ox + 8, oy - 3, TRIM)
+
+    // A present at his feet, tied with a gold ribbon and bow.
+    for (let x = 12; x <= 15; x++) {
+      set(x, 15, GIFT)
+      set(x, 16, GIFT)
+    }
+    set(13, 15, SPARK)
+    set(13, 16, SPARK)
+    set(12, 14, SPARK)
+    set(14, 14, SPARK)
+  }
+
   return px
 }
 
@@ -315,6 +348,11 @@ export function tinyFrame(mood: Mood, tick: number, body = BODY, season?: Season
     for (let x = 1; x <= 6; x++) set(x, oy, HAT)
     set(3, oy - 1, HAT)
     set(4, oy - 1, HAT)
+  }
+  if (season === 'christmas') {
+    // A red cap over the head, its pom-pom on the corner.
+    for (let x = 2; x <= 5; x++) set(x, oy, SANTA)
+    set(6, oy, TRIM)
   }
   return px
 }
@@ -445,7 +483,7 @@ export const register: Register = on => {
   }
 
   on('session.start', async ($, e, next) => {
-    await $.command.register({ name: 'buddy', description: 'Show or hide your pixel buddy', argumentHint: '[halloween|normal|auto]' })
+    await $.command.register({ name: 'buddy', description: 'Show or hide your pixel buddy', argumentHint: '[halloween|christmas|normal|auto]' })
     isShown = (await $.ui.panes()).some(pane => pane.id === PANE)
     if (!isShown) void $.ui.open({ id: PANE, title: 'Buddy', rows: 18, columns: PANE_COLUMNS })
 
@@ -512,7 +550,7 @@ export const register: Register = on => {
   })
 
   on('command.run', { command: 'buddy' }, async ($, e) => {
-    // `/buddy halloween` tries a costume on now; `normal` takes it off;
+    // `/buddy christmas` tries a costume on now; `normal` takes it off;
     // `auto` goes back to the calendar.
     const arg = e.args.trim().toLowerCase()
     if (arg) {

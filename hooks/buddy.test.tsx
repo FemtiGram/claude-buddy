@@ -190,6 +190,38 @@ test('a season grows the sprite to 16×16 and never clips the hat or the tear', 
   expect(tinyFrame('idle', 0).some(c => c === HAT)).toBe(false)
 })
 
+test('christmas is December up to Boxing Day', () => {
+  expect(seasonFor(new Date(2026, 10, 30, 23).getTime())).toBeUndefined()
+  expect(seasonFor(new Date(2026, 11, 1, 0).getTime())).toBe('christmas')
+  expect(seasonFor(new Date(2026, 11, 24, 18).getTime())).toBe('christmas')
+  expect(seasonFor(new Date(2026, 11, 26, 23).getTime())).toBe('christmas')
+  expect(seasonFor(new Date(2026, 11, 27, 0).getTime())).toBeUndefined()
+})
+
+test('the Santa hat stays whole, the snow stays behind buddy, the present sits at his feet', () => {
+  const SANTA = 0xd63a3a
+  const TRIM = 0xf4f4f4
+  const GIFT = 0x3f9b4f
+  const TEAR = 0x5aa9e6
+  for (const mood of MOODS) {
+    for (let tick = 0; tick < 96; tick++) {
+      const px = frame(mood, tick, undefined, 'christmas')
+      expect(px).toHaveLength(256)
+      // cone 6 + 4 red; brim 8 + pom-pom 1 white
+      expect(px.filter(c => c === SANTA)).toHaveLength(10)
+      expect(px.filter(c => c === TRIM)).toHaveLength(9)
+      expect(px.filter(c => c === GIFT)).toHaveLength(6)
+      if (mood === 'sad') expect(px.filter(c => c === TEAR)).toHaveLength(1)
+      // snow never covers buddy: he has as much body as without it
+      const plain = frame(mood, tick, undefined, 'halloween').filter(c => c === 0xd97757).length
+      expect(px.filter(c => c === 0xd97757)).toHaveLength(plain)
+    }
+  }
+  const mini = tinyFrame('run', 0, undefined, 'christmas')
+  expect(mini.some(c => c === SANTA)).toBe(true)
+  expect(mini.some(c => c === TRIM)).toBe(true)
+})
+
 test('seasonal captions fit and fall back to the usual ones', () => {
   for (const captions of Object.values(SEASON_CAPTIONS)) {
     for (const text of Object.values(captions)) {
@@ -198,6 +230,7 @@ test('seasonal captions fit and fall back to the usual ones', () => {
     }
   }
   expect(captionFor('idle', 'halloween')).toBe('SPOOKY')
+  expect(captionFor('happy', 'christmas')).toBe('MERRY!')
   expect(captionFor('run', 'halloween')).toBe(CAPTIONS.run)
   expect(captionFor('idle')).toBe(CAPTIONS.idle)
 })
@@ -227,8 +260,9 @@ test('/buddy halloween tries the costume on; normal and auto take it off', async
   expect(opened).toBe(1) // trying a costume on opens the pane if it's closed
   expect((await $.command.run({ command: 'buddy', args: 'normal' })).text).toBe('Buddy dresses down.')
   expect(await rows()).toBe(14)
-  await $.command.run({ command: 'buddy', args: 'halloween' })
+  expect((await $.command.run({ command: 'buddy', args: 'christmas' })).text).toBe('Buddy dresses up for christmas!')
+  expect(await rows()).toBe(16)
   expect((await $.command.run({ command: 'buddy', args: 'auto' })).text).toBe('Buddy follows the calendar again.')
   expect(await rows()).toBe(14)
-  expect((await $.command.run({ command: 'buddy', args: 'xmas' })).text).toContain("doesn't know")
+  expect((await $.command.run({ command: 'buddy', args: 'easter' })).text).toContain("doesn't know")
 })
