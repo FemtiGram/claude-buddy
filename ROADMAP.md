@@ -77,25 +77,24 @@ A test run with three Explore agents showed the agent list working live. `/buddy
 - `bun` and `tsc` aren't installed, so there's no quick way to print a sprite outside the tests.
 - **Auto mode blocks file edits here:** Edit calls fail with "classifier gave no verdict". An `Edit(hooks/**)` allow rule in `.claude/settings.local.json` didn't help (perhaps until a restart). Accept-edits mode, or leaving auto mode, works. Something to try: start with `CLAUDE_CODE_AUTO_MODE_SERVER=0`.
 
+## Where things stand (2026-10-17)
+
+Version **0.11.0**, pushed to github.com/FemtiGram/claude-buddy (the marketplace your friend installs from). **129 skins** in groups Buddy, Ghibli, Star Wars, Sci-fi ships, Marvel, DC, Games, Film & TV, Anime, Cartoons & folklore, Horror; `/buddy list`, `/buddy random`, `/buddy rotate daily|session|off`; seasons (Halloween week = a horror skin a day, Christmas); buddy watches/cheers/flinches for his agents; works in the terminal, the desktop app, VS Code and mobile (SVG). 795 tests. Two art passes polished 65 skins; the rest rated good in review. MIT licence for the code, fan-project disclaimer in the README.
+
+**How we've been working:** new skins go in as placeholders (`hooks/skins/stub.ts` + an entry in `index.ts`), then parallel agents draw 2–3 skins each in their own files and paste their previews; I review, fix shared-test failures, delete `stub.ts`, bump the version, commit and push. Agents must not touch git (one ran `git stash` mid-batch once). With many agents testing at once the shared creature test can time out; re-run on a quiet machine.
+
 ## Next iterations
 
-Skin ideas, researched and ranked, are in `SKIN-IDEAS.md`.
-
-
-1. **Look at buddy in the desktop app, and at Christmas and the forest and mask skins in a real pane.** On the desktop: how smooth the redraw feels, and that it doesn't slow the app. The girl: the white fur and stripes on a light background, the dark red mask on a dark one. The spirit: the white eyes and cream belly on a light background, the grey on a dark one; the mushroom's cream stem and the owl's brown on both. Check the white brim, pom-pom and pale snow on light and dark backgrounds, and that the red hat stands out from buddy's orange.
-2. **Easter:** Good Friday to Easter Monday, computed each year (anonymous Gregorian algorithm). In 2027 Easter Sunday is March 28. Ideas: bunny ears, a bobbing egg, `HOPPY!`.
-3. **New Year** (Dec 31–Jan 1): confetti or fireworks, a party hat, a countdown caption?
-4. More options: Valentine's Day, a birthday, or national days if wanted.
-5. **Stress test the agent list:** 9+ agents (the 8-agent cap and "+N more"), an agent whose tool fails (sad mood, `✗ failed`), and one stopped partway (`■ stopped`).
-6. **Tests for untested code:**
-   - the three timers (frame loop, 1s clock, 5s sweep);
-   - the `tool.call` and `turn.complete` handlers (moods, labels, the 30s linger);
-   - `turn.step`;
-   - `ui.close`;
-   - the 8-agent cap;
-   - `describeTool` for more tools.
-7. Maybe: remember a `/buddy <season>` preview across restarts, as skins already are (`$.store`).
+1. **Add the missing font letters A, F, J, Q, V, X, Z** (`FONT` in register.tsx). Dozens of captions were bent around them (`THNK U`, `HOT`, `WOODS`, `NOD`, `TOYS`...); with them, skins could say `PIKA`, `KUPO!` stays, `BANKAI`, `MAXIMUM`, `YAY`. Then revisit those captions.
+2. **New skin groups:** ideas are listed at the end of `SKIN-IDEAS.md` (Pokémon, Nintendo, Pixar/Disney, Looney Tunes, Simpsons, Adventure Time, Muppets, Harry Potter, LOTR, Transformers, more Ghibli...).
+3. **Format limits that hurt some skins:** one `eyeColor` for both eyes (Cyborg's red eye can't move), one `arms.color` (the Dalek's gun can't move), no per-skin season hats. Small additions to `SkinLook` would fix these.
+4. **Look at it in a real pane:** the redrawn skins, Christmas, the forest and mask skins, the desktop redraw speed. Halloween week starts Oct 24: check the daily monster there.
+5. **Art pass three:** the remaining 64 skins were rated good (4/5); a light pass could still help.
+6. **Easter** (Good Friday to Easter Monday, anonymous Gregorian algorithm; Easter Sunday 2027 is March 28) and **New Year** (Dec 31–Jan 1) seasons. Maybe Nov 1–2 for the calavera.
+7. **Stress test the agent list:** 9+ agents (the 8-agent cap and "+N more"), a failing agent (`✗ failed`, buddy flinches), a stopped one (`■ stopped`).
+8. **Tests for untested code:** the frame loop, 1s clock and 5s sweep timers; `tool.call`; `turn.step`; `ui.close`; the 8-agent cap; `describeTool` for more tools.
+9. Maybe: remember a `/buddy <season>` preview across restarts, as skins and rotation already are (`$.store`).
 
 ## Restarting
 
-Open a new session in this folder and say something like: "Read ROADMAP.md and pick up at next iteration 1."
+Open a new session in this folder and say something like: "Read ROADMAP.md and pick up at next iteration 1." `SKIN-IDEAS.md` has the skin catalog and new-group ideas; `hooks/skins/types.ts` documents the skin format.

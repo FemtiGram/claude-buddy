@@ -1,6 +1,6 @@
 # Skin ideas
 
-A catalog of skins buddy could wear, gathered 2026-10-16 by seven research agents (anime, games, film/TV, folklore; then deeper passes on Nordic/European culture, cult film and indie games). Built so far: everything in this file, the Sci-fi ships, Marvel, DC and a big anime batch (129 skins). Next: an art review and a detail pass on the weakest skins.
+A catalog of skins buddy could wear, gathered 2026-10-16 by seven research agents (anime, games, film/TV, folklore; then deeper passes on Nordic/European culture, cult film and indie games). Built so far: everything in this file, the Sci-fi ships, Marvel, DC and a big anime batch: 129 skins (see `/buddy list`). Two art passes have polished 65 of them. New ideas are at the end.
 
 Every skin needs: a 16×16 sprite (body ~10 px wide, 2 rows of headroom), the five moods (chilling, thinking, working, done, oh no), captions of ≤ 8 letters in the pixel font (A, F, J, Q, V, X, Z are missing; add glyphs before using them), and five 8×6 creatures for the agent roles: Explore, Plan, fork (a copy of its parent), general-purpose, anything else.
 
@@ -68,3 +68,18 @@ With several skins, buddy could change on his own, for example `/buddy rotate da
 - **daily**: a skin picked from the date, so it stays the same all day;
 - **session**: a new one each session;
 - the choice saved in `$.store` like the skin; seasons still dress him on top.
+
+## Next groups (not researched yet)
+
+- **Pokémon:** Bulbasaur, Charmander, Squirtle, Eevee, Snorlax, Gengar, Jigglypuff, Mewtwo (Pikachu exists).
+- **Nintendo:** Luigi, Yoshi, Bowser, Peach, Donkey Kong, Samus, Isabelle, Inkling.
+- **Pixar and Disney:** Buzz, Woody, Stitch, Olaf, Mickey, Remy, Sully's friend Boo (Mike and WALL-E exist).
+- **Classic cartoons:** Bugs Bunny, Daffy, Taz, Homer and Bart Simpson, SpongeBob and Patrick, Bender, Rick and Morty.
+- **Adventure Time and friends:** Finn, Jake, BMO, Marceline.
+- **Muppets and Sesame Street:** Kermit, Animal, Miss Piggy, Cookie Monster, Elmo.
+- **Fantasy films:** Gandalf, Gollum, Frodo, Harry Potter, Hedwig, Dobby.
+- **Robots:** Optimus Prime, Bumblebee, Bender, Johnny 5, EVE.
+- **More Ghibli:** Ponyo, Porco Rosso, Howl, the Catbus, an Ohmu (Totoro-like forest, San mask, No-Face, Calcifer, Kiki, Jiji, kodama, soot exist).
+- **More games:** an Among Us crewmate, Steve and an Enderman (Minecraft), a Fall Guy, Cuphead, Madeline (Celeste), a Stardew farmer.
+- **Seasonal skins:** an Easter bunny, Santa himself, a New Year party popper.
+
