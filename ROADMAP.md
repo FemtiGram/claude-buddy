@@ -16,7 +16,8 @@ Where buddy is and what comes next. Written 2026-10-10 to pick work up in a fres
 | 8 | Desktop, VS Code and mobile: the pane draws buddy, his caption and the agent list as SVG (`svgOf`), redrawn whole every other frame when a sprite changed; buddy grows to fit the pane (`remotePx`) | committed `d48ec5c` |
 | 9 | Skins, R2-D2: silver dome, sliding lens, flashing light, `BEEP!`; droids as minis; each skin now has its own creature universe (`UNIVERSE`, `critterFor(type, skin)`) | committed `5f9c111` |
 | 10 | Skins drawn from data: one file per skin in `hooks/skins/` (`SkinLook`), drawn by `drawLook()`, checked by `looks.test.tsx`, previewed as text by `preview.test.tsx`. Ten skins: mario, moogle, pikachu, slime, barba, moomin, tomte, kirby, creeper, soot; version 0.3.0 | committed `41f58cd` |
-| 11 | Horror skins: stripe, sam, alien, jason, chucky, freddy, ghostface, predator, pennywise, frank. Rotation: `/buddy rotate daily|session|off` (`dailySkin`, `skinAt`), kept in `$.store` as `rotate`; picking a skin stops it. Version 0.4.0 | committed (this commit) |
+| 11 | Horror skins: stripe, sam, alien, jason, chucky, freddy, ghostface, predator, pennywise, frank. Rotation: `/buddy rotate daily|session|off` (`dailySkin`, `skinAt`), kept in `$.store` as `rotate`; picking a skin stops it. Version 0.4.0 | committed `9840577` |
+| 12 | Halloween week: buddy wears a different horror skin each day (`HORROR`, `halloweenSkin`) over his own skin and any rotation; `/buddy normal` takes it off; the classic witch hat stays for `frame()` with the classic skin only. Version 0.4.1 | committed (this commit) |
 
 A test run with three Explore agents showed the agent list working live. `/buddy halloween` and `/buddy normal` were tried in a real session and worked. The desktop drawing was tried in the desktop app and works. Christmas and the forest and mask skins have not been looked at in a real pane yet.
 
@@ -58,7 +59,7 @@ A test run with three Explore agents showed the agent list working live. `/buddy
 ## How rotation works
 
 - `rotation` ('daily' | 'session' | 'off') lives in `$.store` under `rotate`, next to `skin`.
-- `skinAt(now)` is the skin to wear: `dailySkin(now)` (the local date's day number modulo `SKINS.length`, so the days step through every skin), the session's pick, or the chosen skin.
+- `skinAt(now)` is the skin to wear: in Halloween week (or `/buddy halloween`) `halloweenSkin(now)`, a different horror skin each day; otherwise `dailySkin(now)` (the local date's day number modulo `SKINS.length`, so the days step through every skin), the session's pick, or the chosen skin.
 - The frame loop redraws when `skinAt(now)` changes, so a daily rotation switches at midnight on its own.
 
 ## Gotchas

@@ -19,7 +19,7 @@ Every agent Claude starts gets a row in the **agent list** below the big buddy: 
 
 Drawn with half-block pixels in the terminal's own colours, so empty space stays transparent.
 
-Around the holidays buddy dresses up. In the week up to **Halloween** (Oct 24–31) he wears a witch hat, a bat flits over his shoulder, a jack-o'-lantern flickers at his feet, and he says `SPOOKY` and `BOO!`. Through **Christmas** (Dec 1–26) he wears a Santa hat, snow falls behind him, a present waits at his feet, and he says `HO HO HO` and `MERRY!`.
+Around the holidays buddy dresses up. In the week up to **Halloween** (Oct 24–31) he turns into a different horror monster each day, from Stripe to Pennywise, while a bat flits over his shoulder and a jack-o'-lantern flickers at his feet, and he says `SPOOKY` and `BOO!`. `/buddy normal` takes the costume off. Through **Christmas** (Dec 1–26) he wears a Santa hat, snow falls behind him, a present waits at his feet, and he says `HO HO HO` and `MERRY!`.
 
 ## Install
 

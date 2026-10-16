@@ -1,6 +1,6 @@
 import { test, expect, mock } from 'claude-code/testing'
 import {
-  dailySkin, heightOf, SKINS, describeTool, CAPTIONS, SEASON_CAPTIONS, SKIN_CAPTIONS, CRITTERS, critterFor, captionFor, captionPixels, captionWidth, elapsed, encode, frame, listOrder, moodOf,
+  dailySkin, halloweenSkin, HORROR, heightOf, SKINS, describeTool, CAPTIONS, SEASON_CAPTIONS, SKIN_CAPTIONS, CRITTERS, critterFor, captionFor, captionPixels, captionWidth, elapsed, encode, frame, listOrder, moodOf,
   remotePx, seasonFor, size, svgOf, tinyFrame, tintFor,
 } from './register'
 
@@ -644,4 +644,30 @@ test('a daily rotation picked in an earlier session comes back', async ($, on) =
   await $.session.start({ cwd: '/tmp', surface: 'desktop', isInteractive: true })
   const view = await $.ui.mount({ plugin: 'buddy', surface: 'desktop', component: 'Pane', requestId: 'buddy', props: pane(36, 40) })
   expect(((await view.find({ type: 'Svg' }))?.props as { source: string }).source).toBe(desktopBody(dailySkin(SUMMER)))
+})
+
+test('through Halloween week buddy is a different monster each day', () => {
+  expect(HORROR).toHaveLength(10)
+  const days = Array.from({ length: 8 }, (_, i) => halloweenSkin(new Date(2026, 9, 24 + i, 12).getTime()))
+  for (const skin of days) expect(HORROR).toContain(skin)
+  expect(new Set(days).size).toBe(8) // a new one every day of the week
+  expect(halloweenSkin(new Date(2026, 9, 31, 0, 1).getTime())).toBe(halloweenSkin(new Date(2026, 9, 31, 23, 59).getTime()))
+})
+
+test('on Halloween buddy wears the day\'s monster over his own skin; /buddy normal takes it off', async ($, on) => {
+  mock.clock(on, { now: HALLOWEEN })
+  on('store.set', () => ({ value: undefined }))
+  on('ui.panes', () => ({ value: [{ id: 'buddy' }] as never }))
+  const body = async () => {
+    const view = await $.ui.mount({ plugin: 'buddy', surface: 'desktop', component: 'Pane', requestId: 'buddy', props: pane(36, 40) })
+    const source = ((await view.find({ type: 'Svg' }))?.props as { source: string }).source
+    await view.unmount()
+    return source
+  }
+  await $.command.run({ command: 'buddy', args: 'forest' })
+  const monster = halloweenSkin(HALLOWEEN)
+  // the season's props come along: the bat and the jack-o'-lantern
+  expect(await body()).toBe(svgOf(frame('idle', 0, undefined, 'halloween', monster), 16, 16, remotePx(36, false).body))
+  await $.command.run({ command: 'buddy', args: 'normal' })
+  expect(await body()).toBe(svgOf(frame('idle', 0, undefined, undefined, 'forest'), 16, 16, remotePx(36, false).body))
 })

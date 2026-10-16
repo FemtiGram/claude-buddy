@@ -109,11 +109,17 @@ export type Rotation = 'daily' | 'session' | 'off'
 export const ROTATIONS: Rotation[] = ['daily', 'session', 'off']
 // The day's skin by the local calendar: the same all day, the next in the list
 // tomorrow, so the days go through every skin in turn.
-export const dailySkin = (ms: number): Skin => {
+const dayNumber = (ms: number) => {
   const d = new Date(ms)
-  const day = Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 86_400_000)
-  return SKINS[day % SKINS.length]!
+  return Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 86_400_000)
 }
+export const dailySkin = (ms: number): Skin => SKINS[dayNumber(ms) % SKINS.length]!
+
+// Through Halloween week buddy is a different monster each day.
+export const HORROR = (['stripe', 'sam', 'alien', 'jason', 'chucky', 'freddy', 'ghostface', 'predator', 'pennywise', 'frank'] as const).filter(
+  s => (SKINS as string[]).includes(s),
+) as Skin[]
+export const halloweenSkin = (ms: number): Skin => HORROR[dayNumber(ms) % HORROR.length]!
 
 export const heightOf = (season?: Season, skin?: Skin) => (season || (skin && skin !== 'classic') ? H_TALL : H)
 
@@ -904,8 +910,13 @@ export const register: Register = on => {
   let rotation: Rotation = 'off' // kept in the store too
   let sessionSkin: Skin = 'classic' // this session's, for `rotate session`
   const pickForSession = (now: number) => SKINS[Math.floor(now / 1000) % SKINS.length]!
-  // The skin to wear at `now`, rotation first.
-  const skinAt = (now: number) => (rotation === 'daily' ? dailySkin(now) : rotation === 'session' ? sessionSkin : chosenSkin)
+  // The skin to wear at `now`: a monster at Halloween (until `/buddy normal`),
+  // else the rotation's, else the one picked.
+  const skinAt = (now: number) =>
+    seasonAt(now) === 'halloween' ? halloweenSkin(now)
+    : rotation === 'daily' ? dailySkin(now)
+    : rotation === 'session' ? sessionSkin
+    : chosenSkin
 
   // The buddy a loop's events belong to: the main one, or its agent's mini.
   const buddyFor = (agentId: string | undefined, create: boolean): Buddy | undefined => {
