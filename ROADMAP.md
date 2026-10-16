@@ -14,7 +14,8 @@ Where buddy is and what comes next. Written 2026-10-10 to pick work up in a fres
 | 6 | Skins, mask: a forest girl with hair, a carved cream mask (red stripe, eyeholes), fur cape and tunic; the mask goes up to show her face when happy or sad; `WILD!`; forest critters as minis; `/buddy mask` | committed `b7644f1` |
 | 7 | Mask skin redrawn: a round red mask with two horns, two yellow-rimmed eyeholes side by side and white stripes, over a white fur cape; her pupils show her mood | committed `9e825be` |
 | 8 | Desktop, VS Code and mobile: the pane draws buddy, his caption and the agent list as SVG (`svgOf`), redrawn whole every other frame when a sprite changed; buddy grows to fit the pane (`remotePx`) | committed `d48ec5c` |
-| 9 | Skins, R2-D2: silver dome, sliding lens, flashing light, `BEEP!`; droids as minis; each skin now has its own creature universe (`UNIVERSE`, `critterFor(type, skin)`) | committed (this commit) |
+| 9 | Skins, R2-D2: silver dome, sliding lens, flashing light, `BEEP!`; droids as minis; each skin now has its own creature universe (`UNIVERSE`, `critterFor(type, skin)`) | committed `5f9c111` |
+| 10 | Skins drawn from data: one file per skin in `hooks/skins/` (`SkinLook`), drawn by `drawLook()`, checked by `looks.test.tsx`, previewed as text by `preview.test.tsx`. Ten skins: mario, moogle, pikachu, slime, barba, moomin, tomte, kirby, creeper, soot; version 0.3.0 | committed (this commit) |
 
 A test run with three Explore agents showed the agent list working live. `/buddy halloween` and `/buddy normal` were tried in a real session and worked. The desktop drawing was tried in the desktop app and works. Christmas and the forest and mask skins have not been looked at in a real pane yet.
 
@@ -44,6 +45,14 @@ A test run with three Explore agents showed the agent list working live. `/buddy
 - They can't repaint in place, so the frame loop calls `$.ui.invalidate('ui.render')` every `REMOTE_EVERY` frames, and only when `look(now)`, a fingerprint of every sprite, differs from what was last drawn.
 - Panes there count width in columns, not CSS pixels. `remotePx()` draws buddy at about 10 CSS pixels a column, a little wider than the pane, and the surface shrinks an over-wide `Svg` to fit; at most 24 per pixel, 12 while agents are listed.
 - `sprites(now)` and `rowOf(mini, now)` are shared by both drawings, so the terminal and the remote panes show the same thing.
+
+## How skins from data work (`hooks/skins/`)
+
+- One file per skin exports `look: SkinLook` (`types.ts` documents every field and how each mood comes out of it); `index.ts` lists them in `LOOKS`, which register.tsx folds into `SKINS`, captions, `CRITTERS` (as `<skin>:<role>`) and `UNIVERSE`.
+- `looks.test.tsx` runs the same checks on every skin, named after it: the format, nothing clipped in any mood or season, captions in the font, five distinct creatures each with a main colour '#', and `/buddy <name>`.
+- `preview.test.tsx` prints every skin as text (`PREVIEW <name>` in `claude plugin test .`), so a skin can be drawn without a pane. Several agents can draw skins in parallel, one file each.
+
+**Adding a skin:** write `hooks/skins/<name>.ts`, add it to `index.ts`, run the tests and read its preview.
 
 ## Gotchas
 

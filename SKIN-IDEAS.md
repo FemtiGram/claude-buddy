@@ -1,6 +1,6 @@
 # Skin ideas
 
-A catalog of skins buddy could wear, gathered 2026-10-16 by seven research agents (anime, games, film/TV, folklore; then deeper passes on Nordic/European culture, cult film and indie games). Built so far: classic, `forest` (Totoro-like spirit), `mask` (San's mask), `r2d2`.
+A catalog of skins buddy could wear, gathered 2026-10-16 by seven research agents (anime, games, film/TV, folklore; then deeper passes on Nordic/European culture, cult film and indie games). Built so far: classic, `forest` (Totoro-like spirit), `mask` (San's mask), `r2d2`, and the shortlist's top ten: `mario`, `moogle`, `pikachu`, `slime`, `barba`, `moomin`, `tomte`, `kirby`, `creeper`, `soot`. Next up: the horror list.
 
 Every skin needs: a 16×16 sprite (body ~10 px wide, 2 rows of headroom), the five moods (chilling, thinking, working, done, oh no), captions of ≤ 8 letters in the pixel font (A, F, J, Q, V, X, Z are missing; add glyphs before using them), and five 8×6 creatures for the agent roles: Explore, Plan, fork (a copy of its parent), general-purpose, anything else.
 
@@ -28,6 +28,27 @@ Hex colours below are the agents' picks, mostly from memory; check a reference b
 | 16 | **Pac-Man** | `pacman` | instantly known; the four ghosts as creatures | CHOMP | Blinky · Pinky · Inky · Clyde · frightened ghost | moods only via mouth and eye |
 | 17 | **Grogu** (The Mandalorian) | `grogu` | wide drooping ears | YES / COO | Jawa · Mando helmet · mini Grogu · IG-11 · blue frog | dark eyes on a green face |
 | 18 | **The Knight** (Hollow Knight) | `knight` | pale horned mask, tiny dark body; mask cracks when sad | REST / ... | Vengefly · Hornet · Grub · Crawlid · Tiktik | dark body needs a pale rim |
+
+## Horror
+
+Researched with web search; cute-creepy, no gore. Hex values are picks.
+
+| # | Skin | `/buddy` | Look | Done / idle | Creatures (Explore · Plan · fork · general · other) | Watch out |
+|---|------|----------|------|-------------|------------------------------------------------------|-----------|
+| 1 | **Stripe** (Gremlins) | `stripe` | green, white mohawk, bat ears, red eyes, yellow belly | HEHE / NO LIGHT | mogwai with torch · clock at midnight · cocoon splitting into spawn · mini gremlin · pizza slice | the best fork |
+| 2 | **Sam** (Trick 'r Treat) | `sam` | orange onesie, burlap sack head, button eyes, lollipop | SWEET / OCT 31 | pumpkin with torch · candy list · mini sack · candy · jack-o'-lantern | a perfect Halloween costume |
+| 3 | **Xenomorph** (Alien) | `alien` | long dome head, tail, purple-grey (not black), pale teeth | NICE / HISS | facehugger · egg · facehugger (seeds a copy) · chestburster · Jones the cat | head is wider than 10 px |
+| 4 | **Jason** (Friday the 13th) | `jason` | white hockey mask with red marks on a grey-teal body | NICE / CAMP | mask with torch · cabin · smaller mask · canoe · hockey stick | body must not be black |
+| 5 | **Chucky** (Child's Play) | `chucky` | orange-red hair, blue overalls, striped shirt | NICE / PLAY | doll with magnifier · toy box · tiny doll · teddy · Good Guys cap | no knife |
+| 6 | **Freddy** (Nightmare on Elm Street) | `freddy` | brown hat, red/green striped sweater, claw glove | SWEET / NAP | hat with magnifier · bed · claw glove · boiler pipe · coffee | 1 px stripes |
+| 7 | **Ghostface** (Scream) | `ghostface` | stretched white mask, slate robe | NICE / WHO IS IT | ringing phone · mask on clipboard · small mask · hood · rotary phone | robe in slate, not black |
+| 8 | **Predator** | `predator` | dreadlocks, mandibles, yellow eyes, mesh; a red laser dot scans while thinking | NICE / HUNT | lens mask · trophy map · splitting drone disc · gauntlet · skull | — |
+| 9 | **Pennywise** (It) | `pennywise` | white face, red tufts, red balloon | NICE / BOB | paper boat · balloons · small balloon · sewer drain · clown shoe | two film versions |
+| 10 | **Frankenstein's monster** (1931) | `frank` | flat top, neck bolts, green skin; bolts spark when done | NICE / GRRR | bolt with lens · lightning rod · stitched copy · lever · candle | — |
+| 11 | **Gill-man** (Black Lagoon) | `gillman` | moss green, head fin, yellow eyes | NICE / SWIM | eyed bubble · lily pad · hatchling · fish · lantern | — |
+| 12 | **Bonnie** (Five Nights at Freddy's) | `bonnie` | purple rabbit, tall ears, red bow tie | NICE / BEEP | camera · stage · bunny head · pizza · battery | ears are tall |
+
+Cut: Pinhead (pins don't read), Michael Myers (too like Ghostface), Samara (hair over the face), the Mummy, Dracula.
 
 ## More ideas
 
