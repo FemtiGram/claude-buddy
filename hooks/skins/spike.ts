@@ -27,7 +27,7 @@ export const look: SkinLook = {
   tear: [3, 4],
   arms: { color: SKIN, down: [[0, 7], [9, 7]], up: [[0, 5], [9, 5]] },
   feet: { color: 0x3a3a48, at: [3, 6] },
-  captions: { happy: 'BOP!', idle: 'SEE YOU' },
+  captions: { happy: 'BANG!', idle: 'SEE YOU' },
   critters: {
     // Swordfish II: sleek red ship.
     Explore: { rows: ['...ww...', '########', '.######.', '..-##-..'], eye: 1, feet: false, colors: { '#': 0xd84a3a, w: 0xcfd8e0 }, tint: 0xd84a3a },

@@ -36,7 +36,7 @@ export const look: SkinLook = {
     up: [[0, 4], [0, 5], [9, 4], [9, 5]],
   },
   feet: { color: SKIN, at: [2, 7] },
-  captions: { idle: 'GRR', happy: 'HULK!' },
+  captions: { idle: 'GRR', happy: 'SMASH!' },
   critters: {
     // Bruce Banner's glasses.
     Explore: { rows: ['.##..##.', '#oo##oo#', '#oo..oo#', '.##..##.'], eye: 1, arms: false, feet: false, colors: { '#': 0x8a6a4a, o: 0x9ac8e0 }, tint: 0x8a6a4a },

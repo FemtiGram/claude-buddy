@@ -34,7 +34,7 @@ export const look: SkinLook = {
   tear: [2, 5],
   arms: { color: BLADE, down: [[9, 7], [9, 8], [9, 9]], up: [[9, 4], [9, 5], [9, 6]] },
   feet: { color: 0x5a3a28, at: [3, 6] },
-  captions: { happy: 'SWEET', idle: 'NOD' },
+  captions: { happy: 'SWEET', idle: 'DOZE' },
   critters: {
     // Explore: a tiny fedora with a magnifier.
     Explore: { rows: ['..####..', '.######.', '#......m', '.....mm.'], eye: 1, feet: false, arms: false, colors: { '#': HAT, m: BLADE }, tint: HAT },

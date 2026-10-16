@@ -36,7 +36,7 @@ export const look: SkinLook = {
     up: [[0, 6], [0, 7], [8, 6], [8, 7]],
   },
   feet: { color: DEEP, at: [2, 6] },
-  captions: { idle: 'BOB', happy: 'NICE' },
+  captions: { idle: 'FLOAT', happy: 'NICE' },
   critters: {
     // A paper boat sailing the gutter.
     Explore: { rows: ['...##...', '.######.', '########', '.-####-.'], eye: 1, feet: false, arms: false, colors: { '#': 0xe8e4d4 }, tint: 0x8a9bb0 },

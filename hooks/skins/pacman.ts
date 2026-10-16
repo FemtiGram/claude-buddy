@@ -22,7 +22,7 @@ export const look: SkinLook = {
   eyes: [[5, 1]],
   smile: [[2, 3], [3, 3], [4, 3]],
   tear: [4, 2],
-  captions: { happy: 'CHOMP', idle: 'WOKKO' },
+  captions: { happy: 'CHOMP', idle: 'WAKKA' },
   critters: {
     // Blinky: red, looking right.
     Explore: ghost(['..####..', '.#ww#ww.', '########', '##.##.##'], 0xe03838, [3, 6]),

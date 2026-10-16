@@ -29,7 +29,7 @@ export const look: SkinLook = {
   tear: [2, 4],
   arms: { color: SKIN, down: [[0, 7], [9, 7]], up: [[0, 5], [9, 5]] },
   feet: { color: RED, at: [3, 6] },
-  captions: { happy: 'HERE!', idle: 'HO HO' },
+  captions: { happy: 'IM HERE!', idle: 'HO HO' },
   critters: {
     // A little All Might poster.
     Explore: { rows: ['########', '#yyyyyy#', '#bbssbb#', '########'], eye: 2, feet: false, arms: false, colors: { '#': 0xc8302c, y: 0xf2c832, b: 0x2a4aa8, s: 0xf5cfa0 }, tint: 0xc8302c },

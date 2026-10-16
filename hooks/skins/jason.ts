@@ -33,7 +33,7 @@ export const look: SkinLook = {
     up: [[0, 5], [0, 6], [9, 5], [9, 6]],
   },
   feet: { color: 0x6a6258, at: [3, 6] },
-  captions: { idle: 'WOODS', happy: 'NICE' },
+  captions: { idle: 'CAMP', happy: 'NICE' },
   critters: {
     // A tiny hockey mask with a flashlight beam.
     Explore: { rows: ['..####..', '.#R##R#y', '.######y', '..####yy'], eye: 1, eyes: [2, 5], eyeColor: 0x4a4458, colors: { '#': MASK, R: RED, y: 0xe8d890 }, tint: MASK },

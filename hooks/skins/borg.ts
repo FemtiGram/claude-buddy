@@ -25,7 +25,7 @@ export const look: SkinLook = {
   smile: [[2, 3], [7, 3]],
   tear: [7, 6],
   feet: { color: GREEN, at: [2, 7] },
-  captions: { happy: 'BORG', idle: 'RESIST' },
+  captions: { happy: 'FUTILE', idle: 'RESIST' },
   critters: {
     // A Borg sphere.
     Explore: { rows: ['..####..', '.#d##d#.', '########', '.######.'], eye: 2, eyeColor: GREEN, feet: false, arms: false, colors: { '#': 0x6a7a6c, d: 0x2e3a32 }, tint: 0x6a7a6c },

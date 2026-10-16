@@ -30,7 +30,7 @@ export const look: SkinLook = {
   tear: [3, 4],
   arms: { color: 0xfff0a0, down: [[0, 7], [9, 7]], up: [[0, 5], [9, 5]] },
   feet: { color: GOLD, at: [3, 6] },
-  captions: { happy: 'SPEED', idle: 'BRB' },
+  captions: { happy: 'ZOOM!', idle: 'BRB' },
   critters: {
     // A lightning bolt.
     Explore: { rows: ['...###..', '..###...', '.######.', '..##....'], eye: 2, feet: false, arms: false, colors: { '#': GOLD }, tint: GOLD },

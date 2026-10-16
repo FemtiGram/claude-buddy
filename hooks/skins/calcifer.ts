@@ -26,7 +26,7 @@ export const look: SkinLook = {
   eyeColor: 0x3a2a4a,
   smile: [[4, 6], [5, 6]],
   tear: [4, 7],
-  captions: { idle: 'HOT', happy: 'EGGS' },
+  captions: { idle: 'FIRE', happy: 'EGGS' },
   critters: {
     // Turnip-head scarecrow.
     Explore: { rows: ['.g.gg.g.', '..####..', '.######.', '...bb...'], eye: 2, colors: { '#': 0xd8c4e8, g: 0x5e9a4a, b: 0x8a6a48 }, tint: 0xd8c4e8 },

@@ -28,7 +28,7 @@ export const look: SkinLook = {
   tear: [2, 3],
   arms: { color: SKIN, down: [[1, 6], [8, 6]], up: [[0, 5], [9, 5]] },
   feet: { color: 0x6b3e1e, at: [3, 6] },
-  captions: { happy: 'YIPPEE', idle: 'HMM' },
+  captions: { happy: 'WAHOO!', idle: 'HMM' },
   critters: {
     // Lakitu: a green-shelled koopa on his cloud.
     Explore: { rows: ['..gggg..', '.######.', 'wwwwwwww', '.wwwwww.'], eye: 1, feet: false, colors: { '#': 0xd9c25a, g: 0x2fa660, w: CLOUD }, tint: 0x2fa660 },

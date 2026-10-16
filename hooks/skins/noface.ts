@@ -35,7 +35,7 @@ export const look: SkinLook = {
     down: [[0, 7], [0, 8], [9, 7], [9, 8]],
     up: [[0, 5], [0, 6], [9, 5], [9, 6]],
   },
-  captions: { idle: 'UH UH', happy: 'THNK U' },
+  captions: { idle: 'UH UH', happy: 'THANKS' },
   critters: {
     // Haku: a white-green dragon with a teal mane.
     Explore: { rows: ['.tt.....', 'tdd###..', '.t#####.', '..#####.'], eye: 1, eyes: [3, 5], arms: false, feet: false, colors: { '#': 0xd6e8dc, t: 0x2fa89a, d: 0x4fc4b0 }, tint: 0x2fa89a },

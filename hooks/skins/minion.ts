@@ -28,7 +28,7 @@ export const look: SkinLook = {
   tear: [3, 5],
   arms: { color: DARK, down: [[0, 7], [9, 7]], up: [[0, 5], [9, 5]] },
   feet: { color: DARK, at: [3, 6] },
-  captions: { happy: 'BELLO!', idle: 'BELLO' },
+  captions: { happy: 'BANANA!', idle: 'BELLO' },
   critters: {
     // One-eyed minion with a magnifier.
     Explore: { rows: ['..####..', '.#gwwg#m', '.#####m.', '..-##-..'], eye: 1, eyes: [4], colors: { '#': YELLOW, g: 0x8e949c, w: 0xeef0f2, m: 0xc8ccd2 }, tint: YELLOW },

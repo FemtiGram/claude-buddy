@@ -33,7 +33,7 @@ export const look: SkinLook = {
     up: [[0, 4], [0, 5], [9, 4], [9, 5]],
   },
   feet: { color: BLACK, at: [3, 6] },
-  captions: { idle: 'BORED', happy: 'HI MOM!' },
+  captions: { idle: 'BORED', happy: 'MAXIMUM' },
   critters: {
     // A chimichanga: golden wrapped burrito with salsa.
     Explore: { rows: ['..rr....', '.######.', '########', '.######.'], eye: 2, arms: false, feet: false, colors: { '#': 0xd8a24a, r: 0xc83a2a }, tint: 0xd8a24a },

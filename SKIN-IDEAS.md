@@ -2,7 +2,7 @@
 
 A catalog of skins buddy could wear, gathered 2026-10-16 by seven research agents (anime, games, film/TV, folklore; then deeper passes on Nordic/European culture, cult film and indie games). Built so far: everything in this file, the Sci-fi ships, Marvel, DC and a big anime batch: 129 skins (see `/buddy list`). Two art passes have polished 65 of them. New ideas are at the end.
 
-Every skin needs: a 16×16 sprite (body ~10 px wide, 2 rows of headroom), the five moods (chilling, thinking, working, done, oh no), captions of ≤ 8 letters in the pixel font (A, F, J, Q, V, X, Z are missing; add glyphs before using them), and five 8×6 creatures for the agent roles: Explore, Plan, fork (a copy of its parent), general-purpose, anything else.
+Every skin needs: a 16×16 sprite (body ~10 px wide, 2 rows of headroom), the five moods (chilling, thinking, working, done, oh no), captions of ≤ 8 letters in the pixel font (A–Z, `!`, `.` and space; at most 32 pixels wide), and five 8×6 creatures for the agent roles: Explore, Plan, fork (a copy of its parent), general-purpose, anything else.
 
 Hex colours below are the agents' picks, mostly from memory; check a reference before drawing. ⚠ marks a likely problem.
 

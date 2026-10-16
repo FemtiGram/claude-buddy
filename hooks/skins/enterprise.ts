@@ -27,7 +27,7 @@ export const look: SkinLook = {
   tear: [4, 3],
   arms: { color: BUSSARD, down: [[0, 6], [9, 6]], up: [[0, 5], [9, 5]] },
   feet: { color: GLOW, at: [1, 8] },
-  captions: { happy: 'BOLDLY', idle: 'HMM' },
+  captions: { happy: 'BOLDLY', idle: 'ENGAGE' },
   critters: {
     // A shuttlecraft.
     Explore: { rows: ['..####..', '.#w##w#.', '########', '.b....b.'], eye: 1, feet: false, arms: false, colors: { '#': HULL, w: SHADE, b: GLOW }, tint: HULL },

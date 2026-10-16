@@ -31,7 +31,7 @@ export const look: SkinLook = {
   tear: [4, 4],
   arms: { color: SKIN, down: [[9, 7]], up: [[9, 5]] },
   feet: { color: LIGHT, at: [4, 6] },
-  captions: { happy: 'TENSHO', idle: 'TCH' },
+  captions: { happy: 'BANKAI', idle: 'TCH' },
   critters: {
     // Kon: the lion plush, tan with a brown mane.
     Explore: { rows: ['.mm##mm.', 'm######m', 'm######m', '..#--#..'], eye: 1, colors: { '#': 0xe0a848, m: 0xb86a2a }, tint: 0xe0a848 },

@@ -36,7 +36,7 @@ export const look: SkinLook = {
     up: [[0, 6], [9, 6]],
   },
   feet: { color: 0x5c4a3a, at: [3, 6] },
-  captions: { idle: 'BESKR', happy: 'DONE' },
+  captions: { idle: 'BESKR', happy: 'THE WAY' },
   critters: {
     // The Razor Crest: a swept grey ship with a cockpit glow.
     Explore: { rows: ['...##...', '..####y.', '.#######', '#.-##-.#'], eye: 1, eyes: [3], eyeColor: 0x2c303a, arms: false, feet: false, colors: { '#': 0x9a9ea6, y: 0xe8c860, '-': 0x6c7480 }, tint: 0x9a9ea6 },

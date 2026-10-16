@@ -28,7 +28,7 @@ export const look: SkinLook = {
   tear: [3, 4],
   arms: { color: SKIN, down: [[0, 8], [9, 8]], up: [[0, 5], [9, 5]] },
   feet: { color: 0xa8683c, at: [3, 6] },
-  captions: { happy: 'SHISHI!', idle: 'HUNGRY' },
+  captions: { happy: 'SHISHI!', idle: 'MEAT' },
   critters: {
     // The Going Merry: white sail, sheep figurehead.
     Explore: { rows: ['...ww...', '..wwww..', 'ss####..', '.######.'], eye: 2, feet: false, colors: { '#': 0xc8803a, w: 0xe8e0d0, s: 0xf0f0e8 }, tint: 0xc8803a },

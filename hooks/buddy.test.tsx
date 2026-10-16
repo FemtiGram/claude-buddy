@@ -1,6 +1,6 @@
 import { test, expect, mock } from 'claude-code/testing'
 import {
-  dailySkin, halloweenSkin, HORROR, groupOf, skinGroups, heightOf, SKINS, describeTool, CAPTIONS, SEASON_CAPTIONS, SKIN_CAPTIONS, CRITTERS, critterFor, captionFor, captionPixels, captionWidth, elapsed, encode, frame, listOrder, moodOf,
+  dailySkin, halloweenSkin, HORROR, groupOf, skinGroups, heightOf, SKINS, describeTool, CAPTIONS, SEASON_CAPTIONS, SKIN_CAPTIONS, CRITTERS, critterFor, captionFor, captionPixels, captionWidth, hasGlyphs, elapsed, encode, frame, listOrder, moodOf,
   remotePx, seasonFor, size, svgOf, tinyFrame, tintFor,
 } from './register'
 
@@ -129,6 +129,10 @@ test('every caption fits the 32-pixel caption row and draws ink', () => {
     expect(captionWidth(text)).toBeLessThanOrEqual(32)
     expect(captionPixels(text, 0, true).some(c => c !== 0x01000000)).toBe(true)
   }
+})
+
+test('the caption font has every letter A to Z', () => {
+  expect(hasGlyphs('ABCDEFGHIJKLMNOPQRSTUVWXYZ')).toBe(true)
 })
 
 test('activity lines name the tool and its most telling argument', () => {

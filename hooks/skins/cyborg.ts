@@ -31,7 +31,7 @@ export const look: SkinLook = {
   tear: [6, 2],
   arms: { color: DARK, down: [[0, 6], [0, 7]], up: [[0, 4], [0, 5]] },
   feet: { color: DARK, at: [2, 7] },
-  captions: { happy: 'ONLINE', idle: 'BEEP' },
+  captions: { happy: 'BOOYAH!', idle: 'BEEP' },
   critters: {
     // A blue Boom Tube portal.
     Explore: { rows: ['.######.', '#..##..#', '#..##..#', '.######.'], eye: 1, eyes: [], feet: false, arms: false, colors: { '#': 0x3a8ae8 }, tint: 0x3a8ae8 },

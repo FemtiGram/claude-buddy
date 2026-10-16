@@ -24,7 +24,8 @@ Where buddy is and what comes next. Written 2026-10-10 to pick work up in a fres
 | 16 | Marvel group (spidey, ironman, hulk, cap, thor, groot, deadpool, panther, venom, strange) and 18 more anime (goku, vegeta, saitama, luffy, chopper, spike, tanjiro, nezuko, levi, deku, allmight, gojo, ichigo, ryuk, edward, eva, pochita, anya); MIT LICENSE for the code and a fan-project disclaimer in the README. 117 skins. Version 0.8.0 | committed `4e43cfc` |
 | 17 | DC group: batman, superman, wonder, joker, flash, harley, robin, lantern, aquaman, catwoman, cyborg, ivy; the skin tests now also check that every creature's eyes sit on its body. 129 skins. Version 0.9.0 | committed `9035373` |
 | 18 | Art pass: a review rated every skin and the 35 weakest were redrawn (rims on dark characters, shading on pale ones, real silhouettes for the ships, cleaner colour ramps); a contrast check makes every skin read on both a dark and a light terminal. Version 0.10.0 | committed `f6b2045` |
-| 19 | Second art pass: 30 more skins redrawn (the rest of the review's weak list, the skins it flagged for contrast or repeated colours, and seven DC skins drawn after it); 65 of 129 skins now polished. Version 0.11.0 | committed (this commit) |
+| 19 | Second art pass: 30 more skins redrawn (the rest of the review's weak list, the skins it flagged for contrast or repeated colours, and seven DC skins drawn after it); 65 of 129 skins now polished. Version 0.11.0 | committed `48805d3` |
+| 20 | The caption font has the whole alphabet: A, F, J, Q, V, X, Z added; 28 captions that were bent around them now say what they meant (`PIKA` / `PIKACHU!`, `BANKAI`, `MAXIMUM`, `WAKANDA`, `QAPLA!`, `ZOOM!`, `BOOYAH!`, `THE WAY`, `WAHOO!`, `SMASH!`...); a test checks the font covers A–Z. Version 0.12.0 | committed (this commit) |
 
 A test run with three Explore agents showed the agent list working live. `/buddy halloween` and `/buddy normal` were tried in a real session and worked. The desktop drawing was tried in the desktop app and works. Christmas and the forest and mask skins have not been looked at in a real pane yet.
 
@@ -79,22 +80,21 @@ A test run with three Explore agents showed the agent list working live. `/buddy
 
 ## Where things stand (2026-10-17)
 
-Version **0.11.0**, pushed to github.com/FemtiGram/claude-buddy (the marketplace your friend installs from). **129 skins** in groups Buddy, Ghibli, Star Wars, Sci-fi ships, Marvel, DC, Games, Film & TV, Anime, Cartoons & folklore, Horror; `/buddy list`, `/buddy random`, `/buddy rotate daily|session|off`; seasons (Halloween week = a horror skin a day, Christmas); buddy watches/cheers/flinches for his agents; works in the terminal, the desktop app, VS Code and mobile (SVG). 795 tests. Two art passes polished 65 skins; the rest rated good in review. MIT licence for the code, fan-project disclaimer in the README.
+Version **0.12.0**, pushed to github.com/FemtiGram/claude-buddy (the marketplace your friend installs from). **129 skins** in groups Buddy, Ghibli, Star Wars, Sci-fi ships, Marvel, DC, Games, Film & TV, Anime, Cartoons & folklore, Horror; `/buddy list`, `/buddy random`, `/buddy rotate daily|session|off`; seasons (Halloween week = a horror skin a day, Christmas); buddy watches/cheers/flinches for his agents; works in the terminal, the desktop app, VS Code and mobile (SVG). 796 tests. The caption font covers A–Z. Two art passes polished 65 skins; the rest rated good in review. MIT licence for the code, fan-project disclaimer in the README.
 
 **How we've been working:** new skins go in as placeholders (`hooks/skins/stub.ts` + an entry in `index.ts`), then parallel agents draw 2–3 skins each in their own files and paste their previews; I review, fix shared-test failures, delete `stub.ts`, bump the version, commit and push. Agents must not touch git (one ran `git stash` mid-batch once). With many agents testing at once the shared creature test can time out; re-run on a quiet machine.
 
 ## Next iterations
 
-1. **Add the missing font letters A, F, J, Q, V, X, Z** (`FONT` in register.tsx). Dozens of captions were bent around them (`THNK U`, `HOT`, `WOODS`, `NOD`, `TOYS`...); with them, skins could say `PIKA`, `KUPO!` stays, `BANKAI`, `MAXIMUM`, `YAY`. Then revisit those captions.
-2. **New skin groups:** ideas are listed at the end of `SKIN-IDEAS.md` (Pokémon, Nintendo, Pixar/Disney, Looney Tunes, Simpsons, Adventure Time, Muppets, Harry Potter, LOTR, Transformers, more Ghibli...).
-3. **Format limits that hurt some skins:** one `eyeColor` for both eyes (Cyborg's red eye can't move), one `arms.color` (the Dalek's gun can't move), no per-skin season hats. Small additions to `SkinLook` would fix these.
-4. **Look at it in a real pane:** the redrawn skins, Christmas, the forest and mask skins, the desktop redraw speed. Halloween week starts Oct 24: check the daily monster there.
-5. **Art pass three:** the remaining 64 skins were rated good (4/5); a light pass could still help.
-6. **Easter** (Good Friday to Easter Monday, anonymous Gregorian algorithm; Easter Sunday 2027 is March 28) and **New Year** (Dec 31–Jan 1) seasons. Maybe Nov 1–2 for the calavera.
-7. **Stress test the agent list:** 9+ agents (the 8-agent cap and "+N more"), a failing agent (`✗ failed`, buddy flinches), a stopped one (`■ stopped`).
-8. **Tests for untested code:** the frame loop, 1s clock and 5s sweep timers; `tool.call`; `turn.step`; `ui.close`; the 8-agent cap; `describeTool` for more tools.
-9. Maybe: remember a `/buddy <season>` preview across restarts, as skins and rotation already are (`$.store`).
+1. **New skin groups:** ideas are listed at the end of `SKIN-IDEAS.md` (Pokémon, Nintendo, Pixar/Disney, Looney Tunes, Simpsons, Adventure Time, Muppets, Harry Potter, LOTR, Transformers, more Ghibli...).
+2. **Format limits that hurt some skins:** one `eyeColor` for both eyes (Cyborg's red eye can't move), one `arms.color` (the Dalek's gun can't move), no per-skin season hats. Small additions to `SkinLook` would fix these.
+3. **Look at it in a real pane:** the redrawn skins, Christmas, the forest and mask skins, the desktop redraw speed. Halloween week starts Oct 24: check the daily monster there.
+4. **Art pass three:** the remaining 64 skins were rated good (4/5); a light pass could still help.
+5. **Easter** (Good Friday to Easter Monday, anonymous Gregorian algorithm; Easter Sunday 2027 is March 28) and **New Year** (Dec 31–Jan 1) seasons. Maybe Nov 1–2 for the calavera.
+6. **Stress test the agent list:** 9+ agents (the 8-agent cap and "+N more"), a failing agent (`✗ failed`, buddy flinches), a stopped one (`■ stopped`).
+7. **Tests for untested code:** the frame loop, 1s clock and 5s sweep timers; `tool.call`; `turn.step`; `ui.close`; the 8-agent cap; `describeTool` for more tools.
+8. Maybe: remember a `/buddy <season>` preview across restarts, as skins and rotation already are (`$.store`).
 
 ## Restarting
 
-Open a new session in this folder and say something like: "Read ROADMAP.md and pick up at next iteration 1." `SKIN-IDEAS.md` has the skin catalog and new-group ideas; `hooks/skins/types.ts` documents the skin format.
+Open a new session in this folder and say something like: "Read ROADMAP.md and pick up at next iteration 1." Some captions are still squeezed by the 32-pixel row (`EXTERMINATE`, `RASENGAN`, `ASSEMBLE` don't fit). `SKIN-IDEAS.md` has the skin catalog and new-group ideas; `hooks/skins/types.ts` documents the skin format.

@@ -33,7 +33,7 @@ export const look: SkinLook = {
   tear: [3, 6],
   arms: { color: SKIN, down: [[0, 8], [9, 8]], up: [[0, 6], [9, 6]] },
   feet: { color: SHOE, at: [3, 6] },
-  captions: { happy: 'HEH!', idle: 'HMM' },
+  captions: { happy: 'WAKU!', idle: 'HMM' },
   critters: {
     // Bond: big white fluffy dog.
     Explore: { rows: ['#.#..#.#', '########', '########', '.##--##.'], eye: 1, colors: { '#': 0xe6e2da }, tint: 0xe6e2da },

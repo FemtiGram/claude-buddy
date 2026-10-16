@@ -31,7 +31,7 @@ export const look: SkinLook = {
   tear: [3, 4],
   arms: { color: 0xe8e8e8, down: [[0, 7], [9, 7]], up: [[0, 5], [9, 5]] },
   feet: { color: RED, at: [3, 6] },
-  captions: { happy: 'PLUS!', idle: 'MUMBLE' },
+  captions: { happy: 'SMASH!', idle: 'MUMBLE' },
   critters: {
     // Bakugo: spiky blond, explosions at his hands.
     Explore: { rows: ['#.#.#.#.', '.######.', 'o######o', '..#--#..'], eye: 2, eyeColor: 0xd02020, colors: { '#': 0xf2d24a, o: 0xf08a2a }, tint: 0xf2d24a },

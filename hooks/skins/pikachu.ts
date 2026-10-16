@@ -21,7 +21,7 @@ export const look: SkinLook = {
   tear: [3, 5],
   arms: { color: 0xf6c932, down: [[1, 6], [8, 6]], up: [[0, 5], [9, 5]] },
   feet: { color: 0xd9a92a, at: [3, 6] },
-  captions: { idle: 'PI', happy: 'CHU' },
+  captions: { idle: 'PIKA', happy: 'PIKACHU!' },
   critters: {
     // Pidgey: a small brown bird with a cream front.
     Explore: { rows: ['..a##a..', '.######.', '.#cccc#.', '..-cc-..'], eye: 1, colors: { '#': 0x9a7048, a: 0xd9b36a, c: 0xe8d8b0 }, tint: 0xb08454 },

@@ -30,7 +30,7 @@ export const look: SkinLook = {
   smileColor: 0xffc060,
   tear: [4, 3],
   feet: { color: GLOW, at: [4, 5] },
-  captions: { happy: 'GLORY!', idle: 'HONOR' },
+  captions: { happy: 'QAPLA!', idle: 'HONOR' },
   critters: {
     // A scout probe.
     Explore: { rows: ['...##...', '..####..', '.#o##o#.', '..-..-..'], eye: 2, eyeColor: 0xe0602a, feet: false, arms: false, colors: { '#': HULL, o: GLOW }, tint: HULL },

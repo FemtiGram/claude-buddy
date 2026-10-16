@@ -32,7 +32,7 @@ export const look: SkinLook = {
   tear: [2, 4],
   arms: { color: FACE_HI, down: [[0, 9], [9, 9]], up: [[0, 7], [9, 7]] },
   feet: { color: DARK, at: [3, 6] },
-  captions: { happy: 'YUMMY', idle: 'BORED' },
+  captions: { happy: 'APPLES', idle: 'BORED' },
   critters: {
     // A red apple.
     Explore: { rows: ['...gl...', '.######.', '########', '..####..'], eye: 1, feet: false, arms: false, colors: { '#': 0xd84040, g: 0x7a5030, l: 0x58a858 }, tint: 0xd84040 },

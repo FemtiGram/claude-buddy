@@ -28,7 +28,7 @@ export const look: SkinLook = {
   tear: [3, 3],
   arms: { color: 0x7a7a7a, down: [[0, 5], [9, 5]], up: [[0, 3], [9, 3]] },
   feet: { color: TREAD, at: [2, 3, 6, 7] },
-  captions: { happy: 'WOW!', idle: 'HELLO' },
+  captions: { happy: 'EVA!', idle: 'HELLO' },
   critters: {
     // EVE: a white egg with a dark face band and blue eyes.
     Explore: { rows: ['..####..', '.#kkkk#.', '.######.', '..####..'], eye: 1, eyeColor: 0x4aa3f0, feet: false, colors: { '#': 0xe4e8ec, k: 0x2a3550 }, tint: 0x4aa3f0 },

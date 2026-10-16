@@ -33,7 +33,7 @@ export const look: SkinLook = {
     up: [[0, 3], [0, 4], [9, 3], [9, 4]],
   },
   feet: { color: SHOE, at: [2, 7] },
-  captions: { idle: 'TOYS', happy: 'NICE' },
+  captions: { idle: 'PLAY', happy: 'NICE' },
   critters: {
     // A doll with a magnifier: orange hair, pale face, glass to the right.
     Explore: { rows: ['.hhhh...', '.h##h.oo', '.###.o.o', '..bb..oo'], eye: 1, eyes: [2, 3], eyeColor: 0x3a5fa0, colors: { '#': SKIN, h: HAIR, b: DENIM, o: 0x8a6a40 }, tint: HAIR },

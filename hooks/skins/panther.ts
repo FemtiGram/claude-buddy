@@ -33,7 +33,7 @@ export const look: SkinLook = {
     up: [[0, 5], [0, 6], [9, 5], [9, 6]],
   },
   feet: { color: GLOW, at: [3, 6] },
-  captions: { idle: 'HMM', happy: 'KING!' },
+  captions: { idle: 'HMM', happy: 'WAKANDA' },
   critters: {
     // Shuri: dark braids, a brown face, purple gauntlets on both sides.
     Explore: { rows: ['..hhhh..', '.h####h.', 'p######p', 'p.####.p'], eye: 1, colors: { '#': 0x9a6a48, h: 0x4a4458, p: GLOW }, tint: 0x9a6a48 },
