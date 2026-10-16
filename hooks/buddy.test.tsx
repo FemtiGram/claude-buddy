@@ -400,37 +400,51 @@ test('in the forest an agent\'s name takes its critter\'s colour', async ($, on)
   expect((await term.find({ type: 'Text', text: 'Plan' }))?.props.color).toBe(`#${CRITTERS.owl.tint.toString(16)}`)
 })
 
-test('the masked girl is 16×16 and never clips her hair, her mask or her boots', () => {
-  const HAIR = 0x5b4339
-  const MASK = 0xe8dcc0
+test('the masked girl is 16×16 and never clips her horns, her mask or her boots', () => {
+  const MASK = 0xb8322a
+  const RIM = 0xf2b632
+  const PELT = 0xece6d6
   const SHOE = 0x5a3d2b
-  const SKIN = 0xf0c8a0
+  const EYE = 0x1f1e1d
+  const TEAR = 0x5aa9e6
   const HAT = 0x6a3d9a
   const SANTA = 0xd63a3a
+  const count = (px: number[], ...cs: number[]) => px.filter(p => cs.includes(p)).length
   expect(size(2, undefined, 'mask')).toEqual({ columns: 32, rows: 16 })
   for (const mood of MOODS) {
     const plain = frame(mood, 0, undefined, undefined, 'mask')
-    const count = (px: number[], c: number) => px.filter(p => p === c).length
     for (let tick = 0; tick < 96; tick++) {
       const px = frame(mood, tick, undefined, undefined, 'mask')
       expect(px).toHaveLength(256)
-      for (const c of [HAIR, MASK, SHOE]) expect(count(px, c)).toBe(count(plain, c))
+      // the tear runs over the mask, so it counts with it
+      expect(count(px, MASK, TEAR)).toBe(count(plain, MASK, TEAR))
+      // a blink turns pupils back to rim, so they count together
+      expect(count(px, RIM, EYE)).toBe(count(plain, RIM, EYE))
+      expect(count(px, PELT)).toBe(count(plain, PELT))
       expect(count(px, SHOE)).toBe(4)
       expect(px.some(c => c === 0xd97757)).toBe(false)
-      // the mask comes off when she's happy or sad: her face shows, not just her hands
-      if (mood === 'happy' || mood === 'sad') expect(count(px, SKIN)).toBeGreaterThan(10)
-      else expect(count(px, SKIN)).toBeLessThanOrEqual(4)
       // seasons bring props but no hat, and never cover her
       const spooky = frame(mood, tick, undefined, 'halloween', 'mask')
       const merry = frame(mood, tick, undefined, 'christmas', 'mask')
       expect(spooky.some(c => c === HAT)).toBe(false)
       expect(merry.some(c => c === SANTA)).toBe(false)
-      for (const c of [HAIR, MASK]) {
+      for (const c of [MASK, RIM, PELT]) {
         expect(count(spooky, c)).toBe(count(px, c))
         expect(count(merry, c)).toBe(count(px, c))
       }
     }
   }
+  // two eyes show through two eyeholes: looking up when happy, apart when sad,
+  // hidden in a blink
+  const pupils = (px: number[]) => px.flatMap((c, i) => (c === EYE ? [[i % 16, Math.floor(i / 16)]] : []))
+  const idle = pupils(frame('idle', 0, undefined, undefined, 'mask'))
+  const happy = pupils(frame('happy', 0, undefined, undefined, 'mask'))
+  const sad = pupils(frame('sad', 0, undefined, undefined, 'mask'))
+  expect(idle).toHaveLength(2)
+  expect(idle[0]![1]).toBe(idle[1]![1]) // side by side, on one row
+  expect(happy).toHaveLength(2)
+  expect(sad[1]![0]! - sad[0]![0]!).toBeGreaterThan(idle[1]![0]! - idle[0]![0]!)
+  expect(pupils(frame('idle', 47, undefined, undefined, 'mask'))).toHaveLength(0)
   expect(captionFor('happy', undefined, 'mask')).toBe('WILD!')
   // her agents are forest critters too
   expect(tinyFrame('idle', 0, 0xe8a87c, undefined, 'mask', 'owl')).toEqual(tinyFrame('idle', 0, 0xe8a87c, undefined, 'forest', 'owl'))

@@ -39,13 +39,13 @@ const GIFT = 0x3f9b4f
 // The forest skin: a grey-blue spirit with a cream belly.
 const FUR = 0x8b9099
 const BELLY = 0xeee4c8
-// The mask skin: a forest girl in a carved mask and a fur cape.
-const HAIR = 0x5b4339
-const MASK = 0xe8dcc0
-const PAINT = 0xc0392b
+// The mask skin: a round red horned mask with yellow-rimmed holes and white
+// stripes, over a shaggy white fur cape.
+const MASK = 0xb8322a
+const RIM = 0xf2b632
+const STRIPE = 0xf4f4f4
+const PELT = 0xece6d6
 const SKIN = 0xf0c8a0
-const CAPE = 0xa77b4f
-const TUNIC = 0x4a6b4a
 const SHOE = 0x5a3d2b
 
 type Mood = 'idle' | 'think' | 'run' | 'happy' | 'sad'
@@ -313,68 +313,59 @@ function spiritBody(set: Draw, mood: Mood, tick: number, ox: number, oy: number,
   }
 }
 
-// The mask skin, 10 wide: hair framing a carved mask ('M', a red 'R' stripe,
-// 'X' eyeholes), a fur cape 'F' over a tunic 'T'. `oy` is the top of her hair.
+// The mask skin, 10 wide: horns, the round mask ('R' red, 'W' white stripes,
+// 'Y' the rims of its two eyeholes, 'D' the dark inside), then the fur cape 'F'.
+// `oy` is the top of the mask; the horns stick up two rows above it.
 const MASK_ROWS = [
-  '..HHHHHH..',
-  '.HHHHHHHH.',
-  '.HMMRRMMH.',
-  '.HMXMMXMH.',
-  '.HMMMMMMH.',
-  '.HHMMMMHH.',
-  'FFFFFFFFFF',
-  '.FTTTTTTF.',
-  '..TTTTTT..',
+  '.R.......R',
+  '.RR.....R.',
+  '..RRWRRR..',
+  '.RRRWRRRR.',
+  'RYYRWRRYYR',
+  'RYDRRWRDYR',
+  'RWWRRRWWRR',
+  '.RRWWRRRR.',
+  '..RRRWWR..',
+  '.FFFFFFFF.',
+  '..FFFFFF..',
 ]
-// Happy or sad, she pushes the mask up onto her head and shows her face.
-const FACE_ROWS = ['.HSSSSSSH.', '.HSSSSSSH.', '.HSSSSSSH.', '.HHSSSSHH.']
-const MASK_UP = '..MXRRXM..'
-const MASK_COLORS: Record<string, number> = { H: HAIR, M: MASK, R: PAINT, X: EYE, S: SKIN, F: CAPE, T: TUNIC }
+const MASK_COLORS: Record<string, number> = { R: MASK, W: STRIPE, Y: RIM, D: EYE, F: PELT }
+// The two eyeholes side by side, each 2×2 with its rim.
+const HOLES = [[1, 2], [7, 2]] as const
 
 function maskBody(set: Draw, mood: Mood, tick: number, ox: number, oy: number) {
-  const unmasked = mood === 'happy' || mood === 'sad'
-  const rows = unmasked ? [...MASK_ROWS.slice(0, 2), ...FACE_ROWS, ...MASK_ROWS.slice(6)] : MASK_ROWS
-  const draw = (row: string, y: number) => {
-    for (let x = 0; x < row.length; x++) if (row[x] !== '.') set(ox + x, y, MASK_COLORS[row[x]!]!)
-  }
-  rows.forEach((row, y) => draw(row, oy + y))
-  if (unmasked) draw(MASK_UP, oy - 1)
+  MASK_ROWS.forEach((row, y) => {
+    for (let x = 0; x < row.length; x++) if (row[x] !== '.') set(ox + x, oy - 2 + y, MASK_COLORS[row[x]!]!)
+  })
 
   // Hands out from under the cape, up when happy or running.
   const armUp = mood === 'happy' || (mood === 'run' && tick % 4 < 2)
-  set(ox - 1, oy + (armUp ? 5 : 6), SKIN)
-  set(ox + 10, oy + (armUp ? 5 : 6), SKIN)
+  set(ox, oy + (armUp ? 6 : 7), SKIN)
+  set(ox + 9, oy + (armUp ? 6 : 7), SKIN)
   if (mood === 'happy') {
-    set(ox - 2, oy + 4, SKIN)
-    set(ox + 11, oy + 4, SKIN)
+    set(ox - 1, oy + 5, SKIN)
+    set(ox + 10, oy + 5, SKIN)
   }
 
   // Boots that stride while running.
   const feet = mood === 'run' ? (tick % 4 < 2 ? [1, 2, 7, 8] : [2, 3, 6, 7]) : [2, 3, 6, 7]
   for (const fx of feet) set(ox + fx, oy + 9, SHOE)
 
-  if (mood === 'happy') {
-    // ^ ^ and a smile.
-    for (const ex of [ox + 2, ox + 5]) {
-      set(ex, oy + 3, EYE)
-      set(ex + 1, oy + 2, EYE)
-      set(ex + 2, oy + 3, EYE)
-    }
-    set(ox + 4, oy + 5, EYE)
-    set(ox + 5, oy + 5, EYE)
-  } else if (mood === 'sad') {
-    // Worried brows and a tear down the cheek.
-    set(ox + 3, oy + 3, EYE)
-    set(ox + 6, oy + 3, EYE)
-    set(ox + 2, oy + 2, EYE)
-    set(ox + 7, oy + 2, EYE)
-    set(ox + 3, oy + 4 + Math.min((tick % 16) >> 3, 1), TEAR)
-  } else {
-    // Behind the mask her eyes catch the light now and then, and dart while thinking.
-    const look = mood === 'think' ? ([0, 1, 0, -1][Math.floor(tick / 10) % 4] ?? 0) : 0
-    const glint = mood === 'idle' && tick % 48 >= 46
-    if (glint || look < 0) set(ox + 3, oy + 3, SPARK)
-    if (glint || look > 0) set(ox + 6, oy + 3, SPARK)
+  // Her eyes show through the eyeholes: the dark corner of each moves with her
+  // mood. Low and inward by default, up when happy, low and drifting apart
+  // when sad, darting while thinking; a blink hides them.
+  const look = mood === 'think' ? ([0, 1, 0, -1][Math.floor(tick / 10) % 4] ?? 0) : 0
+  const blink = mood === 'idle' && tick % 48 >= 46
+  for (const [hx, hy] of HOLES) {
+    for (let dx = 0; dx < 2; dx++) for (let dy = 0; dy < 2; dy++) set(ox + hx + dx, oy + hy + dy, RIM)
+    if (blink) continue
+    const inward = mood !== 'sad'
+    const px = look < 0 ? 0 : look > 0 ? 1 : (hx < 5) === inward ? 1 : 0
+    set(ox + hx + px, oy + hy + (mood === 'happy' ? 0 : 1), EYE)
+  }
+  if (mood === 'sad' && tick % 16 < 10) {
+    // A tear from under the left eyehole.
+    set(ox, oy + 4, TEAR)
   }
 }
 
