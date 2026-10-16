@@ -42,8 +42,10 @@ Answer `y` to add the marketplace and pick the **user** scope to have buddy in e
 - Ten more skins, each with its own crew of creatures for the agent list: `/buddy mario`, `moogle`, `pikachu`, `slime` (Dragon Quest), `barba` (Barbapapa), `moomin`, `tomte`, `kirby`, `creeper` and `soot` (a soot sprite). Each lives in its own small file in `hooks/skins/`; see `hooks/skins/types.ts` to add one.
 - Horror skins too, cute-creepy: `/buddy stripe` (Gremlins), `sam` (Trick 'r Treat), `alien`, `jason`, `chucky`, `freddy`, `ghostface`, `predator`, `pennywise` and `frank` (Frankenstein's monster).
 - A Star Wars crew: `/buddy vader`, `trooper`, `chewie`, `yoda`, `grogu`, `threepio`, `mando`, `leia`, `ewok` and `jawa`, each with Star Wars creatures for its agents.
-- And many more, 89 in all: Ghibli (`noface`, `calcifer`, `kodama`, `jiji`, `kiki`), games (`link`, `sonic`, `pacman`, `shovel`, `junimo`, `hollow`, `blackmage`, `megaman`, `companion`, `goose`, `bomber`, `rayman`, `redbird`), film and TV (`minion`, `walle`, `baymax`, `mike`, `gizmo`, `toothless`, `dalek`, `slimer`, `irongiant`, `jack`, `joy`), anime (`doraemon`, `naruto`, `usagi`), cartoons and folklore (`pippi`, `tintin`, `gromit`, `smurf`, `calavera`, `lion`, `troll`, `yaga`, `anansi`, `sphinx`, `kitsune`) and two more monsters (`gillman`, `bonnie`). `/buddy list` shows them all.
+- And many more, 117 in all: Ghibli (`noface`, `calcifer`, `kodama`, `jiji`, `kiki`), games (`link`, `sonic`, `pacman`, `shovel`, `junimo`, `hollow`, `blackmage`, `megaman`, `companion`, `goose`, `bomber`, `rayman`, `redbird`), film and TV (`minion`, `walle`, `baymax`, `mike`, `gizmo`, `toothless`, `dalek`, `slimer`, `irongiant`, `jack`, `joy`), anime (`doraemon`, `naruto`, `usagi`), cartoons and folklore (`pippi`, `tintin`, `gromit`, `smurf`, `calavera`, `lion`, `troll`, `yaga`, `anansi`, `sphinx`, `kitsune`) and two more monsters (`gillman`, `bonnie`). `/buddy list` shows them all.
 - Sci-fi ships: `/buddy xwing`, `tie`, `falcon`, `destroyer`, `enterprise`, `borg`, `birdofprey`, `rocinante`, `serenity` and `tardis`. Their windows are their eyes, their engines flicker while they work, and each carries its own crew (a tribble that multiplies, Wash's dinosaur, a Weeping Angel...).
+- Marvel: `/buddy spidey`, `ironman`, `hulk`, `cap`, `thor`, `groot`, `deadpool`, `panther`, `venom` and `strange`.
+- More anime: `/buddy goku`, `vegeta`, `saitama`, `luffy`, `chopper`, `spike`, `tanjiro`, `nezuko`, `levi`, `deku`, `allmight`, `gojo`, `ichigo`, `ryuk`, `edward`, `eva`, `pochita` and `anya`.
 - `/buddy list` shows every skin by group (Buddy, Ghibli, Star Wars, Games, Cartoons & folklore, Horror) and what he's wearing; `/buddy random` puts on a random one.
 - `/buddy rotate` puts on a different skin every day (the same one all day), `/buddy rotate session` a new one each session, `/buddy rotate off` stops. Picking a skin by hand stops the rotation too, and the choice is remembered across sessions.
 - Works in the terminal, the Claude desktop app, VS Code and the mobile app. The terminal repaints buddy's pixels in place; the others draw him as an SVG that grows to fit the pane, and redraw it up to about 7 times a second, so he moves a little less smoothly there.
@@ -55,3 +57,9 @@ claude --plugin-dir ~/code/claude-buddy   # run from the working copy
 claude plugin validate .
 claude plugin test .
 ```
+
+## A fan project
+
+buddy is a free, non-commercial hobby project. The characters, ships and names in its skins belong to their owners (Nintendo, Disney, Lucasfilm, Marvel, Studio Ghibli, Warner Bros. and others) and are drawn here as small pixel-art homages. buddy is not affiliated with or endorsed by any of them. If you hold rights to something here and want it removed, open an issue and it will be taken out.
+
+buddy's code is MIT-licensed (see `LICENSE`); that licence covers the code only, not the characters.
