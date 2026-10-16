@@ -1,6 +1,6 @@
 # Skin ideas
 
-A catalog of skins buddy could wear, gathered 2026-10-16 by seven research agents (anime, games, film/TV, folklore; then deeper passes on Nordic/European culture, cult film and indie games). Built so far: classic, `forest` (Totoro-like spirit), `mask` (San's mask), `r2d2`, and the shortlist's top ten: `mario`, `moogle`, `pikachu`, `slime`, `barba`, `moomin`, `tomte`, `kirby`, `creeper`, `soot`. The horror top ten too: `stripe`, `sam`, `alien`, `jason`, `chucky`, `freddy`, `ghostface`, `predator`, `pennywise`, `frank`.
+A catalog of skins buddy could wear, gathered 2026-10-16 by seven research agents (anime, games, film/TV, folklore; then deeper passes on Nordic/European culture, cult film and indie games). Built so far: everything in this file (79 skins). Next ideas: a Sci-fi ships group (X-wing, TIE fighter, Millennium Falcon, Star Destroyer, the Enterprise, a Borg cube, a Klingon Bird-of-Prey, the Rocinante, Serenity, the TARDIS).
 
 Every skin needs: a 16×16 sprite (body ~10 px wide, 2 rows of headroom), the five moods (chilling, thinking, working, done, oh no), captions of ≤ 8 letters in the pixel font (A, F, J, Q, V, X, Z are missing; add glyphs before using them), and five 8×6 creatures for the agent roles: Explore, Plan, fork (a copy of its parent), general-purpose, anything else.
 

@@ -107,7 +107,7 @@ const lookOf = (skin?: Skin): SkinLook | undefined => (LOOKS as Record<string, S
 
 // Where `/buddy list` puts each skin, in this order, then any other groups.
 const BUILTIN_GROUP: Record<BuiltinSkin, string> = { classic: 'Buddy', forest: 'Ghibli', mask: 'Ghibli', r2d2: 'Star Wars' }
-const GROUP_ORDER = ['Buddy', 'Ghibli', 'Star Wars', 'Games', 'Cartoons & folklore', 'Horror']
+const GROUP_ORDER = ['Buddy', 'Ghibli', 'Star Wars', 'Games', 'Film & TV', 'Anime', 'Cartoons & folklore', 'Horror']
 export const groupOf = (skin: Skin) => lookOf(skin)?.group ?? BUILTIN_GROUP[skin as BuiltinSkin] ?? 'Other'
 // Every skin by group, for `/buddy list`.
 export const skinGroups = (): [string, Skin[]][] => {
@@ -129,7 +129,7 @@ const dayNumber = (ms: number) => {
 export const dailySkin = (ms: number): Skin => SKINS[dayNumber(ms) % SKINS.length]!
 
 // Through Halloween week buddy is a different monster each day.
-export const HORROR = (['stripe', 'sam', 'alien', 'jason', 'chucky', 'freddy', 'ghostface', 'predator', 'pennywise', 'frank'] as const).filter(
+export const HORROR = (['stripe', 'sam', 'alien', 'jason', 'chucky', 'freddy', 'ghostface', 'predator', 'pennywise', 'frank', 'gillman', 'bonnie'] as const).filter(
   s => (SKINS as string[]).includes(s),
 ) as Skin[]
 export const halloweenSkin = (ms: number): Skin => HORROR[dayNumber(ms) % HORROR.length]!

@@ -371,7 +371,9 @@ test('in the forest each agent type is its own critter, whole in every mood', ()
       // (a thinking critter holds still, so its corner is always the dot's)
       const drawn = (px: number[]) => px.filter((c, i) => c !== 0x01000000 && !(i === 7 && (c === 0xf5d76e || mood === 'think'))).length
       const own = drawn(tinyFrame(mood, 0, undefined, undefined, 'forest', critter))
-      for (let tick = 0; tick < 96; tick++) {
+      // frames that cover every state: both steps (0-3), a sparkle and none (5),
+      // a bob (8), each glance (0, 10, 20, 30), a tear and none (12), the blink (46, 47)
+      for (const tick of [0, 1, 2, 3, 5, 8, 10, 12, 20, 30, 46, 47]) {
         const px = tinyFrame(mood, tick, 0xe8a87c, undefined, 'forest', critter)
         expect(px).toHaveLength(48)
         // drawn in its own colours, never the agent's tint
@@ -648,7 +650,7 @@ test('a daily rotation picked in an earlier session comes back', async ($, on) =
 })
 
 test('through Halloween week buddy is a different monster each day', () => {
-  expect(HORROR).toHaveLength(10)
+  expect(HORROR.length).toBeGreaterThanOrEqual(10)
   const days = Array.from({ length: 8 }, (_, i) => halloweenSkin(new Date(2026, 9, 24 + i, 12).getTime()))
   for (const skin of days) expect(HORROR).toContain(skin)
   expect(new Set(days).size).toBe(8) // a new one every day of the week
