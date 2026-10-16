@@ -38,7 +38,7 @@ Answer `y` to add the marketplace and pick the **user** scope to have buddy in e
 - `/buddy halloween` or `/buddy christmas` tries a costume on now, `/buddy normal` takes it off, `/buddy auto` follows the calendar again.
 - `/buddy forest` turns buddy into a grey forest spirit with ears and a belly, and his agents into forest critters: a sprout for Explore, an owl for Plan, an acorn for forks, a little spirit for general-purpose, a mushroom for anyone else. `/buddy classic` turns them back. The skin is remembered across sessions, and seasons still bring their props, just no hat over the ears.
 - `/buddy mask` turns buddy into a forest girl behind a round red horned mask with two yellow-rimmed eyeholes, white stripes and a shaggy fur cape. Her eyes show through the holes: up when she's happy, drifting apart when she's sad, darting while she thinks. She says `WILD!` when done, and her agents are the same forest critters.
-- Terminal only for now; the desktop and VS Code surfaces show a one-line text status.
+- Works in the terminal, the Claude desktop app, VS Code and the mobile app. The terminal repaints buddy's pixels in place; the others draw him as an SVG that grows to fit the pane, and redraw it up to about 7 times a second, so he moves a little less smoothly there.
 
 ## Develop
 

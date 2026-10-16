@@ -1,7 +1,7 @@
 import { test, expect, mock } from 'claude-code/testing'
 import {
   describeTool, CAPTIONS, SEASON_CAPTIONS, SKIN_CAPTIONS, CRITTERS, critterFor, captionFor, captionPixels, captionWidth, elapsed, encode, frame, listOrder, moodOf,
-  seasonFor, size, tinyFrame, tintFor,
+  remotePx, seasonFor, size, svgOf, tinyFrame, tintFor,
 } from './register'
 
 const MOODS = ['idle', 'think', 'run', 'happy', 'sad'] as const
@@ -460,4 +460,80 @@ test('/buddy mask puts the mask on, and it is remembered', async ($, on) => {
   expect(store.get('skin')).toBe('mask')
   const term = await $.ui.mount({ plugin: 'buddy', surface: 'terminal', component: 'Pane', requestId: 'buddy', props: pane(36, 40) })
   expect((await term.find({ type: 'Raster', key: 'sprite' }))?.props.rows).toBe(16)
+})
+
+test('svgOf draws one rect per run of a colour and leaves the empty pixels out', () => {
+  const N = 0x01000000
+  const svg = svgOf([0xff0000, 0xff0000, N, 0x00ff00, N, N, N, 0x00ff00], 4, 2, 5)
+  expect(svg).toContain('width="20" height="10"')
+  expect(svg.match(/<rect /g)).toHaveLength(3)
+  expect(svg).toContain('<rect x="0" y="0" width="10" height="5" fill="#ff0000"/>')
+  expect(svg).toContain('<rect x="15" y="5" width="5" height="5" fill="#00ff00"/>')
+  // a whole buddy stays far under the 128 KiB an Svg may hold
+  expect(svgOf(frame('happy', 3, undefined, 'christmas', 'forest'), 16, 16, 8).length).toBeLessThan(20_000)
+})
+
+test('the desktop, the editor and the phone draw buddy and his agents as SVG', async ($, on) => {
+  mock.clock(on)
+  on('agent.spawn', () => ({ model: 'test', agentId: 'agent-1' }))
+  await $.agent.spawn({
+    tool_use_id: 'toolu_1', prompt: 'x', description: 'Find map files', subagentType: 'Explore',
+    provider: { plugin: 'engine', tier: 'core' }, parentModel: 'test', background: true, fork: false,
+  })
+  for (const surface of ['desktop', 'vscode', 'mobile'] as const) {
+    const view = await $.ui.mount({ plugin: 'buddy', surface, component: 'Pane', requestId: 'buddy', props: pane(36, 40) })
+    expect(await view.find({ type: 'Raster' })).toBeUndefined()
+    const svgs = await view.findAll({ type: 'Svg' })
+    expect(svgs).toHaveLength(3) // buddy, his caption, one mini
+    const [body, caption, mini] = svgs.map(s => s.props as { source: string; alt: string })
+    expect(body!.alt).toBe('Buddy, chilling')
+    // with an agent listed, buddy steps down to 12 CSS pixels a pixel
+    expect(body!.source).toContain('width="192" height="168"')
+    expect(body!.source).toContain('fill="#d97757"')
+    expect(caption!.alt).toBe('CHILLING')
+    expect(caption!.source).toContain('width="192"') // as wide as buddy
+    expect(mini!.alt).toBe('Explore, think')
+    expect(mini!.source).toContain('width="32" height="24"')
+    expect(await view.find({ text: 'Find map files' })).toBeDefined()
+    expect(await view.find({ text: 'Explore' })).toBeDefined()
+    await view.unmount()
+  }
+})
+
+test('on the desktop the pane redraws as buddy bobs', async ($, on) => {
+  const clock = mock.clock(on)
+  mock.store(on)
+  on('command.register', () => ({ value: undefined }))
+  on('ui.panes', () => ({ value: [{ id: 'buddy' }] as never }))
+  on('session.start', ($, e) => ({ cwd: e.cwd }))
+  await $.session.start({ cwd: '/tmp', surface: 'desktop', isInteractive: true })
+  const view = await $.ui.mount({ plugin: 'buddy', surface: 'desktop', component: 'Pane', requestId: 'buddy', props: pane(36, 40) })
+  const body = async () => ((await view.find({ type: 'Svg' }))?.props as { source: string }).source
+  const seen = new Set([await body()])
+  for (let i = 0; i < 20; i++) {
+    await clock.advance(132)
+    seen.add(await body())
+  }
+  // idle buddy bobs up and down, so the drawing changed as time went by
+  expect(seen.size).toBeGreaterThan(1)
+})
+
+test('on the desktop buddy grows to fit the pane, up to a limit', async ($, on) => {
+  mock.clock(on)
+  const width = async (columns: number) => {
+    const view = await $.ui.mount({ plugin: 'buddy', surface: 'desktop', component: 'Pane', requestId: 'buddy', props: pane(columns, 40) })
+    const source = ((await view.find({ type: 'Svg' }))?.props as { source: string }).source
+    await view.unmount()
+    return Number(/width="(\d+)"/.exec(source)![1])
+  }
+  const narrow = await width(24)
+  const wide = await width(36)
+  expect(wide).toBeGreaterThan(narrow)
+  // drawn a little wider than the pane (10 CSS pixels a column), for the pane to shrink to fit
+  expect(wide).toBeGreaterThanOrEqual(36 * 8)
+  expect(await width(400)).toBe(16 * 24)
+  // a tiny pane still gets a buddy you can see; the minis grow with him but stay small
+  expect(remotePx(2, false)).toEqual({ body: 4, caption: 2, mini: 4 })
+  expect(remotePx(400, false).mini).toBe(8)
+  expect(remotePx(400, true).body).toBe(12)
 })

@@ -18,6 +18,21 @@ const MAX_MINIS = 8
 const MINI_LINGER_MS = 30_000 // how long a finished agent stays listed, dimmed
 const SWEEP_MS = 5000
 const CLOCK_MS = 1000 // elapsed times tick once a second
+// The desktop, the editor and the phone have no Raster to repaint in place:
+// they draw SVG and redraw the whole pane, so at most every other frame.
+const REMOTE_EVERY = 2
+// Their panes count width in columns, not CSS pixels, so buddy is drawn at
+// about 10 CSS pixels a column, a little wider than the pane: an Svg wider
+// than its slot shrinks to fit it, keeping its shape.
+const REMOTE_COLUMN_PX = 10
+const REMOTE_MAX_PX = 24 // CSS pixels a side for one of buddy's pixels, at most
+const REMOTE_AGENTS_PX = 12 // ...and while agents are listed, to leave them room
+// How big each of buddy's pixels is drawn in a remote pane `bodyColumns` wide;
+// his caption spans his width, and the minis grow a little with him.
+export const remotePx = (bodyColumns: number, hasAgents: boolean) => {
+  const body = Math.max(4, Math.min(hasAgents ? REMOTE_AGENTS_PX : REMOTE_MAX_PX, Math.floor((bodyColumns * REMOTE_COLUMN_PX) / W)))
+  return { body, caption: Math.max(2, Math.floor((body * W) / CAPTION_W)), mini: Math.max(4, Math.min(8, Math.floor(body / 3))) }
+}
 
 const NONE = 0x01000000 // terminal default (transparent)
 const BODY = 0xd97757 // Claude orange
@@ -608,6 +623,24 @@ export function tinyFrame(mood: Mood, tick: number, body = BODY, season?: Season
   return px
 }
 
+// An SVG of a sprite, for the surfaces without a Raster: one rect per run of
+// one colour along a row, each pixel `px` CSS pixels a side.
+export function svgOf(pixels: number[], width: number, height: number, px: number): string {
+  let rects = ''
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; ) {
+      const c = pixels[y * width + x] ?? NONE
+      let run = 1
+      while (x + run < width && pixels[y * width + x + run] === c) run++
+      if (c !== NONE) rects += `<rect x="${x * px}" y="${y * px}" width="${run * px}" height="${px}" fill="${hex(c)}"/>`
+      x += run
+    }
+  }
+  const w = width * px
+  const h = height * px
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" shape-rendering="crispEdges">${rects}</svg>`
+}
+
 // Cells for a sprite drawn `scale`× as big: each pixel is `scale` columns wide
 // and `scale` half-rows tall, so it stays square.
 export const size = (scale: number, season?: Season, skin?: Skin) => ({ columns: W * scale, rows: (heightOf(season, skin) * scale) / 2 })
@@ -717,6 +750,8 @@ export const register: Register = on => {
   const minis = new Map<string, Buddy>()
   let scale = 2
   let isShown = false
+  let isShownRemote = false // drawn on the desktop, the editor or the phone
+  let remoteLast = '' // what the remote pane last drew, to redraw only on a change
   let tick = 0
   let wallNow = 0 // the clock as of the last frame, for drawing times
   let season: Season | undefined
@@ -736,6 +771,37 @@ export const register: Register = on => {
     return mini
   }
 
+  // Everything a pane draws at `now`: the big buddy, the caption, each mini.
+  const sprites = (now: number) => {
+    const mood = moodOf(main, now)
+    return {
+      mood,
+      caption: captionFor(mood, season, skin),
+      body: frame(mood, tick, BODY, season, skin),
+      captionPx: captionPixels(captionFor(mood, season, skin), tick, mood === 'think'),
+      mini: (b: Buddy) => tinyFrame(moodOf(b, now), tick + (b.phase ?? 0), b.body, season, skin, critterFor(b.type ?? '')),
+    }
+  }
+  // A cheap fingerprint of what a remote pane shows, to tell when to redraw it.
+  const look = (now: number) => {
+    const s = sprites(now)
+    return [s.body, s.captionPx, ...[...minis.values()].map(s.mini)].map(px => px.join(',')).join('|')
+  }
+
+  // A mini's text: its name's colour, its time and tool count, its activity.
+  const rowOf = (mini: Buddy, now: number) => {
+    const isDone = !!mini.leaveAt
+    const time = elapsed((mini.endedAt ?? now) - (mini.startedAt ?? now))
+    const activity = mini.activity ?? '▸ starting…'
+    return {
+      isDone,
+      nameColor: isDone ? undefined : hex(skin !== 'classic' ? CRITTERS[critterFor(mini.type ?? '')].tint : (mini.body ?? BODY)),
+      meta: `${mini.tools ? `${mini.tools} tool${mini.tools === 1 ? '' : 's'} · ` : ''}${time}`,
+      activity,
+      statusColor: activity.startsWith('✓') ? 'success' : activity.startsWith('✗') ? 'error' : undefined,
+    }
+  }
+
   on('session.start', async ($, e, next) => {
     await $.command.register({ name: 'buddy', description: 'Show or hide your pixel buddy', argumentHint: '[forest|mask|classic|halloween|christmas|normal|auto]' })
     const stored = await $.store.get('skin').catch(() => undefined)
@@ -744,7 +810,7 @@ export const register: Register = on => {
     if (!isShown) void $.ui.open({ id: PANE, title: 'Buddy', rows: 18, columns: PANE_COLUMNS })
 
     $.clock.every(FRAME_MS, async () => {
-      if (!isShown) return
+      if (!isShown && !isShownRemote) return
       tick++
       const now = (wallNow = await $.clock.now())
 
@@ -760,6 +826,10 @@ export const register: Register = on => {
         }
       }
       if (left) return $.ui.invalidate('ui.render')
+
+      // A remote pane redraws whole, and only when its sprites moved.
+      if (isShownRemote && tick % REMOTE_EVERY === 0 && look(now) !== remoteLast) $.ui.invalidate('ui.render')
+      if (!isShown) return
 
       const paint = async (b: Buddy, key: string, cells: string) => {
         if (cells === b.last) return
@@ -782,7 +852,7 @@ export const register: Register = on => {
 
     // Running agents' elapsed times tick.
     $.clock.every(CLOCK_MS, () => {
-      if (isShown && [...minis.values()].some(m => !m.leaveAt)) $.ui.invalidate('ui.render')
+      if ((isShown || isShownRemote) && [...minis.values()].some(m => !m.leaveAt)) $.ui.invalidate('ui.render')
     })
 
     // Safety net: drop minis whose agent ended without a turn.complete (killed).
@@ -842,7 +912,7 @@ export const register: Register = on => {
   })
 
   on('ui.close', async ($, e, next) => {
-    if (e.id === PANE) isShown = false
+    if (e.id === PANE) isShown = isShownRemote = false
     return next(e)
   })
 
@@ -940,8 +1010,42 @@ export const register: Register = on => {
     const spriteH = heightOf(season, skin) // not `h`: that's the JSX factory
     const caption = captionFor(mood, season, skin)
     if (e.surface !== 'terminal') {
-      const { Text } = $.ui.resolve(e)
-      return <Text dimColor>Buddy lives in the terminal ({caption})</Text>
+      // No Raster here: every sprite is an SVG, and the whole pane redraws as it moves.
+      const { Box, Text, Svg } = $.ui.resolve(e)
+      isShownRemote = true
+      remoteLast = look(now)
+      const s = sprites(now)
+      const ordered = listOrder([...minis])
+      const shown = ordered.slice(0, MAX_MINIS)
+      const running = ordered.filter(([, m]) => !m.leaveAt).length
+      const px = remotePx(e.props.bodyColumns, minis.size > 0)
+      return (
+        <Box flexDirection="column" gap={1}>
+          <Box flexDirection="column" alignItems="center" gap={1}>
+            <Svg source={svgOf(s.body, W, spriteH, px.body)} alt={`Buddy, ${caption.toLowerCase()}`} />
+            <Svg source={svgOf(s.captionPx, CAPTION_W, CAPTION_H, px.caption)} alt={caption} />
+            {main.activity && <Text dimColor>{main.activity}</Text>}
+          </Box>
+          {minis.size > 0 && <Text dimColor>{`agents · ${running ? `${running} running` : 'all done'}`}</Text>}
+          {shown.map(([id, mini]) => {
+            const row = rowOf(mini, now)
+            return (
+              <Box key={id} flexDirection="row" gap={1}>
+                <Svg source={svgOf(s.mini(mini), TW, TH, px.mini)} alt={`${mini.name ?? 'agent'}, ${moodOf(mini, now)}`} />
+                <Box flexDirection="column">
+                  <Box flexDirection="row" gap={1}>
+                    <Text bold color={row.nameColor} dimColor={row.isDone}>{mini.name ?? 'agent'}</Text>
+                    <Text dimColor>{row.meta}</Text>
+                  </Box>
+                  <Text dimColor={row.isDone}>{mini.label || '…'}</Text>
+                  <Text dimColor={!row.statusColor} color={row.statusColor}>{row.activity}</Text>
+                </Box>
+              </Box>
+            )
+          })}
+          {minis.size > shown.length && <Text dimColor>{`+${minis.size - shown.length} more`}</Text>}
+        </Box>
+      )
     }
     const { Box, Text, Raster } = $.ui.resolve(e)
     isShown = true
@@ -982,12 +1086,8 @@ export const register: Register = on => {
           </Box>
         )}
         {shown.map(([id, mini]) => {
-          const isDone = !!mini.leaveAt
           mini.last = encode(tinyFrame(moodOf(mini, now), tick + (mini.phase ?? 0), mini.body, season, skin, critterFor(mini.type ?? '')), 1, TW, TH)
-          const time = elapsed((mini.endedAt ?? now) - (mini.startedAt ?? now))
-          const meta = `${mini.tools ? `${mini.tools} tool${mini.tools === 1 ? '' : 's'} · ` : ''}${time}`
-          const activity = mini.activity ?? '▸ starting…'
-          const statusColor = activity.startsWith('✓') ? 'success' : activity.startsWith('✗') ? 'error' : undefined
+          const { isDone, nameColor, meta, activity, statusColor } = rowOf(mini, now)
           return (
             <Box flexDirection="row" gap={1} marginTop={1}>
               <Box paddingLeft={1}>
@@ -995,7 +1095,7 @@ export const register: Register = on => {
               </Box>
               <Box flexDirection="column" width={textColumns}>
                 <Box flexDirection="row" justifyContent="space-between">
-                  <Text bold color={isDone ? undefined : hex(skin !== 'classic' ? CRITTERS[critterFor(mini.type ?? '')].tint : (mini.body ?? BODY))} dimColor={isDone} wrap="truncate">
+                  <Text bold color={nameColor} dimColor={isDone} wrap="truncate">
                     {mini.name ?? 'agent'}
                   </Text>
                   <Text dimColor>{meta}</Text>
